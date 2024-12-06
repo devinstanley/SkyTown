@@ -73,8 +73,10 @@ namespace SkyTown.HUD.Inventory
             Vector2 mousePosition = inputManager.GetMousePosition();
 
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X - player.Position.X/2 + inventoryTexture.Width/2 - InventorySlotDimensions/2;
-            float relativeY = mousePosition.Y - player.Position.Y/2 + inventoryTexture.Height/ 2 - InventorySlotDimensions/2;
+            float relativeX = mousePosition.X - player.Position.X + inventoryTexture.Width/2;// - inventoryTexture.Width/2f;
+            float relativeY = mousePosition.Y - player.Position.Y + inventoryTexture.Height/2;
+
+            Debug.WriteLine($"Mouse Pos: {relativeX}, {relativeY}");
 
             // Convert to slot indices
             int slotX = (int)(relativeX / InventorySlotDimensions);

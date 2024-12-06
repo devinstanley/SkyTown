@@ -17,7 +17,7 @@ namespace SkyTown.Entities.Items
         public String ToolTip { get; set; }
         public ItemType Type { get; set; }
         public int MaxInventoryStack { get; set; }
-        public Item(int maxStack=3)
+        public Item(int maxStack=1)
         {
             MaxInventoryStack = maxStack;
         }
