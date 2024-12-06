@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\CustomContentPipeline\bin\Debug\net8.0\CustomContentPipeline.dll
+/reference:..\CustomContentPipeline\bin\Debug\net8.0\CustomContentPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 

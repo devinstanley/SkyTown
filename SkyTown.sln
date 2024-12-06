@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyTown", "SkyTown.csproj", "{EB6E31DC-9974-4995-926B-0B4142D3F3E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomContentPipeline", "..\CustomContentPipeline\CustomContentPipeline.csproj", "{DF33E72A-632E-4227-948D-2F6700317FF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomContentPipeline", "CustomContentPipeline\CustomContentPipeline.csproj", "{5B5DD18D-E26B-4991-8D56-E6CF0AE9E283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EB6E31DC-9974-4995-926B-0B4142D3F3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6E31DC-9974-4995-926B-0B4142D3F3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6E31DC-9974-4995-926B-0B4142D3F3E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF33E72A-632E-4227-948D-2F6700317FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF33E72A-632E-4227-948D-2F6700317FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF33E72A-632E-4227-948D-2F6700317FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF33E72A-632E-4227-948D-2F6700317FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B5DD18D-E26B-4991-8D56-E6CF0AE9E283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B5DD18D-E26B-4991-8D56-E6CF0AE9E283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B5DD18D-E26B-4991-8D56-E6CF0AE9E283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B5DD18D-E26B-4991-8D56-E6CF0AE9E283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
