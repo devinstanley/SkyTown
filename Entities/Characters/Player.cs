@@ -1,0 +1,133 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using SkyTown.Entities.Base;
+using SkyTown.Entities.Items;
+using SkyTown.LogicManagers;
+
+namespace SkyTown.Entities.Characters
+{
+    public class Player : NPC
+    {
+        public InventoryManager inventory;
+        float RunningSpeed = 1.2f;
+        private Vector2 _minPos, _maxPos;
+        public Player(string name) : base(name)
+        {
+            inventory = new();
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+        }
+
+        new public void LoadContent(ContentManager content)
+        {
+            Texture2D npcTexture = content.Load<Texture2D>($"Assets\\Sprites\\{Name}");
+            animationManager.AddAnimation(NPCState.IdleForward, new Animation(npcTexture, 9, 4, 1, 3, [2, 3, 4, 5, 6, 7, 8]));
+            animationManager.AddAnimation(NPCState.IdleLeft, new Animation(npcTexture, 9, 4, 1, 2, [1, 2, 3, 4, 5, 6, 7]));
+            animationManager.AddAnimation(NPCState.IdleBackward, new Animation(npcTexture, 9, 4, 1, 1, [1, 2, 3, 4, 5, 6, 7]));
+            animationManager.AddAnimation(NPCState.IdleRight, new Animation(npcTexture, 9, 4, 1, 4, [1, 2, 3, 4, 5, 6, 7]));
+
+            animationManager.AddAnimation(NPCState.WalkForward, new Animation(npcTexture, 9, 4, 0.1f, 3));
+            animationManager.AddAnimation(NPCState.WalkLeft, new Animation(npcTexture, 9, 4, 0.1f, 2));
+            animationManager.AddAnimation(NPCState.WalkBackward, new Animation(npcTexture, 9, 4, 0.1f, 1));
+            animationManager.AddAnimation(NPCState.WalkRight, new Animation(npcTexture, 9, 4, 0.1f, 4));
+
+            animationManager.AddAnimation(NPCState.RunForward, new Animation(npcTexture, 9, 4, 0.1f, 3, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunLeft, new Animation(npcTexture, 9, 4, 0.1f, 2, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunBackward, new Animation(npcTexture, 9, 4, 0.1f, 1, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunRight, new Animation(npcTexture, 9, 4, 0.1f, 4, [0, 2, 4, 6, 8]));
+
+            inventory.LoadContent(content);
+        }
+
+        public void SetBounds(Point mapSize, Point tileSize)
+        {
+            _minPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
+            _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
+        }
+
+        public void Update(GameTime gameTime, InputManager input, CollisionManager collisionManager)
+        {
+            if (input == null)
+            {
+                return;
+            }
+
+            //Handle Input Update
+            int displacementScalar = (int)(_speed * gameTime.ElapsedGameTime.TotalSeconds);
+            UpdateVelocity(input);
+            vel *= displacementScalar;
+
+            //Update Hitbox Size Based on Current Animation
+            Width = animationManager.AnimationWidth;
+            Height = animationManager.AnimationHeight;
+             
+            //Detect Collisions With Current Game Scene Collision Manager
+            collisionManager.HandlePlayerMapCollisions(vel);
+
+            //Update Player Position
+            Position += vel;
+            Position = Vector2.Clamp(Position + vel, _minPos, _maxPos);
+
+            Update(gameTime);
+        }
+
+        public void UpdateVelocity(InputManager input)
+        {
+            vel = Vector2.Zero;
+
+            if (input.IsKeyDown(Keys.W))
+            {
+                vel.Y -= 1;
+                AnimationState = NPCState.WalkBackward;
+            }
+            else if (input.IsKeyDown(Keys.S))
+            {
+                vel.Y += 1;
+                AnimationState = NPCState.WalkForward;
+            }
+            if (input.IsKeyDown(Keys.A))
+            {
+                vel.X -= 1;
+                AnimationState = NPCState.WalkLeft;
+            }
+            else if (input.IsKeyDown(Keys.D))
+            {
+                vel.X += 1;
+                AnimationState = NPCState.WalkRight;
+            }
+
+            if (!vel.Equals(Vector2.Zero))
+            {
+                vel.Normalize();
+            }
+            if (input.IsKeyDown(Keys.LeftShift) || input.IsKeyDown(Keys.RightShift))
+            {
+                AnimationState += 4;
+                vel *= RunningSpeed;
+            }
+            //Transition To Idle in Same Direction
+            if (vel.Equals(Vector2.Zero))
+            {
+                AnimationState = (NPCState)((int)AnimationState % 4);
+            }
+            
+        }
+    }
+}

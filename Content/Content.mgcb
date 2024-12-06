@@ -1,0 +1,149 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\CustomContentPipeline\bin\Debug\net8.0\CustomContentPipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin Assets/Map/Collisions.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Map/Collisions.png
+
+#begin Assets/Map/DevelopmentMapCollisions.csv
+/importer:CsvImporter
+/processor:CsvProcessor
+/build:Assets/Map/DevelopmentMapCollisions.csv
+
+#begin Assets/Map/DevelopmentMapTileMapLayer0.csv
+/importer:CsvImporter
+/processor:CsvProcessor
+/build:Assets/Map/DevelopmentMapTileMapLayer0.csv
+
+#begin Assets/Map/DevelopmentMapTileMapLayer1.csv
+/importer:CsvImporter
+/processor:CsvProcessor
+/build:Assets/Map/DevelopmentMapTileMapLayer1.csv
+
+#begin Assets/Map/DevelopmentMapTileMapLayer2.csv
+/importer:CsvImporter
+/processor:CsvProcessor
+/build:Assets/Map/DevelopmentMapTileMapLayer2.csv
+
+#begin Assets/Map/MapSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Map/MapSheet.png;Assets/Map/DevelopmentMapTileAtlas.png
+
+#begin Assets/Map/TestMap.csv
+/importer:CsvImporter
+/processor:CsvProcessor
+/build:Assets/Map/TestMap.csv;Assets/Map/TestTileMap.csv
+
+#begin Assets/Map/TX Tileset Grass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Map/TX Tileset Grass.png;Assets/Map/TestTileAtlas.png
+
+#begin Assets/Menu/InventoryHUD.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Menu/InventoryHUD.png
+
+#begin Assets/Menu/Start Menu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Menu/Start Menu.png
+
+#begin Assets/Sprites/Blurg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Sprites/Blurg.png
+
+#begin Assets/Sprites/spriteAnimationTest.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Sprites/spriteAnimationTest.png;Assets/Sprites/Player.png
+
+#begin Assets/Sprites/spriteAnimationTestCollision.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Sprites/spriteAnimationTestCollision.png;Assets/Sprites/PlayerCollision.png
+
+#begin Assets/Sprites/TestItem.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Sprites/TestItem.png
+
