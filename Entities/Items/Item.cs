@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Base;
+using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace SkyTown.Entities.Items
         public String ToolTip { get; set; }
         public ItemType Type { get; set; }
         public int MaxInventoryStack { get; set; }
-        public Item(int maxStack=1)
+        public Item(ResourceManager resourceManager, int maxStack=1) : base(resourceManager)
         {
             MaxInventoryStack = maxStack;
         }

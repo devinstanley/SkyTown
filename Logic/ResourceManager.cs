@@ -5,16 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace SkyTown.Logic
 {
-    internal class ResourceManager
+    public class ResourceManager
     {
         ContentManager content;
         Dictionary<string, Texture2D> textureLibrary = new Dictionary<string, Texture2D>();
+        Dictionary<string, Song> songLibrary = new Dictionary<string, Song>();
         public ResourceManager(ContentManager content)
         {
             this.content = content;
+        }
+        public Song LoadSong(string songName)
+        {
+            if (!songLibrary.ContainsKey(songName))
+            {
+                Song song = content.Load<Song>(songName);
+                songLibrary.Add(songName, song);
+            }
+
+            return songLibrary[songName];
         }
         public Texture2D LoadTexture(string textureName)
         {

@@ -25,15 +25,15 @@ namespace SkyTown.Entities.Characters
         public Player(string name, ResourceManager resourceManager) : base(name, resourceManager)
         {
             inventory = new();
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item(resourceManager));
         }
 
         new public void LoadContent(ContentManager content)

@@ -28,12 +28,12 @@ namespace SkyTown.Logic.GameStates
         {
             this.game = game;
             CurrentScene = new MapScene("DevelopmentMap");
-            ViewCamera = new Camera(game.GraphicsDevice.Viewport);
+            this.ViewCamera = game.ViewCamera;
         }
 
         public void Initialize()
         {
-            player = new Player("PlayerCollision");
+            player = new Player("PlayerCollision", game.resourceManager);
             pauseMenu = new GameState_Paused(game, player);
             CurrentScene.Initialize(player);
         }
