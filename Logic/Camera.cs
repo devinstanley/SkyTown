@@ -16,6 +16,11 @@ public class Camera
         _rotation = 0.0f;
     }
 
+    public void HandleScreenResize(GraphicsDevice graphicsDevice)
+    {
+
+    }
+
     public Matrix GetTransformation()
     {
         return Matrix.CreateTranslation(new Vector3(-_position, 0)) *

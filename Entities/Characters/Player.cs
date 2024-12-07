@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Items;
+using SkyTown.Logic;
 using SkyTown.LogicManagers;
 
 namespace SkyTown.Entities.Characters
@@ -21,7 +22,7 @@ namespace SkyTown.Entities.Characters
         public InventoryManager inventory;
         float RunningSpeed = 1.2f;
         private Vector2 _minPos, _maxPos;
-        public Player(string name) : base(name)
+        public Player(string name, ResourceManager resourceManager) : base(name, resourceManager)
         {
             inventory = new();
             inventory.AddItem(new Item());

@@ -4,6 +4,7 @@ using SkyTown.Entities.Characters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SkyTown.Logic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace SkyTown.Entities.Base
     public abstract class Entity
     {
         public int ID { get; set; }
+        private ResourceManager resourceManager;
         public Vector2 Position;
         public Rectangle Hitbox => new Rectangle((int)Position.X - Width/2, (int)Position.Y - Height/2, Width, Height); // Collision box
         public Rectangle SourceRectangle { get; set; }  // Sprite sheet region
@@ -20,5 +22,10 @@ namespace SkyTown.Entities.Base
         protected readonly AnimationManager animationManager = new();
         protected NPCState AnimationState = NPCState.IdleForward;
         public bool IsCollidable { get; set; }  // Can be walked through or not
+
+        public Entity(ResourceManager resourceManager)
+        {
+            this.resourceManager = resourceManager;
+        }
     }
 }

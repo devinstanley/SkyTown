@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SkyTown.Logic;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace SkyTown.Entities.Characters
 
         public readonly string Name;
 
-        public NPC(string name)
+        public NPC(string name, ResourceManager resourceManager): base(resourceManager)
         {
             Name = name;
         }
