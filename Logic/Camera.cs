@@ -4,9 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 public class Camera
 {
     private Vector2 _position;
+    private float _resolutionScalar;
     private float _zoom;
     private float _rotation;
-    private Viewport _viewport;
+    public Viewport _viewport;
     private readonly int _resolutionWidth;
     private readonly int _resolutionHeight;
     private int virtualHeight;
@@ -17,6 +18,7 @@ public class Camera
     {
         _viewport = viewport;
         _position = Vector2.Zero;
+        _resolutionScalar = 1.0f;
         _zoom = 2.0f;
         _rotation = 0.0f;
         _resolutionWidth = resWidth;
@@ -25,46 +27,43 @@ public class Camera
 
     public void HandleScreenResize(GraphicsDevice graphicsDevice)
     {
-        int curWindowHeight = graphicsDevice.PresentationParameters.BackBufferHeight;
-        int curWindowWidth = graphicsDevice.PresentationParameters.BackBufferWidth;
+        float screenHeight = graphicsDevice.PresentationParameters.BackBufferHeight;
+        float screenWidth = graphicsDevice.PresentationParameters.BackBufferWidth;
 
-        if (curWindowWidth/ _resolutionWidth > curWindowHeight / _resolutionHeight)
+        if (screenWidth/ _resolutionWidth > screenHeight / _resolutionHeight)
         {
-            float aspect = (float)curWindowHeight / _resolutionHeight;
-            virtualWidth = (int)aspect * _resolutionWidth;
-            virtualHeight = curWindowHeight;
+            float aspect = (float)screenHeight / _resolutionHeight;
+            virtualWidth = (int)(aspect * _resolutionWidth);
+            virtualHeight = (int)screenHeight;
         }
         else
         {
-            float aspect = (float)curWindowWidth / _resolutionWidth;
-            virtualWidth = curWindowWidth;
-            virtualHeight = (int)aspect * _resolutionHeight;
+            float aspect = (float)screenWidth / _resolutionWidth;
+            virtualWidth = (int)screenWidth;
+            virtualHeight = (int)(aspect * _resolutionHeight);
         }
-        _zoom = virtualWidth / (float)_resolutionWidth;
-
-        
+        _resolutionScalar = virtualWidth / (float)_resolutionWidth;
+        _viewport = new Viewport
+        {
+            X = (int)(screenWidth / 2f - virtualWidth / 2f),
+            Y = (int)(screenHeight / 2f - virtualHeight / 2f),
+            Width = (int)virtualWidth,
+            Height = (int)virtualHeight,
+            MinDepth = 0,
+            MaxDepth = 1
+        };
     }
 
     public Matrix GetTransformation()
     {
         return Matrix.CreateTranslation(new Vector3(-_position, 0)) *
                Matrix.CreateRotationZ(_rotation) *
-               Matrix.CreateScale(_zoom) *
+               Matrix.CreateScale(_resolutionScalar*2) * 
                Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
     }
 
     public void SetPosition(Vector2 position)
     {
         _position = position;
-    }
-
-    public void SetZoom(float zoom)
-    {
-        //_zoom = MathHelper.Clamp(zoom, 0.1f, 10.0f);
-    }
-
-    public void SetRotation(float rotation)
-    {
-        _rotation = rotation;
     }
 }

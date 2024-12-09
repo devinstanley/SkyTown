@@ -18,7 +18,6 @@ namespace SkyTown
 
         private int _resolutionWidth = 1920;
         private int _resolutionHeight = 1080;
-        private RenderTarget2D _renderTarget;
 
         public Camera ViewCamera;
 
@@ -40,13 +39,14 @@ namespace SkyTown
 
         private void Window_ClientSizeChanged(object sender, System.EventArgs e)
         {
-            //ViewCamera.HandleScreenResize(GraphicsDevice);
+            ViewCamera.HandleScreenResize(GraphicsDevice);
         }
 
         protected override void Initialize()
         {
             ViewCamera = new Camera(GraphicsDevice.Viewport, _resolutionWidth, _resolutionWidth);
             GameState = new GameState_MainMenu(this);
+            ViewCamera.HandleScreenResize(GraphicsDevice);
             GameState.Initialize();
             base.Initialize();
         }
@@ -60,7 +60,6 @@ namespace SkyTown
 
         protected override void LoadContent()
         {
-            _renderTarget = new RenderTarget2D(GraphicsDevice, _resolutionWidth, _resolutionHeight);
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameState.LoadContent(Content);
         }
@@ -76,7 +75,7 @@ namespace SkyTown
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            //GraphicsDevice.SetRenderTarget(_renderTarget);
+            GraphicsDevice.Viewport = ViewCamera._viewport;
             _spriteBatch.Begin(transformMatrix: GameState.ViewCamera.GetTransformation());
             GameState.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
