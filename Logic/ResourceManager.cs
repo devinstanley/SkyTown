@@ -9,16 +9,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace SkyTown.Logic
 {
-    public class ResourceManager
+    public static class ResourceManager
     {
-        ContentManager content;
-        Dictionary<string, Texture2D> textureLibrary = new Dictionary<string, Texture2D>();
-        Dictionary<string, Song> songLibrary = new Dictionary<string, Song>();
-        public ResourceManager(ContentManager content)
-        {
-            this.content = content;
-        }
-        public Song LoadSong(string songName)
+        public static ContentManager content;
+        static Dictionary<string, Texture2D> textureLibrary = new Dictionary<string, Texture2D>();
+        static Dictionary<string, Song> songLibrary = new Dictionary<string, Song>();
+        
+        public static Song LoadSong(string songName)
         {
             if (!songLibrary.ContainsKey(songName))
             {
@@ -28,7 +25,7 @@ namespace SkyTown.Logic
 
             return songLibrary[songName];
         }
-        public Texture2D LoadTexture(string textureName)
+        public static Texture2D LoadTexture(string textureName)
         {
             if (!textureLibrary.ContainsKey(textureName))
             {

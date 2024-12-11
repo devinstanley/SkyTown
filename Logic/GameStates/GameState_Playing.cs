@@ -33,7 +33,7 @@ namespace SkyTown.Logic.GameStates
 
         public void Initialize()
         {
-            player = new Player("PlayerCollision", game.resourceManager);
+            player = new Player("PlayerCollision");
             pauseMenu = new GameState_Paused(game, player);
             CurrentScene.Initialize(player);
         }

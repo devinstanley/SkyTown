@@ -21,7 +21,7 @@ namespace SkyTown.Entities.Characters
 
         public readonly string Name;
 
-        public NPC(string name, ResourceManager resourceManager): base(resourceManager)
+        public NPC(string name): base()
         {
             Name = name;
         }

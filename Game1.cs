@@ -14,8 +14,6 @@ namespace SkyTown
 
         private IGameState GameState;
 
-        public ResourceManager resourceManager;
-
         private int _resolutionWidth = 1920;
         private int _resolutionHeight = 1080;
 
@@ -31,7 +29,7 @@ namespace SkyTown
             _graphics.PreferredBackBufferHeight = _resolutionHeight;
             _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
-            resourceManager = new ResourceManager(Content);
+            ResourceManager.content = Content;
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += Window_ClientSizeChanged;

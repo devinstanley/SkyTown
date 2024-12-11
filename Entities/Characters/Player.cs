@@ -22,18 +22,18 @@ namespace SkyTown.Entities.Characters
         public InventoryManager inventory;
         float RunningSpeed = 1.2f;
         private Vector2 _minPos, _maxPos;
-        public Player(string name, ResourceManager resourceManager) : base(name, resourceManager)
+        public Player(string name) : base(name)
         {
             inventory = new();
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
-            inventory.AddItem(new Item(resourceManager));
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
+            inventory.AddItem(new Item());
         }
 
         new public void LoadContent(ContentManager content)

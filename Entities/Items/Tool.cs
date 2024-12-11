@@ -9,7 +9,7 @@ namespace SkyTown.Entities.Items
 {
     internal class Tool: Item
     {
-        public Tool(ResourceManager resourceManager): base(resourceManager)
+        public Tool(): base()
         {
 
         }
