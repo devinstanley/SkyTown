@@ -21,15 +21,14 @@ namespace SkyTown.Entities.Characters
 
         public readonly string Name;
 
-        public NPC(string name): base()
+        public NPC(string ID) : base(ID)
         {
-            Name = name;
+            Name = "";
         }
 
         public void LoadContent(ContentManager content)
         {
-            Texture2D npcTexture = content.Load<Texture2D>($"Assets\\Sprites\\{Name}");
-            animationManager.AddAnimation(NPCState.IdleForward, new Animation(npcTexture, 2, 1, 1));
+            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 2, 1, 1));
         }
 
         public void Update(GameTime gameTime)

@@ -22,7 +22,7 @@ namespace SkyTown.Entities.Characters
         public InventoryManager inventory;
         float RunningSpeed = 1.2f;
         private Vector2 _minPos, _maxPos;
-        public Player(string name) : base(name)
+        public Player(string ID) : base(ID)
         {
             inventory = new();
             inventory.AddItem(new Item());
@@ -38,21 +38,20 @@ namespace SkyTown.Entities.Characters
 
         new public void LoadContent(ContentManager content)
         {
-            Texture2D npcTexture = content.Load<Texture2D>($"Assets\\Sprites\\{Name}");
-            animationManager.AddAnimation(NPCState.IdleForward, new Animation(npcTexture, 9, 4, 1, 3, [2, 3, 4, 5, 6, 7, 8]));
-            animationManager.AddAnimation(NPCState.IdleLeft, new Animation(npcTexture, 9, 4, 1, 2, [1, 2, 3, 4, 5, 6, 7]));
-            animationManager.AddAnimation(NPCState.IdleBackward, new Animation(npcTexture, 9, 4, 1, 1, [1, 2, 3, 4, 5, 6, 7]));
-            animationManager.AddAnimation(NPCState.IdleRight, new Animation(npcTexture, 9, 4, 1, 4, [1, 2, 3, 4, 5, 6, 7]));
+            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 9, 4, 1, 3, [2, 3, 4, 5, 6, 7, 8]));
+            animationManager.AddAnimation(NPCState.IdleLeft, new Animation(ID, 9, 4, 1, 2, [1, 2, 3, 4, 5, 6, 7]));
+            animationManager.AddAnimation(NPCState.IdleBackward, new Animation(ID, 9, 4, 1, 1, [1, 2, 3, 4, 5, 6, 7]));
+            animationManager.AddAnimation(NPCState.IdleRight, new Animation(ID, 9, 4, 1, 4, [1, 2, 3, 4, 5, 6, 7]));
 
-            animationManager.AddAnimation(NPCState.WalkForward, new Animation(npcTexture, 9, 4, 0.1f, 3));
-            animationManager.AddAnimation(NPCState.WalkLeft, new Animation(npcTexture, 9, 4, 0.1f, 2));
-            animationManager.AddAnimation(NPCState.WalkBackward, new Animation(npcTexture, 9, 4, 0.1f, 1));
-            animationManager.AddAnimation(NPCState.WalkRight, new Animation(npcTexture, 9, 4, 0.1f, 4));
+            animationManager.AddAnimation(NPCState.WalkForward, new Animation(ID, 9, 4, 0.1f, 3));
+            animationManager.AddAnimation(NPCState.WalkLeft, new Animation(ID, 9, 4, 0.1f, 2));
+            animationManager.AddAnimation(NPCState.WalkBackward, new Animation(ID, 9, 4, 0.1f, 1));
+            animationManager.AddAnimation(NPCState.WalkRight, new Animation(ID, 9, 4, 0.1f, 4));
 
-            animationManager.AddAnimation(NPCState.RunForward, new Animation(npcTexture, 9, 4, 0.1f, 3, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunLeft, new Animation(npcTexture, 9, 4, 0.1f, 2, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunBackward, new Animation(npcTexture, 9, 4, 0.1f, 1, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunRight, new Animation(npcTexture, 9, 4, 0.1f, 4, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunForward, new Animation(ID, 9, 4, 0.1f, 3, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunLeft, new Animation(ID, 9, 4, 0.1f, 2, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunBackward, new Animation(ID, 9, 4, 0.1f, 1, [0, 2, 4, 6, 8]));
+            animationManager.AddAnimation(NPCState.RunRight, new Animation(ID, 9, 4, 0.1f, 4, [0, 2, 4, 6, 8]));
 
             inventory.LoadContent(content);
         }

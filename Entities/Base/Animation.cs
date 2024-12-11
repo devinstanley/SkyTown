@@ -9,12 +9,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SkyTown.Logic;
 
 namespace SkyTown.Entities.Base
 {
     public class Animation
     {
-        private readonly Texture2D _texture2D;
+        private readonly string _textureID;
         private readonly List<Rectangle> _sourceRects = new();
         private readonly int _frames;
         private int _frame;
@@ -25,16 +26,16 @@ namespace SkyTown.Entities.Base
         public int CurrentWidth { get; private set; }
         public int CurrentHeight { get; private set; }
 
-        public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, int[] skipList = null)
+        public Animation(string textureID, int framesX, int framesY, float frameTime, int row = 1, int[] skipList = null)
         {
-            _texture2D = texture;
+            _textureID = textureID;
             _frameTime = frameTime;
             _frameTimeLeft = _frameTime;
             _frames = framesX;
 
             _skipFramesLen = skipList != null ? skipList.Length : 0;
-            var frameWidth = _texture2D.Width / framesX;
-            var frameHeight = _texture2D.Height / framesY;
+            var frameWidth = ResourceManager.LoadTexture(_textureID).Width / framesX;
+            var frameHeight = ResourceManager.LoadTexture(_textureID).Height / framesY;
             CurrentHeight = frameHeight;
             CurrentWidth = frameWidth;
 
@@ -84,7 +85,7 @@ namespace SkyTown.Entities.Base
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale = -1)
         { 
             spriteBatch.Draw(
-                _texture2D,
+                ResourceManager.LoadTexture(_textureID),
                 pos,
                 _sourceRects[_frame],
                 Color.White, 0f, new Vector2(CurrentWidth / 2, CurrentHeight / 2),

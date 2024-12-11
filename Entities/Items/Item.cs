@@ -13,20 +13,18 @@ namespace SkyTown.Entities.Items
 {
     public class Item: Entity
     {
-        public Texture2D Texture;
         public String Name { get; set; }
         public String ToolTip { get; set; }
         public ItemType Type { get; set; }
         public int MaxInventoryStack { get; set; }
-        public Item(int maxStack=1) : base()
+        public Item(string ID, int maxStack=1) : base(ID)
         {
             MaxInventoryStack = maxStack;
         }
 
         public void LoadContent(ContentManager content)
         {
-            Texture = content.Load<Texture2D>("Assets\\Sprites\\TestItem");
-            animationManager.AddAnimation(0, new Animation(Texture, 1, 1, 1));
+            animationManager.AddAnimation(0, new Animation(ID, 1, 1, 1));
             
         }
         public void Update(GameTime gameTime)

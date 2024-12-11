@@ -9,7 +9,7 @@ namespace SkyTown.Entities.Items
 {
     internal class Tool: Item
     {
-        public Tool(): base()
+        public Tool(string ID): base(ID)
         {
 
         }
