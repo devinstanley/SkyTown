@@ -58,6 +58,7 @@ namespace SkyTown.Logic.GameStates
         public void StartGame()
         {
             game.ChangeGameState(new GameState_Playing(game));
+            game.ViewCamera.SetZoom(0.5f);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace SkyTown.Map
     {
         //For Drawing on Screen
         private int tileDims = 32;
+        public Vector2 MapDimension;
         public float scale = 1;
         public string SceneID;
         Texture2D TextureAtlas;
@@ -69,7 +70,9 @@ namespace SkyTown.Map
             }
             int numRows = (int)tileMaps.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)tileMaps.Last().Select(u => u.Key.X).Max();
+            MapDimension = new(numRows, numCols);
             player.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
+            
 
             this.collisionManager = new CollisionManager(player, npcManager, collisionMap, tileDims);
         }

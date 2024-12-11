@@ -14,8 +14,8 @@ namespace SkyTown
 
         private IGameState GameState;
 
-        private int _resolutionWidth = 480;
-        private int _resolutionHeight = 240;
+        private int _resolutionWidth = 240;
+        private int _resolutionHeight = 120;
 
         public Camera ViewCamera;
 
