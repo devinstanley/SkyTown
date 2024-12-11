@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Characters;
+using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace SkyTown.HUD.Inventory
 {
     internal class InventoryHUD
     {
-        public Texture2D inventoryTexture;
+        public Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
         public static int MAXSLOTS = 20;
         public static int INVENTORYWIDTH = 5;
         public static int INVENTORYHEIGHT = 4;
@@ -31,9 +32,8 @@ namespace SkyTown.HUD.Inventory
             _inventory = player.inventory;
         }
 
-        public void LoadContent(ContentManager content)
+        public void LoadContent()
         {
-            inventoryTexture = content.Load<Texture2D>($"Assets\\Menu\\InventoryHUD");
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)

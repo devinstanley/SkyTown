@@ -36,7 +36,7 @@ namespace SkyTown.Logic.GameStates
 
         public void LoadContent(ContentManager content)
         {
-            inventoryHUD.LoadContent(content);
+            inventoryHUD.LoadContent();
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)

@@ -15,22 +15,24 @@ namespace SkyTown.Logic
         static Dictionary<string, Texture2D> textureLibrary = new Dictionary<string, Texture2D>();
         static Dictionary<string, Song> songLibrary = new Dictionary<string, Song>();
         
-        public static Song LoadSong(string songName)
+        public static Song LoadSong(string songID)
         {
-            if (!songLibrary.ContainsKey(songName))
+            if (!songLibrary.ContainsKey(songID))
             {
-                Song song = content.Load<Song>(songName);
-                songLibrary.Add(songName, song);
+                string songPath = string.Join("\\", songID.Split("."));
+                Song song = content.Load<Song>(songPath);
+                songLibrary.Add(songID, song);
             }
 
-            return songLibrary[songName];
+            return songLibrary[songID];
         }
-        public static Texture2D LoadTexture(string textureName)
+        public static Texture2D LoadTexture(string textureID)
         {
-            if (!textureLibrary.ContainsKey(textureName))
+            if (!textureLibrary.ContainsKey(textureID))
             {
-                Texture2D texture = content.Load<Texture2D>(textureName);
-                textureLibrary.Add(textureName, texture);
+                string texturePath = string.Join("\\", textureID.Split("."));
+                Texture2D texture = content.Load<Texture2D>(texturePath);
+                textureLibrary.Add(textureID, texture);
                 //referenceCount.Add(textureName, 1);  // First reference
             }
             else
@@ -38,7 +40,7 @@ namespace SkyTown.Logic
                 //referenceCount[textureName]++;
             }
 
-            return textureLibrary[textureName];
+            return textureLibrary[textureID];
         }
     }
 }

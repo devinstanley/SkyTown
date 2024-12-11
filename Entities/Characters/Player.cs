@@ -24,16 +24,12 @@ namespace SkyTown.Entities.Characters
         private Vector2 _minPos, _maxPos;
         public Player(string ID) : base(ID)
         {
+            string testItemID = "Assets.Sprites.TestItem";
             inventory = new();
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
-            inventory.AddItem(new Item());
+            inventory.AddItem(new Item(testItemID));
+            inventory.AddItem(new Item(testItemID));
+            inventory.AddItem(new Item(testItemID));
+            inventory.AddItem(new Item(testItemID));
         }
 
         new public void LoadContent(ContentManager content)

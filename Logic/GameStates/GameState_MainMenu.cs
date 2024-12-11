@@ -10,9 +10,6 @@ namespace SkyTown.Logic.GameStates
     internal class GameState_MainMenu : IGameState
     {
         private Game1 game;
-        private Texture2D GameMenuBackground;
-        private Song titleSong;
-        private Song startEffect;
         const GameState myStateEnum = GameState.MainMenu;
         public Camera ViewCamera { get; set; }
 
@@ -29,12 +26,9 @@ namespace SkyTown.Logic.GameStates
 
         public void LoadContent(ContentManager content)
         {
-            GameMenuBackground = content.Load<Texture2D>($"Assets\\Menu\\Start Menu");
-            titleSong = content.Load<Song>($"Assets\\Music\\Skytown Main Theme");
-            startEffect = content.Load<Song>($"Assets\\Music\\Start Effect");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 1f;
-            MediaPlayer.Play( titleSong );
+            MediaPlayer.Play(ResourceManager.LoadSong("Assets.Sounds.SkytownMainTheme"));
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)
@@ -42,7 +36,7 @@ namespace SkyTown.Logic.GameStates
             if (inputManager.IsNewKeyPressed(Keys.Enter))
             {
                 MediaPlayer.IsRepeating = false;
-                MediaPlayer.Play(startEffect);
+                MediaPlayer.Play(ResourceManager.LoadSong("Assets.Sounds.StartEffect"));
                 StartGame();
                 
             }
@@ -51,10 +45,10 @@ namespace SkyTown.Logic.GameStates
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-                GameMenuBackground,
+                ResourceManager.LoadTexture("Assets.Menus.StartMenu"),
                 Vector2.Zero,
                 null,
-                Color.White, 0f, new Vector2(GameMenuBackground.Width / 2, GameMenuBackground.Height / 2),
+                Color.White, 0f, new Vector2(ResourceManager.LoadTexture("Assets.Menus.StartMenu").Width / 2, ResourceManager.LoadTexture("Assets.Menus.StartMenu").Height / 2),
                 4,
                 SpriteEffects.None,
                 0f

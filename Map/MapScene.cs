@@ -49,9 +49,9 @@ namespace SkyTown.Map
         }
         public void LoadContent(ContentManager content)
         {
-            TextureAtlas = content.Load<Texture2D>($"Assets\\Map\\{SceneID}TileAtlas");
-            collisionTextures = content.Load<Texture2D>($"Assets\\Map\\Collisions");
-            collisionMap = content.Load<Dictionary<Vector2, int>>($"Assets\\Map\\{SceneID}Collisions").Where(u => u.Value != -1 && u.Value != 2).ToDictionary();
+            TextureAtlas = content.Load<Texture2D>($"Assets\\Maps\\MapSheet");
+            collisionTextures = content.Load<Texture2D>($"Assets\\Maps\\Collisions");
+            collisionMap = content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}Collisions").Where(u => u.Value != -1 && u.Value != 2).ToDictionary();
             GenerateSources();
             GenerateCollisionSources();
             int layer = 0;
@@ -59,7 +59,7 @@ namespace SkyTown.Map
             {
                 try
                 {
-                    tileMaps.Add(content.Load<Dictionary<Vector2, int>>($"Assets\\Map\\{SceneID}TileMapLayer{layer}"));
+                    tileMaps.Add(content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}TileMapLayer{layer}"));
                     layer++;
                 }
                 catch
