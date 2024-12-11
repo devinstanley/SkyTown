@@ -44,10 +44,11 @@ namespace SkyTown.HUD.Inventory
 
         public void HandleInput(InputManager inputManager)
         {
+            
             //Check if we are selecting item
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
             {
-                SelectingSlot = _inventory.GetItemAtClick(inputManager);
+                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
             }
             if (SelectingSlot != -1)
             {

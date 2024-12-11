@@ -87,9 +87,9 @@ namespace SkyTown.Entities.Characters
             }
         }
 
-        public int GetItemAtClick(InputManager inputManager)
+        public int GetItemAtKey(int key)
         {
-            return Items.Where(u => u.Value.Item.Hitbox.Contains(inputManager.GetMousePosition())).Select(u => u.Key).FirstOrDefault(-1);
+            return Items.Where(u => u.Key.Equals(key)).Select(u => u.Key).FirstOrDefault(-1);
         }
 
         public void RemoveItem(int slot)

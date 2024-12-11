@@ -15,6 +15,7 @@ namespace SkyTown.LogicManagers
     public class InputManager
     {
         private Matrix MouseTranslation;
+        private Vector2 viewportOffset;
         public KeyboardState currentKeyboardState;
         public KeyboardState previousKeyboardState;
 
@@ -32,9 +33,10 @@ namespace SkyTown.LogicManagers
             
         }
 
-        public void Update(Matrix transformationMatrix)
+        public void Update(Camera ViewCamera)
         {
-            MouseTranslation = Matrix.Invert(transformationMatrix);
+            MouseTranslation = Matrix.Invert(ViewCamera.GetTransformation());
+            viewportOffset = new(ViewCamera._viewport.X, ViewCamera._viewport.Y);
 
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
@@ -57,7 +59,7 @@ namespace SkyTown.LogicManagers
         public Vector2 GetMousePosition()
         {
             Point mousePosition = currentMouseState.Position;
-            return Vector2.Transform(new Vector2(mousePosition.X, mousePosition.Y), MouseTranslation);
+            return Vector2.Transform(new Vector2(mousePosition.X - viewportOffset.X, mousePosition.Y - viewportOffset.Y), MouseTranslation);
         }
         public bool IsLeftClicked()
         {

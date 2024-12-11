@@ -49,7 +49,7 @@ namespace SkyTown.Logic.GameStates
                 Vector2.Zero,
                 null,
                 Color.White, 0f, new Vector2(ResourceManager.LoadTexture("Assets.Menus.StartMenu").Width / 2, ResourceManager.LoadTexture("Assets.Menus.StartMenu").Height / 2),
-                4,
+                1,
                 SpriteEffects.None,
                 0f
             );

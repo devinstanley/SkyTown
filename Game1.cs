@@ -14,8 +14,8 @@ namespace SkyTown
 
         private IGameState GameState;
 
-        private int _resolutionWidth = 1920;
-        private int _resolutionHeight = 1080;
+        private int _resolutionWidth = 480;
+        private int _resolutionHeight = 240;
 
         public Camera ViewCamera;
 
@@ -42,7 +42,7 @@ namespace SkyTown
 
         protected override void Initialize()
         {
-            ViewCamera = new Camera(GraphicsDevice.Viewport, _resolutionWidth, _resolutionWidth);
+            ViewCamera = new Camera(GraphicsDevice.Viewport, _resolutionWidth, _resolutionHeight);
             GameState = new GameState_MainMenu(this);
             ViewCamera.HandleScreenResize(GraphicsDevice);
             GameState.Initialize();
@@ -64,7 +64,7 @@ namespace SkyTown
 
         protected override void Update(GameTime gameTime)
         {
-            InputManager.Update(GameState.ViewCamera.GetTransformation());
+            InputManager.Update(ViewCamera);
             GameState.Update(gameTime, InputManager);
 
             base.Update(gameTime);
@@ -74,7 +74,7 @@ namespace SkyTown
         {
             GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.Viewport = ViewCamera._viewport;
-            _spriteBatch.Begin(transformMatrix: GameState.ViewCamera.GetTransformation());
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp ,transformMatrix: GameState.ViewCamera.GetTransformation());
             GameState.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
 
