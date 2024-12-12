@@ -75,11 +75,11 @@ public class Camera
         float halfViewportHeight = virtualHeight / 2f;
     }
 
-    public void SetPosition(Vector2 position, Vector2 mapDims)
+    public void SetPosition(Vector2 position)
     {
         _position = position;
 
         // Clamp the camera position to the valid range
-        _position = Vector2.Clamp(_position, _minPos, _maxPos);
+        //_position = Vector2.Clamp(_position, _minPos, _maxPos);
     }
 }

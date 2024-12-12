@@ -75,11 +75,11 @@ namespace SkyTown.Entities.Characters
             Height = animationManager.AnimationHeight;
              
             //Detect Collisions With Current Game Scene Collision Manager
-            collisionManager.HandlePlayerMapCollisions(vel);
+            collisionManager.HandlePlayerMapCollisions();
 
             //Update Player Position
             Position += vel;
-            Position = Vector2.Clamp(Position + vel, _minPos, _maxPos);
+            Position = Vector2.Clamp(Position, _minPos, _maxPos);
 
             Update(gameTime);
         }

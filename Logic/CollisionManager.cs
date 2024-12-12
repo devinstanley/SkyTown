@@ -34,18 +34,16 @@ namespace SkyTown.LogicManagers
             this.tileSize = tileSize;
         }
 
-        public void HandlePlayerMapCollisions(Vector2 displacement)
+        public void HandlePlayerMapCollisions()
         {
-            var futPlayerPos = player.Position + displacement;
-            var futPlayerRect = new Rectangle(
-                (int)futPlayerPos.X - tileSize / 2,
-                (int)futPlayerPos.Y - tileSize / 2,
+            var futurePlayerRectX = new Rectangle(
+                (int)(player.Position.X + player.vel.X) - tileSize / 2,
+                (int)player.Position.Y - tileSize / 2,
                 player.Width,
                 player.Height
             );
-
-            List<Vector2> localCollidables = GetCollidableTilesAroundPlayer(futPlayerRect);
-            foreach (var tilePos in localCollidables)
+            List<Vector2> localCollidablesX = GetCollidableTilesAroundPlayer(futurePlayerRectX);
+            foreach (var tilePos in localCollidablesX)
             {
                 Rectangle collisionRect = new(
                     (int)tilePos.X * tileSize,
@@ -54,9 +52,61 @@ namespace SkyTown.LogicManagers
                     tileSize
                 );
 
-                if (futPlayerRect.Intersects(collisionRect))
+                while (futurePlayerRectX.Intersects(collisionRect))
                 {
-                    player.vel = new Vector2(0, 0);
+                    if (player.vel.X < 1 && player.vel.X > -1)
+                    {
+                        player.vel.X = 0;
+                        break;
+                    }
+                    //Check player direction
+                    if (player.vel.X > 0)
+                    {
+                        futurePlayerRectX.X -= 1;
+                        player.vel.X -= 1;
+                    }
+                    else if (player.vel.X < 0)
+                    {
+                        futurePlayerRectX.X += 1;
+                        player.vel.X += 1;
+                    }
+                }
+            }
+
+            var futurePlayerRectY = new Rectangle(
+                (int)player.Position.X - tileSize / 2,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2,
+                player.Width,
+                player.Height
+            );
+            List<Vector2> localCollidablesY = GetCollidableTilesAroundPlayer(futurePlayerRectY);
+            foreach (var tilePos in localCollidablesY)
+            {
+                Rectangle collisionRect = new(
+                    (int)tilePos.X * tileSize,
+                    (int)tilePos.Y * tileSize,
+                    tileSize,
+                    tileSize
+                );
+
+                while (futurePlayerRectY.Intersects(collisionRect))
+                {
+                    if (player.vel.Y < 1 && player.vel.Y > -1)
+                    {
+                        player.vel.Y = 0;
+                        break;
+                    }
+                    //Check player direction
+                    if (player.vel.Y > 0)
+                    {
+                        futurePlayerRectY.Y -= 1;
+                        player.vel.Y -= 1;
+                    }
+                    else if (player.vel.Y < 0)
+                    {
+                        futurePlayerRectY.Y += 1;
+                        player.vel.Y += 1;
+                    }
                 }
             }
         }
