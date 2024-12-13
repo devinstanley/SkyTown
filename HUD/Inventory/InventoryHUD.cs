@@ -17,6 +17,7 @@ namespace SkyTown.HUD.Inventory
     internal class InventoryHUD
     {
         public Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
+        public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItem"); }
         public static int MAXSLOTS = 20;
         public static int INVENTORYWIDTH = 5;
         public static int INVENTORYHEIGHT = 4;
@@ -44,11 +45,11 @@ namespace SkyTown.HUD.Inventory
 
         public void HandleInput(InputManager inputManager)
         {
-            
-            //Check if we are selecting item
+            //Check if we are dragging item
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
             {
                 SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                _inventory.CurrentSelectedItem = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
             }
             if (SelectingSlot != -1)
             {
@@ -106,10 +107,6 @@ namespace SkyTown.HUD.Inventory
                 1f, SpriteEffects.None, 0f);
             foreach (var itemSlot in _inventory.Items)
             {
-                if (itemSlot.Key == SelectingSlot)
-                {
-                    continue; //Skip currently selected item
-                }
                 int slotX = itemSlot.Key % INVENTORYWIDTH; // Column index
                 int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
 
@@ -117,6 +114,24 @@ namespace SkyTown.HUD.Inventory
                     player.Position.X + slotX*InventorySlotDimensions + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
                     player.Position.Y + slotY*InventorySlotDimensions + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
                     );
+
+                if (itemSlot.Key == _inventory.CurrentSelectedItem)
+                {
+                    //Draw selected item highlight
+                    spriteBatch.Draw(
+                        selectedItemHighlight,
+                        position,
+                        null,
+                        Color.White,
+                        0f,
+                        new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
+                        1.0f, SpriteEffects.None, 0f);
+                }
+                if (itemSlot.Key == SelectingSlot)
+                {
+                    continue; //Skip drawing currently selected item
+                }
+
                 itemSlot.Value.Draw(spriteBatch, position, 0.9f);
             }
             if (SelectingSlot >= 0)

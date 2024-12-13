@@ -25,8 +25,8 @@ namespace SkyTown
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = _resolutionWidth;
-            _graphics.PreferredBackBufferHeight = _resolutionHeight;
+            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             ResourceManager.content = Content;

@@ -14,6 +14,7 @@ namespace SkyTown.Entities.Characters
     public class InventoryManager
     {
         public Dictionary<int, InventorySlot> Items { get; private set; }
+        public int CurrentSelectedItem = -1; 
         public InventoryManager()
         {
             Items = new Dictionary<int, InventorySlot>();

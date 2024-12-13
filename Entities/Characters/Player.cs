@@ -21,7 +21,10 @@ namespace SkyTown.Entities.Characters
     {
         public InventoryManager inventory;
         float RunningSpeed = 1.2f;
-        private Vector2 _minPos, _maxPos;
+        public Vector2 hitboxOffset = new(0, 16);
+        public int HitboxWidth = 24;
+        public int HitboxHeight = 32;
+        private Vector2 _minPos, _maxPos; 
         public Player(string ID) : base(ID)
         {
             string testItemID = "Assets.Sprites.TestItem";

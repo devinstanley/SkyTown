@@ -9,16 +9,6 @@ using System.Threading.Tasks;
 
 namespace SkyTown.LogicManagers
 {
-
-    public enum CollisionSide
-    {
-        None = 0,
-        Top = 1,
-        Bottom = 2,
-        Left = 4,
-        Right = 8
-    }
-
     public class CollisionManager
     {
         Player player;
@@ -37,10 +27,10 @@ namespace SkyTown.LogicManagers
         public void HandlePlayerMapCollisions()
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2,
-                (int)player.Position.Y - tileSize / 2,
-                player.Width,
-                player.Height
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width/2 - player.HitboxWidth/2 + (int)player.hitboxOffset.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height/2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
             );
             List<Vector2> localCollidablesX = GetCollidableTilesAroundPlayer(futurePlayerRectX);
             foreach (var tilePos in localCollidablesX)
@@ -74,10 +64,10 @@ namespace SkyTown.LogicManagers
             }
 
             var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2,
-                player.Width,
-                player.Height
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth/ 2 + (int)player.hitboxOffset.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight/ 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
             );
             List<Vector2> localCollidablesY = GetCollidableTilesAroundPlayer(futurePlayerRectY);
             foreach (var tilePos in localCollidablesY)
@@ -137,66 +127,6 @@ namespace SkyTown.LogicManagers
             }
 
             return collidables;
-        }
-
-        public void HandleXPlayerMapCollisions(List<Vector2> localCollidables, Rectangle playerRect)
-        {
-            foreach (Vector2 tilePos in localCollidables)
-            {
-                Rectangle collisionRect = new(
-                    (int)tilePos.X * tileSize,
-                    (int)tilePos.Y * tileSize,
-                    tileSize,
-                    tileSize
-                );
-
-                if (playerRect.Intersects(collisionRect))
-                {
-                    if (playerRect.Right > collisionRect.Left && playerRect.Left < collisionRect.Left)
-                    {
-                        // Player is colliding from the left
-                        player.Position.X = collisionRect.Left - player.Width / 2 - tileSize/2;
-                    }
-                    else if (playerRect.Left < collisionRect.Right && playerRect.Right > collisionRect.Right)
-                    {
-                        // Player is colliding from the right
-                        player.Position.X = collisionRect.Right + player.Width / 2 - tileSize/2;
-                    }
-
-                    // Update player rectangle after position adjustment
-                    playerRect.X = (int)player.Position.X - tileSize/2;
-                }
-            }
-        }
-
-        public void HandleYPlayerMapCollisions(List<Vector2> localCollidables, Rectangle playerRect)
-        {
-            foreach (Vector2 tilePos in localCollidables)
-            {
-                Rectangle collisionRect = new(
-                    (int)tilePos.X * tileSize,
-                    (int)tilePos.Y * tileSize,
-                    tileSize,
-                    tileSize
-                );
-
-                if (playerRect.Intersects(collisionRect))
-                {
-                    if (playerRect.Bottom > collisionRect.Top && playerRect.Top < collisionRect.Top)
-                    {
-                        // Player is colliding from the top
-                        player.Position.Y = collisionRect.Top - player.Height / 2 - tileSize/2;
-                    }
-                    else if (playerRect.Top < collisionRect.Bottom && playerRect.Bottom > collisionRect.Bottom)
-                    {
-                        // Player is colliding from the bottom
-                        player.Position.Y = collisionRect.Bottom + player.Height / 2 - tileSize/2;
-                    }
-
-                    // Update player rectangle after position adjustment
-                    playerRect.Y = (int)player.Position.Y - tileSize/2;
-                }
-            }
         }
     }
 }
