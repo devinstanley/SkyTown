@@ -87,6 +87,15 @@ namespace SkyTown.Entities.Characters
             Update(gameTime);
         }
 
+        public new void Draw(SpriteBatch spriteBatch)
+        {
+            animationManager.Draw(spriteBatch, Position);
+            if (inventory.CurrentSelectedItem != -1)
+            {
+                inventory.Items[inventory.CurrentSelectedItem].Draw(spriteBatch, new Vector2(Position.X - Width/4, Position.Y - Height/4), 0.25f);
+            }
+        }
+
         public void UpdateVelocity(InputManager input)
         {
             vel = Vector2.Zero;

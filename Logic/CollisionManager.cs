@@ -42,24 +42,9 @@ namespace SkyTown.LogicManagers
                     tileSize
                 );
 
-                while (futurePlayerRectX.Intersects(collisionRect))
+                if (collisionMap[tilePos] == 0)
                 {
-                    if (player.vel.X < 1 && player.vel.X > -1)
-                    {
-                        player.vel.X = 0;
-                        break;
-                    }
-                    //Check player direction
-                    if (player.vel.X > 0)
-                    {
-                        futurePlayerRectX.X -= 1;
-                        player.vel.X -= 1;
-                    }
-                    else if (player.vel.X < 0)
-                    {
-                        futurePlayerRectX.X += 1;
-                        player.vel.X += 1;
-                    }
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect);
                 }
             }
 
@@ -79,28 +64,64 @@ namespace SkyTown.LogicManagers
                     tileSize
                 );
 
-                while (futurePlayerRectY.Intersects(collisionRect))
+                if (collisionMap[tilePos] == 0)
                 {
-                    if (player.vel.Y < 1 && player.vel.Y > -1)
-                    {
-                        player.vel.Y = 0;
-                        break;
-                    }
-                    //Check player direction
-                    if (player.vel.Y > 0)
-                    {
-                        futurePlayerRectY.Y -= 1;
-                        player.vel.Y -= 1;
-                    }
-                    else if (player.vel.Y < 0)
-                    {
-                        futurePlayerRectY.Y += 1;
-                        player.vel.Y += 1;
-                    }
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
+                }
+
+                
+            }
+        }
+
+        #region Sliding Collision Resolvers
+        private void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect)
+        {
+            while (futurePlayerRectY.Intersects(collisionRect))
+            {
+                if (player.vel.Y < 1 && player.vel.Y > -1)
+                {
+                    player.vel.Y = 0;
+                    break;
+                }
+                //Check player direction
+                if (player.vel.Y > 0)
+                {
+                    futurePlayerRectY.Y -= 1;
+                    player.vel.Y -= 1;
+                }
+                else if (player.vel.Y < 0)
+                {
+                    futurePlayerRectY.Y += 1;
+                    player.vel.Y += 1;
                 }
             }
         }
 
+        private void ResolveXSlidingCollision(Rectangle futurePlayerRectX, Rectangle collisionRect)
+        {
+            while (futurePlayerRectX.Intersects(collisionRect))
+            {
+                if (player.vel.X < 1 && player.vel.X > -1)
+                {
+                    player.vel.X = 0;
+                    break;
+                }
+                //Check player direction
+                if (player.vel.X > 0)
+                {
+                    futurePlayerRectX.X -= 1;
+                    player.vel.X -= 1;
+                }
+                else if (player.vel.X < 0)
+                {
+                    futurePlayerRectX.X += 1;
+                    player.vel.X += 1;
+                }
+            }
+        }
+        #endregion
+
+        #region Collision Tile Identification
         private List<Vector2> GetCollidableTilesAroundPlayer(Rectangle playerRect)
         {
             List<Vector2> collidables = new();
@@ -128,5 +149,6 @@ namespace SkyTown.LogicManagers
 
             return collidables;
         }
+        #endregion
     }
 }

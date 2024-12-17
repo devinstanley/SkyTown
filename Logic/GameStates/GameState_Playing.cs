@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using SkyTown.Map;
 using SkyTown.LogicManagers;
 using SkyTown.Entities.Characters;
+using SkyTown.HUD.Inventory;
 
 namespace SkyTown.Logic.GameStates
 {
@@ -22,6 +23,7 @@ namespace SkyTown.Logic.GameStates
         private Player player;
         private NPCManager NPCs = new NPCManager();
         private GameState_Paused pauseMenu;
+        private HotbarHUD hotbarHUD;
         public Camera ViewCamera { get; set; }
 
         public GameState_Playing(Game1 game)
@@ -34,6 +36,7 @@ namespace SkyTown.Logic.GameStates
         public void Initialize()
         {
             player = new Player("Assets.Sprites.spriteAnimationTestCollision");
+            hotbarHUD = new HotbarHUD(player);
             pauseMenu = new GameState_Paused(game, player);
             CurrentScene.Initialize(player);
         }
@@ -78,6 +81,10 @@ namespace SkyTown.Logic.GameStates
             if (mySubstate == GameState.Paused)
             {
                 pauseMenu.Draw(gameTime, spriteBatch);
+            }
+            else
+            {
+                hotbarHUD.Draw(gameTime, spriteBatch);
             }
         }
 

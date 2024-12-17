@@ -35,7 +35,6 @@ namespace SkyTown.Entities.Items
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)
         {
-            Position = pos;
             animationManager.Draw(spriteBatch, pos, scale);
         }
     }
