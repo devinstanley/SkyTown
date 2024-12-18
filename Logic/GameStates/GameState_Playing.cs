@@ -36,7 +36,7 @@ namespace SkyTown.Logic.GameStates
         public void Initialize()
         {
             player = new Player("Assets.Sprites.spriteAnimationTestCollision");
-            hotbarHUD = new HotbarHUD(player);
+            hotbarHUD = new HotbarHUD(game, player);
             pauseMenu = new GameState_Paused(game, player);
             CurrentScene.Initialize(player);
         }

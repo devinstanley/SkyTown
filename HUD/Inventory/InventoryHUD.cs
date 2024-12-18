@@ -18,17 +18,20 @@ namespace SkyTown.HUD.Inventory
     {
         public Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
         public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItem"); }
-        public static Vector2 InventoryStartLoc = new Vector2(18, 72);
+        public static Vector2 InventoryStartLoc = new Vector2(14, 73);
         public static int INVENTORYWIDTH = 9;
         public static int INVENTORYHEIGHT = 4;
         public static int MAXSLOTS = INVENTORYHEIGHT * INVENTORYWIDTH;
-        public int InventorySlotDimensions = 31;
+        public int InventorySlotDimensions = 32;
+        public int InventorySpacer = 3;
+        protected Game1 game;
         protected Player player;
         protected InventoryManager _inventory;
         public int SelectingSlot = -1;
 
-        public InventoryHUD(Player player)
+        public InventoryHUD(Game1 game, Player player)
         {
+            this.game = game;
             this.player = player;
             _inventory = player.inventory;
         }
@@ -75,21 +78,23 @@ namespace SkyTown.HUD.Inventory
             // Get the mouse position
             Vector2 mousePosition = inputManager.GetMousePosition();
 
-            // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + InventoryStartLoc.X - player.Position.X + inventoryTexture.Width/2;// - inventoryTexture.Width/2f;
-            float relativeY = mousePosition.Y - InventoryStartLoc.Y - player.Position.Y + inventoryTexture.Height/2;
+            Debug.WriteLine($"Mouse Pos: {mousePosition}");
 
-            Debug.WriteLine($"Mouse Pos: {relativeX}, {relativeY}");
+            // Calculate grid-relative mouse position
+            float relativeX = mousePosition.X + inventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - player.Position.X - player.Width/2f;
+            float relativeY = mousePosition.Y + inventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - player.Position.Y - player.Height/2f;
+
+            Debug.WriteLine($"Fixed Mouse Pos: {relativeX}, {relativeY}");
 
             // Convert to slot indices
-            int slotX = (int)(relativeX / InventorySlotDimensions);
-            int slotY = (int)(relativeY / InventorySlotDimensions);
+            float slotX = relativeX / (InventorySlotDimensions + InventorySpacer);
+            float slotY = relativeY / (InventorySlotDimensions + InventorySpacer);
 
             // Check if within grid bounds
             if (slotX >= 0 && slotX < INVENTORYWIDTH && slotY >= 0 && slotY < INVENTORYHEIGHT)
             {
                 // Convert 2D grid coordinates to the flattened key
-                return slotY * INVENTORYWIDTH + slotX;
+                return (int)slotY * INVENTORYWIDTH + (int)slotX;
             }
 
             // Return -1 if the mouse position is outside the grid
@@ -112,9 +117,14 @@ namespace SkyTown.HUD.Inventory
                 int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
 
                 Vector2 position = new(
-                    player.Position.X + InventoryStartLoc.X + slotX*InventorySlotDimensions + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
-                    player.Position.Y + InventoryStartLoc.Y + slotY*InventorySlotDimensions + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
+                    player.Position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
+                    player.Position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
                     );
+
+                if (slotY == 3)
+                {
+                    position.Y += 1;
+                }
 
                 if (itemSlot.Key == _inventory.CurrentSelectedItem)
                 {
@@ -126,7 +136,7 @@ namespace SkyTown.HUD.Inventory
                         Color.White,
                         0f,
                         new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
-                        .8f, SpriteEffects.None, 0f);
+                        1.0f, SpriteEffects.None, 0f);
                 }
                 if (itemSlot.Key == SelectingSlot)
                 {

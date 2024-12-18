@@ -25,7 +25,7 @@ namespace SkyTown.Logic.GameStates
         {
             this.game = game;
             this.player = player;
-            this.inventoryHUD = new InventoryHUD(player);
+            this.inventoryHUD = new InventoryHUD(game, player);
             ViewCamera = game.ViewCamera;
         }
 

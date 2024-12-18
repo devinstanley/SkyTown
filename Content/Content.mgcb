@@ -14,7 +14,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Assets/HUDs/HotbarHUD.png
+#begin ../../../../Downloads/HotbarHUD.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -24,9 +24,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/HUDs/HotbarHUD.png
+/build:../../../../Downloads/HotbarHUD.png;Assets/HUDs/HotbarHUD.png
 
-#begin Assets/HUDs/Inventory.png
+#begin Assets/HUDs/InventoryHUD.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -36,7 +36,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/HUDs/Inventory.png;Assets/HUDs/InventoryHUD.png
+/build:Assets/HUDs/InventoryHUD.png
 
 #begin Assets/HUDs/SelectedItem.png
 /importer:TextureImporter

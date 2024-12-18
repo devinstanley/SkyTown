@@ -8,10 +8,10 @@ public class Camera
     private float _zoom = 1;
     private float _rotation;
     public Viewport _viewport;
-    private readonly int _resolutionWidth;
-    private readonly int _resolutionHeight;
-    private int virtualHeight;
-    private int virtualWidth;
+    public readonly int _resolutionWidth;
+    public readonly int _resolutionHeight;
+    public int virtualHeight;
+    public int virtualWidth;
     private Vector2 _minPos, _maxPos;
 
 
