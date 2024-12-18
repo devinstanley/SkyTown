@@ -62,8 +62,8 @@ namespace SkyTown.HUD.Inventory
             Debug.WriteLine($"Mouse Pos: {mousePosition}");
 
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + inventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - player.Position.X - player.Width / 2f;
-            float relativeY = mousePosition.Y + inventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - player.Position.Y - player.Height / 2f;
+            float relativeX = mousePosition.X + scale*inventoryTexture.Width / 2f - scale*InventoryStartLoc.X + scale*InventorySlotDimensions - player.Position.X - player.Width / 2f + 16;
+            float relativeY = mousePosition.Y + scale*inventoryTexture.Height / 2f - scale * InventoryStartLoc.Y + 16 - player.Position.Y - player.Height / 2f + game.ViewCamera._resolutionHeight / 2 + 64;
 
             Debug.WriteLine($"Fixed Mouse Pos: {relativeX}, {relativeY}");
 
@@ -72,10 +72,10 @@ namespace SkyTown.HUD.Inventory
             float slotY = relativeY / (InventorySlotDimensions + InventorySpacer);
 
             // Check if within grid bounds
-            if (slotX >= 0 && slotX < INVENTORYWIDTH && slotY >= 0 && slotY < INVENTORYHEIGHT)
+            if (slotX >= 0 && slotX < INVENTORYWIDTH && slotY == 0)
             {
                 // Convert 2D grid coordinates to the flattened key
-                return (int)slotY * INVENTORYWIDTH + (int)slotX;
+                return (int)3 * INVENTORYWIDTH + (int)slotX;
             }
 
             // Return -1 if the mouse position is outside the grid
@@ -86,7 +86,7 @@ namespace SkyTown.HUD.Inventory
         {
             spriteBatch.Draw(
                 inventoryTexture,
-                new Vector2(player.Position.X, player.Position.Y - player.Height/2 - game.ViewCamera._resolutionHeight/2),
+                new Vector2(player.Position.X, player.Position.Y - player.Height/2 - 16 - game.ViewCamera._resolutionHeight/2),
                 null,
                 Color.White,
                 0f,
@@ -98,14 +98,14 @@ namespace SkyTown.HUD.Inventory
                 int slotX = itemSlot.Key % INVENTORYWIDTH; // Column index
                 int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
 
-                if (slotY != 0)
+                if (slotY != 3)
                 {
                     continue;
                 }
 
                 Vector2 position = new(
-                    player.Position.X + slotX * InventorySlotDimensions - inventoryTexture.Width / 2,
-                    player.Position.Y + slotY * InventorySlotDimensions - inventoryTexture.Height / 2 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    player.Position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
+                    player.Position.Y - inventoryTexture.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
                     );
 
                 if (itemSlot.Key == _inventory.CurrentSelectedItem)
@@ -118,9 +118,10 @@ namespace SkyTown.HUD.Inventory
                         Color.White,
                         0f,
                         new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
-                        scale, SpriteEffects.None, 0f);
+                        scale + 0.05f, SpriteEffects.None, 0f);
                 }
+                itemSlot.Value.Draw(spriteBatch, position, scale - 0.05f);
             }
-            }
+        }
     }
 }

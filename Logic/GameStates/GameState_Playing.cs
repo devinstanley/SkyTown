@@ -67,6 +67,7 @@ namespace SkyTown.Logic.GameStates
             {
                 case GameState.Playing:
                     CurrentScene.Update(gameTime, inputManager, ViewCamera);
+                    hotbarHUD.Update(gameTime, inputManager);
                     break;
                 case GameState.Paused:
                     pauseMenu.Update(gameTime, inputManager);
