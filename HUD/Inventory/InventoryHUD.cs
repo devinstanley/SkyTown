@@ -105,7 +105,7 @@ namespace SkyTown.HUD.Inventory
         {
             spriteBatch.Draw(
                 inventoryTexture,
-                player.Position,
+                game.ViewCamera._position,
                 null,
                 Color.White,
                 0f,
@@ -117,8 +117,8 @@ namespace SkyTown.HUD.Inventory
                 int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
 
                 Vector2 position = new(
-                    player.Position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
-                    player.Position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
+                    game.ViewCamera._position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
+                    game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
                     );
 
                 if (slotY == 3)

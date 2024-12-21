@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Camera
 {
-    private Vector2 _position;
+    public Vector2 _position;
     private float _resolutionScalar;
     private float _zoom = 1;
     private float _rotation;
@@ -68,18 +68,22 @@ public class Camera
         _zoom = newZoom;
     }
 
-    public void SetBounds()
+    public void SetBounds(Vector2 mapSize, int tileSize)
     {
-        // Calculate the half-size of the viewport in world units
-        float halfViewportWidth = virtualWidth / 2f;
-        float halfViewportHeight = virtualHeight / 2f;
+        // Calculate the map size (considering the size of the map in world coordinates)
+        _minPos = new Vector2(_resolutionWidth / 2 + tileSize/2 + 32, _resolutionHeight / 2 + tileSize/2 + 32);
+
+        // Max position calculation (the camera can go as far as the end of the map minus half of its size)
+        _maxPos = new Vector2(mapSize.X * tileSize - _resolutionWidth / 2,
+                              mapSize.Y * tileSize - _resolutionHeight / 2);
     }
 
     public void SetPosition(Vector2 position)
     {
         _position = position;
 
-        // Clamp the camera position to the valid range
-        //_position = Vector2.Clamp(_position, _minPos, _maxPos);
+        // Clamp the camera position to the valid range considering the map boundaries
+        _position.X = MathHelper.Clamp(_position.X, _minPos.X, _maxPos.X);
+        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y, _maxPos.Y);
     }
 }

@@ -22,7 +22,7 @@ namespace SkyTown.Map
     public class MapScene
     {
         //For Drawing on Screen
-        private int tileDims = 32;
+        public int tileDims = 32;
         public Vector2 MapDimension;
         public float scale = 1;
         public string SceneID;
@@ -35,7 +35,7 @@ namespace SkyTown.Map
         //For Holding Player and NPC
         private Player player;
         private NPCManager npcManager;
-        private bool DEBUG_COLLISIONS = true;
+        private bool DEBUG_COLLISIONS = false;
         private CollisionManager collisionManager;
 
 

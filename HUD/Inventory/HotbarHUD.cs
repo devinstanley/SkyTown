@@ -86,7 +86,7 @@ namespace SkyTown.HUD.Inventory
         {
             spriteBatch.Draw(
                 inventoryTexture,
-                new Vector2(player.Position.X, player.Position.Y - player.Height/2 - 16 - game.ViewCamera._resolutionHeight/2),
+                new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - player.Height/2 - 16 - game.ViewCamera._resolutionHeight/2),
                 null,
                 Color.White,
                 0f,

@@ -35,7 +35,7 @@ namespace SkyTown.Logic.GameStates
 
         public void Initialize()
         {
-            player = new Player("Assets.Sprites.spriteAnimationTestCollision");
+            player = new Player("Assets.Sprites.spriteAnimationTest");
             hotbarHUD = new HotbarHUD(game, player);
             pauseMenu = new GameState_Paused(game, player);
             CurrentScene.Initialize(player);
@@ -46,6 +46,7 @@ namespace SkyTown.Logic.GameStates
             player.LoadContent(content);
             pauseMenu.LoadContent(content);
             CurrentScene.LoadContent(content);
+            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims);
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)
