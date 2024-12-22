@@ -82,7 +82,7 @@ namespace SkyTown.Entities.Characters
 
             //Update Player Position
             Position += vel;
-            Position = Vector2.Clamp(Position, _minPos, _maxPos);
+            Position = Vector2.Clamp(Position, _minPos - new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2), _maxPos + new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2));
 
             Update(gameTime);
         }

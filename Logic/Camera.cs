@@ -15,6 +15,8 @@ public class Camera
     public int virtualWidth;
     private Vector2 _minPos, _maxPos;
 
+    public bool TopScreenClamp;
+
 
     public Camera(Viewport viewport, int resWidth,int resHeight)
     {
@@ -82,6 +84,9 @@ public class Camera
     public void SetPosition(Vector2 position)
     {
         _position = position;
+
+        // Check if HUD needs to move to bottom
+        TopScreenClamp = _minPos.Y > position.Y ? true : false;
 
         // Clamp the camera position to the valid range considering the map boundaries
         _position.X = MathHelper.Clamp(_position.X, _minPos.X, _maxPos.X);

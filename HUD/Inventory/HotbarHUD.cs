@@ -84,9 +84,19 @@ namespace SkyTown.HUD.Inventory
 
         new public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            bool bottomRender = game.ViewCamera.TopScreenClamp;
+            Vector2 hudPos = new();
+            if (bottomRender)
+            {
+                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2);
+            }
+            else
+            {
+                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - player.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2);
+            }
             spriteBatch.Draw(
                 inventoryTexture,
-                new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - player.Height/2 - 16 - game.ViewCamera._resolutionHeight/2),
+                hudPos,
                 null,
                 Color.White,
                 0f,
@@ -102,11 +112,20 @@ namespace SkyTown.HUD.Inventory
                 {
                     continue;
                 }
-
-                Vector2 position = new(
+                Vector2 position = new();
+                if (bottomRender)
+                {
+                    position = new(
                     game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y - inventoryTexture.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    game.ViewCamera._position.Y + player.Height / 2 + inventoryTexture.Height / 2 - 16 + game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
                     );
+                }
+                else {
+                    position = new(
+                    game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
+                    game.ViewCamera._position.Y - player.Height/2 - inventoryTexture.Height / 2 + 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    );
+                }
 
                 if (itemSlot.Key == _inventory.CurrentSelectedItem)
                 {

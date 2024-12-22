@@ -92,12 +92,8 @@ namespace SkyTown.Logic.GameStates
 
         public void ChangeScene(MapScene newScene)
         {
-
-        }
-
-        public void CheckPause()
-        {
-
+            CurrentScene = newScene;
+            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, player);
         }
     }
 }
