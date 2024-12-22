@@ -104,8 +104,8 @@ namespace SkyTown.HUD.Inventory
                 }
 
                 Vector2 position = new(
-                    player.Position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
-                    player.Position.Y - inventoryTexture.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
+                    game.ViewCamera._position.Y - inventoryTexture.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
                     );
 
                 if (itemSlot.Key == _inventory.CurrentSelectedItem)

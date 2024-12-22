@@ -46,7 +46,7 @@ namespace SkyTown.Logic.GameStates
             player.LoadContent(content);
             pauseMenu.LoadContent(content);
             CurrentScene.LoadContent(content);
-            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims);
+            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, player);
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)

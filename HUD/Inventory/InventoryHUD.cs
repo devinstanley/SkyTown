@@ -81,8 +81,8 @@ namespace SkyTown.HUD.Inventory
             Debug.WriteLine($"Mouse Pos: {mousePosition}");
 
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + inventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - player.Position.X - player.Width/2f;
-            float relativeY = mousePosition.Y + inventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - player.Position.Y - player.Height/2f;
+            float relativeX = mousePosition.X + inventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - game.ViewCamera._position.X - player.Width/2f;
+            float relativeY = mousePosition.Y + inventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - game.ViewCamera._position.Y - player.Height/2f;
 
             Debug.WriteLine($"Fixed Mouse Pos: {relativeX}, {relativeY}");
 
