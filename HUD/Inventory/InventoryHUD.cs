@@ -65,7 +65,21 @@ namespace SkyTown.HUD.Inventory
                     int newLoc = GetKeyAtPos(inputManager);
                     if (newLoc != -1)
                     {
-                        _inventory.Swap(SelectingSlot, newLoc);
+                        if (_inventory.Items.ContainsKey(newLoc) && _inventory.Items[newLoc].Item.ID == _inventory.Items[SelectingSlot].Item.ID)
+                        {
+                            while (_inventory.Items[newLoc].AddedQuantity())
+                            {
+                                _inventory.Items[SelectingSlot].Quantiy -= 1;
+                                if (_inventory.Items[SelectingSlot].Quantiy == 0)
+                                {
+                                    _inventory.Items.Remove(SelectingSlot);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            _inventory.Swap(SelectingSlot, newLoc);
+                        }
                     }
                     SelectingSlot = -1;
                     _inventory.CurrentSelectedItem = newLoc;

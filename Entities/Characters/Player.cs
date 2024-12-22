@@ -24,6 +24,7 @@ namespace SkyTown.Entities.Characters
         public Vector2 hitboxOffset = new(0, 16);
         public int HitboxWidth = 24;
         public int HitboxHeight = 32;
+        
         private Vector2 _minPos, _maxPos; 
         public Player(string ID) : base(ID)
         {

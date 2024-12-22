@@ -16,7 +16,7 @@ namespace SkyTown.Entities.Characters
 
         public NPCManager()
         {
-
+            
         }
 
         public void LoadContent(ContentManager content)

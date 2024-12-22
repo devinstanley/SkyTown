@@ -14,7 +14,8 @@ namespace SkyTown.Logic
         public static ContentManager content;
         static Dictionary<string, Texture2D> textureLibrary = new Dictionary<string, Texture2D>();
         static Dictionary<string, Song> songLibrary = new Dictionary<string, Song>();
-        
+        static Dictionary<string, SpriteFont> fontLibrary = new Dictionary<string, SpriteFont>();
+
         public static Song LoadSong(string songID)
         {
             if (!songLibrary.ContainsKey(songID))
@@ -41,6 +42,21 @@ namespace SkyTown.Logic
             }
 
             return textureLibrary[textureID];
+        }
+
+        public static SpriteFont LoadFont(string fontID)
+        {
+            if (!fontLibrary.ContainsKey(fontID))
+            {
+                string fontPath = string.Join("\\", fontID.Split("."));
+                SpriteFont font = content.Load<SpriteFont>(fontPath);
+                fontLibrary.Add(fontID, font);
+            }
+            else
+            {
+            }
+
+            return fontLibrary[fontID];
         }
     }
 }

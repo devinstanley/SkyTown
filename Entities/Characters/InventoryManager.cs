@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Items;
 using SkyTown.HUD.Inventory;
+using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System;
 using System.Collections.Generic;
@@ -106,7 +107,7 @@ namespace SkyTown.Entities.Characters
     {
         public Item Item { get; private set; }
         public int MaxQuantity {  get; private set; }
-        public int Quantiy { get; private set; }
+        public int Quantiy { get; set; }
 
         public InventorySlot(Item item, int quantity = 1)
         {
@@ -117,7 +118,7 @@ namespace SkyTown.Entities.Characters
 
         public bool AddedQuantity()
         {
-            if (Quantiy <= MaxQuantity)
+            if (Quantiy < MaxQuantity)
             {
                 Quantiy += 1;
                 return true;
@@ -128,6 +129,19 @@ namespace SkyTown.Entities.Characters
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)
         {
             Item.Draw(spriteBatch, pos, scale);
+            string amt = Quantiy.ToString();
+            SpriteFont font = ResourceManager.LoadFont("Assets.Font.Arial");
+            spriteBatch.DrawString(
+                font,
+                amt,
+                pos + new Vector2(10, 10),
+                Color.White,
+                0f,
+                new Vector2(0, 0),
+                0.7f,
+                SpriteEffects.None,
+                0f
+                );
         }
     }
 }
