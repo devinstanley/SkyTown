@@ -24,6 +24,8 @@ namespace SkyTown.Entities.Characters
         public Vector2 hitboxOffset = new(0, 16);
         public int HitboxWidth = 24;
         public int HitboxHeight = 32;
+        
+        private Vector2 _minPos, _maxPos; 
         public Player(string ID) : base(ID)
         {
             string testItemID = "Assets.Sprites.TestItem";
@@ -54,7 +56,11 @@ namespace SkyTown.Entities.Characters
             inventory.LoadContent(content);
         }
 
-        
+        public void SetBounds(Point mapSize, Point tileSize)
+        {
+            _minPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
+            _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
+        }
 
         public void Update(GameTime gameTime, InputManager input, CollisionManager collisionManager)
         {
@@ -72,10 +78,16 @@ namespace SkyTown.Entities.Characters
             Width = animationManager.AnimationWidth;
             Height = animationManager.AnimationHeight;
 
-            //Player position updated in collision manager
-            
-
             base.Update(gameTime);
+        }
+
+        public void UpdatePosition()
+        {
+            //Update Player Position
+            Position += vel;
+            Position = Vector2.Clamp(Position, 
+                _minPos - new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2), 
+                _maxPos + new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2));
         }
 
         public new void Draw(SpriteBatch spriteBatch)

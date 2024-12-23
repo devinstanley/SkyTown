@@ -12,9 +12,14 @@ namespace SkyTown.LogicManagers
 {
     public class CollisionManager
     {
+        //Player Items
         Player player;
         private Vector2 _playerMinPos, _playerMaxPos;
+
+        //
         NPCManager npcManager;
+
+
         Dictionary<Vector2, int> collisionMap;
         int tileSize;
 
@@ -30,6 +35,13 @@ namespace SkyTown.LogicManagers
         {
             _playerMinPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
             _playerMaxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            HandlePlayerMapCollisions();
+
+            player.UpdatePosition();
         }
 
         public void HandlePlayerMapCollisions()
@@ -78,8 +90,6 @@ namespace SkyTown.LogicManagers
                     ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
                 }
             }
-            player.Position += player.vel;
-            player.Position = Vector2.Clamp(player.Position, _playerMinPos - new Vector2((player.Width - player.HitboxWidth) / 2, (player.Height - player.HitboxHeight) / 2), _playerMaxPos + new Vector2((player.Width - player.HitboxWidth) / 2, (player.Height - player.HitboxHeight) / 2));
         }
 
         #region Sliding Collision Resolvers

@@ -76,10 +76,9 @@ namespace SkyTown.Map
             int numRows = (int)tileMaps.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)tileMaps.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numRows, numCols);
-            
+            player.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
 
             collisionManager = new CollisionManager(player, npcManager, collisionMap, tileDims);
-            collisionManager.SetPlayerBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
         }
 
         public void GenerateSources()
@@ -103,7 +102,7 @@ namespace SkyTown.Map
         {
 
             player.Update(gameTime, inputManager, collisionManager);
-            collisionManager.HandlePlayerMapCollisions();
+            collisionManager.Update(gameTime);
             ViewCamera.SetPosition(player.Position);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
