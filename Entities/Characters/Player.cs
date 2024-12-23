@@ -74,10 +74,6 @@ namespace SkyTown.Entities.Characters
             UpdateVelocity(input);
             vel *= displacementScalar;
 
-            //Update Hitbox Size Based on Current Animation
-            Width = animationManager.AnimationWidth;
-            Height = animationManager.AnimationHeight;
-
             base.Update(gameTime);
         }
 

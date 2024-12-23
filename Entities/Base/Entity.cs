@@ -8,10 +8,11 @@ using SkyTown.Logic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using SharpFont.Cache;
 
 namespace SkyTown.Entities.Base
 {
-    public abstract class Entity
+    public class Entity
     {
         public string ID { get; set; }
         public Vector2 Position { get; set; }
@@ -32,11 +33,19 @@ namespace SkyTown.Entities.Base
         public void Update(GameTime gameTime)
         {
             animationManager.Update(AnimationState, gameTime);
+
+            Width = animationManager.AnimationWidth;
+            Height = animationManager.AnimationHeight;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             animationManager.Draw(spriteBatch, Position);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale = -1)
+        {
+            animationManager.Draw(spriteBatch, pos, scale);
         }
     }
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Base;
+using SkyTown.Entities.Characters;
 using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
@@ -24,18 +25,15 @@ namespace SkyTown.Entities.Items
 
         public void LoadContent(ContentManager content)
         {
-            animationManager.AddAnimation(0, new Animation(ID, 1, 1, 1));
-            
+            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 1, 1, 1));
         }
         public void Update(GameTime gameTime)
         {
-            animationManager.Update(0, gameTime);
-            Width = animationManager.AnimationWidth;
-            Height = animationManager.AnimationHeight;
+            base.Update(gameTime);
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)
         {
-            animationManager.Draw(spriteBatch, pos, scale);
+            base.Draw(spriteBatch, pos, scale);
         }
     }
 

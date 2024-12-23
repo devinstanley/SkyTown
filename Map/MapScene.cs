@@ -10,6 +10,7 @@ using System.IO;
 using SkyTown.LogicManagers;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Base;
+using SkyTown.Entities.Items;
 
 namespace SkyTown.Map
 {
@@ -35,7 +36,7 @@ namespace SkyTown.Map
 
         //For holding temporary/interactable entitys?
         //Resources and Such
-        public List<Entity> SceneEntities = new();
+        public List<Item> SceneItems = new();
 
         //For Holding Player and NPC
         private Player player;
@@ -48,6 +49,9 @@ namespace SkyTown.Map
         public MapScene(string ID)
         {
             SceneID = ID;
+
+            string testItemID = "Assets.Sprites.TestItem";
+            SceneItems.Add(new Item(testItemID));
         }
         public void Initialize(Player player)
         {
@@ -78,6 +82,11 @@ namespace SkyTown.Map
             MapDimension = new(numRows, numCols);
             player.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
 
+            foreach (Item item in SceneItems)
+            {
+                item.LoadContent(content);
+            }
+
             collisionManager = new CollisionManager(player, npcManager, collisionMap, tileDims);
         }
 
@@ -100,7 +109,10 @@ namespace SkyTown.Map
 
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
         {
-
+            foreach (Entity e in SceneItems)
+            {
+                e.Update(gameTime);
+            }
             player.Update(gameTime, inputManager, collisionManager);
             collisionManager.Update(gameTime);
             ViewCamera.SetPosition(player.Position);
@@ -125,9 +137,9 @@ namespace SkyTown.Map
                 order += 1;
             }
 
-            foreach (var entity in SceneEntities)
+            foreach (var entity in SceneItems)
             {
-                entity.Draw(spriteBatch);
+                entity.Draw(spriteBatch, entity.Position, 0.5f);
             }
 
             if (DEBUG_COLLISIONS)
