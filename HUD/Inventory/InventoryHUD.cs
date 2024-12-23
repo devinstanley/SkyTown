@@ -71,7 +71,10 @@ namespace SkyTown.HUD.Inventory
                     int newLoc = GetKeyAtPos(inputManager);
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
-                        if (_inventory.Items.ContainsKey(newLoc) && _inventory.Items[newLoc].Item.ID == _inventory.Items[SelectingSlot].Item.ID)
+                        if (_inventory.Items.ContainsKey(newLoc) //Make sure new location has an item slot
+                            && _inventory.Items[newLoc].Item.ID == _inventory.Items[SelectingSlot].Item.ID //Check if item slots contain the same item
+                            && (_inventory.Items[newLoc].Quantiy < _inventory.Items[newLoc].MaxQuantity) //Make sure new location not at max
+                            && (_inventory.Items[SelectingSlot].Quantiy < _inventory.Items[SelectingSlot].MaxQuantity)) //Make sure old location not at max
                         {
                             while (_inventory.Items[newLoc].AddedQuantity())
                             {
