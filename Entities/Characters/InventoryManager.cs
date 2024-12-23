@@ -70,6 +70,29 @@ namespace SkyTown.Entities.Characters
             }
         }
 
+        public void SplitStack(int itemKey)
+        {
+            if (!Items.Keys.Contains(itemKey))
+            {
+                return;
+            }
+            for (int i = 0; i < InventoryHUD.MAXSLOTS; i++)
+            {
+                if (!Items.ContainsKey(i))
+                {
+                    int newStackCount = (int)Math.Floor(Items[itemKey].Quantiy / 2d);
+                    int curStackCount = (int)Math.Ceiling(Items[itemKey].Quantiy / 2d);
+
+                    Items[itemKey].Quantiy = curStackCount;
+                    if (newStackCount > 0)
+                    {
+                        Items.Add(i, new InventorySlot(Items[itemKey].Item, newStackCount));
+                    }
+                    return;
+                }
+            }
+        }
+
         public void AddItem(Item item)
         {
             foreach (var slot in Items.Where(u => u.Value.Item.ID.Equals(item.ID)).Select(u => u.Value))

@@ -49,10 +49,16 @@ namespace SkyTown.HUD.Inventory
         public void HandleInput(InputManager inputManager)
         {
             //Check if we are dragging item
+            if (inputManager.IsRightClicked() && SelectingSlot == -1)
+            {
+                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                _inventory.SplitStack(SelectingSlot);
+                SelectingSlot = -1;
+            }
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
             {
                 SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
-                _inventory.CurrentSelectedItem = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                _inventory.CurrentSelectedItem = SelectingSlot;
             }
             if (SelectingSlot != -1)
             {
@@ -63,7 +69,7 @@ namespace SkyTown.HUD.Inventory
                 else
                 {
                     int newLoc = GetKeyAtPos(inputManager);
-                    if (newLoc != -1)
+                    if (newLoc != -1 && newLoc != SelectingSlot)
                     {
                         if (_inventory.Items.ContainsKey(newLoc) && _inventory.Items[newLoc].Item.ID == _inventory.Items[SelectingSlot].Item.ID)
                         {
@@ -73,6 +79,9 @@ namespace SkyTown.HUD.Inventory
                                 if (_inventory.Items[SelectingSlot].Quantiy == 0)
                                 {
                                     _inventory.Items.Remove(SelectingSlot);
+                                    _inventory.CurrentSelectedItem = newLoc;
+                                    SelectingSlot = -1;
+                                    return;
                                 }
                             }
                         }
