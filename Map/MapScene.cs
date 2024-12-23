@@ -34,9 +34,9 @@ namespace SkyTown.Map
         Dictionary<int, Rectangle> tileSource;
         Dictionary<Vector2, int> collisionMap = new();
 
-        //For holding temporary/interactable entitys?
-        //Resources and Such
-        public List<Item> SceneItems = new();
+        //For Holding Various Items
+        public List<Item> SceneItems = new(); //Attainable Items
+        public List<Entity> SceneEntities = new();
 
         //For Holding Player and NPC
         private Player player;
@@ -51,6 +51,12 @@ namespace SkyTown.Map
             SceneID = ID;
 
             string testItemID = "Assets.Sprites.TestItem";
+            SceneItems.Add(new Item(testItemID));
+            SceneItems.Add(new Item(testItemID));
+            SceneItems.Add(new Item(testItemID));
+            SceneItems.Add(new Item(testItemID));
+            SceneItems.Add(new Item(testItemID));
+            SceneItems.Add(new Item(testItemID));
             SceneItems.Add(new Item(testItemID));
         }
         public void Initialize(Player player)
@@ -82,9 +88,11 @@ namespace SkyTown.Map
             MapDimension = new(numRows, numCols);
             player.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
 
+            Random t = new Random();
             foreach (Item item in SceneItems)
             {
                 item.LoadContent(content);
+                item.Position = new Vector2(150 + t.NextInt64(-50, 50), 150 + t.NextInt64(-50, 50));
             }
 
             collisionManager = new CollisionManager(player, npcManager, collisionMap, tileDims);
@@ -114,7 +122,7 @@ namespace SkyTown.Map
                 e.Update(gameTime);
             }
             player.Update(gameTime, inputManager, collisionManager);
-            collisionManager.Update(gameTime);
+            collisionManager.Update(gameTime, this);
             ViewCamera.SetPosition(player.Position);
         }
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

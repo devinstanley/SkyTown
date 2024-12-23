@@ -33,7 +33,6 @@ namespace SkyTown.HUD.Inventory
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
             {
                 SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
-                _inventory.CurrentSelectedItem = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
             }
             if (SelectingSlot != -1)
             {

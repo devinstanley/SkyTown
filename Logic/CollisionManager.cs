@@ -1,6 +1,8 @@
 ﻿using Assimp;
 using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
+using SkyTown.Entities.Items;
+using SkyTown.Map;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +14,8 @@ namespace SkyTown.LogicManagers
 {
     public class CollisionManager
     {
+        int ItemFollowDistance = 100;
+        int ItemFollowSpeed = 200;
         //Player Items
         Player player;
         private Vector2 _playerMinPos, _playerMaxPos;
@@ -37,11 +41,33 @@ namespace SkyTown.LogicManagers
             _playerMaxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, MapScene scene)
         {
             HandlePlayerMapCollisions();
 
             player.UpdatePosition();
+            HandlePlayerItemInteractions(gameTime, scene.SceneItems);
+        }
+
+        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems)
+        {
+            List<Item> ItemsCopy = new List<Item>(AttainableItems);
+
+            foreach (Item item in ItemsCopy)
+            {
+                float dist = (player.Position - item.Position).Length();
+                if (dist < 10){
+                    player.inventory.AddItem(item);
+                    AttainableItems.Remove(item);
+                }
+                else if (dist < ItemFollowDistance)
+                {
+                    Vector2 vel = (player.Position - item.Position);
+                    vel.Normalize();
+                    float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50/dist), 0, 1));
+                    item.Position += displacementScalar * vel;
+                }
+            }
         }
 
         public void HandlePlayerMapCollisions()
