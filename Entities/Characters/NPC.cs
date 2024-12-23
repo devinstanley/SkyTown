@@ -31,14 +31,14 @@ namespace SkyTown.Entities.Characters
             animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 2, 1, 1));
         }
 
-        public void Update(GameTime gameTime)
+        new public void Update(GameTime gameTime)
         {
-            animationManager.Update(AnimationState, gameTime);
+            base.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            animationManager.Draw(spriteBatch, Position);
+            base.Draw(spriteBatch);
         }
     }
     public enum NPCState

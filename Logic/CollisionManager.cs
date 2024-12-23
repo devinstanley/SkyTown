@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Assimp;
+using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace SkyTown.LogicManagers
     public class CollisionManager
     {
         Player player;
+        private Vector2 _playerMinPos, _playerMaxPos;
         NPCManager npcManager;
         Dictionary<Vector2, int> collisionMap;
         int tileSize;
@@ -22,6 +24,12 @@ namespace SkyTown.LogicManagers
             this.npcManager = npcManager;
             this.collisionMap = collisionMap;
             this.tileSize = tileSize;
+        }
+
+        public void SetPlayerBounds(Point mapSize, Point tileSize)
+        {
+            _playerMinPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
+            _playerMaxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
         }
 
         public void HandlePlayerMapCollisions()
@@ -42,6 +50,7 @@ namespace SkyTown.LogicManagers
                     tileSize
                 );
 
+                //Is Sliding Collision for Player
                 if (collisionMap[tilePos] == 0)
                 {
                     ResolveXSlidingCollision(futurePlayerRectX, collisionRect);
@@ -68,9 +77,9 @@ namespace SkyTown.LogicManagers
                 {
                     ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
                 }
-
-                
             }
+            player.Position += player.vel;
+            player.Position = Vector2.Clamp(player.Position, _playerMinPos - new Vector2((player.Width - player.HitboxWidth) / 2, (player.Height - player.HitboxHeight) / 2), _playerMaxPos + new Vector2((player.Width - player.HitboxWidth) / 2, (player.Height - player.HitboxHeight) / 2));
         }
 
         #region Sliding Collision Resolvers
