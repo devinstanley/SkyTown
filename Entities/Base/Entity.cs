@@ -31,6 +31,11 @@ namespace SkyTown.Entities.Base
             this.ID = ID;
         }
 
+        public void LoadContent(ContentManager content)
+        {
+            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 1, 1, 1));
+        }
+
         public void Update(GameTime gameTime)
         {
             animationManager.Update(AnimationState, gameTime);

@@ -17,34 +17,23 @@ namespace SkyTown.LogicManagers
     {
         int ItemFollowDistance = 100;
         int ItemFollowSpeed = 200;
-        //Player Items
-        Player player;
+        int tileSize = 32;
 
-        //
-        NPCManager npcManager;
-
-
-        Dictionary<Vector2, int> collisionMap;
-        int tileSize;
-
-        public CollisionManager(Player player, NPCManager npcManager, Dictionary<Vector2, int> collisionMap, int tileSize)
+        public CollisionManager()
         {
-            this.player = player;
-            this.npcManager = npcManager;
-            this.collisionMap = collisionMap;
-            this.tileSize = tileSize;
         }
 
-        public void Update(GameTime gameTime, MapScene scene)
+        public void Update(GameTime gameTime, MapScene scene, Player player)
         {
-            HandlePlayerMapCollisions();
-            HandlePlayerNPCCollisions(gameTime, scene.npcManager);
+            HandlePlayerMapCollisions(gameTime, scene.collisionMap, player);
+            HandlePlayerNPCCollisions(gameTime, scene.npcManager, player);
+            HandlePlayerEntityCollisions(gameTime, scene.SceneEntities, player);
 
             player.UpdatePosition();
-            HandlePlayerItemInteractions(gameTime, scene.SceneItems);
+            HandlePlayerItemInteractions(gameTime, scene.SceneItems,player);
         }
 
-        public void HandlePlayerMapCollisions()
+        public void HandlePlayerMapCollisions(GameTime gameTime, Dictionary<Vector2, int> collisionMap, Player player)
         {
             var futurePlayerRectX = new Rectangle(
                 (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
@@ -52,7 +41,7 @@ namespace SkyTown.LogicManagers
                 player.HitboxWidth,
                 player.HitboxHeight
             );
-            List<Vector2> localCollidablesX = GetCollidableTilesAroundPlayer(futurePlayerRectX);
+            List<Vector2> localCollidablesX = GetCollidableTilesAroundPlayer(futurePlayerRectX, collisionMap);
             foreach (var tilePos in localCollidablesX)
             {
                 Rectangle collisionRect = new(
@@ -65,7 +54,7 @@ namespace SkyTown.LogicManagers
                 //Is Sliding Collision for Player
                 if (collisionMap[tilePos] == 0)
                 {
-                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect);
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
                 }
             }
 
@@ -75,7 +64,7 @@ namespace SkyTown.LogicManagers
                 player.HitboxWidth,
                 player.HitboxHeight
             );
-            List<Vector2> localCollidablesY = GetCollidableTilesAroundPlayer(futurePlayerRectY);
+            List<Vector2> localCollidablesY = GetCollidableTilesAroundPlayer(futurePlayerRectY, collisionMap);
             foreach (var tilePos in localCollidablesY)
             {
                 Rectangle collisionRect = new(
@@ -87,12 +76,61 @@ namespace SkyTown.LogicManagers
 
                 if (collisionMap[tilePos] == 0)
                 {
-                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
                 }
             }
         }
 
-        public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager)
+        public void HandlePlayerEntityCollisions(GameTime gameTime, List<Entity> SceneEntities, Player player)
+        {
+            var futurePlayerRectX = new Rectangle(
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
+            );
+
+            foreach (Entity entity in SceneEntities)
+            {
+                Rectangle collisionRect = new(
+                    (int)entity.Position.X - entity.Width / 2 + tileSize / 2,
+                    (int)entity.Position.Y - entity.Height / 2 + tileSize / 2,
+                    entity.Width,
+                    entity.Height
+                );
+
+                //Is Sliding Collision for Player
+                if (futurePlayerRectX.Intersects(collisionRect))
+                {
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect,player);
+                }
+            }
+
+            var futurePlayerRectY = new Rectangle(
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
+            );
+
+            foreach (Entity entity in SceneEntities)
+            {
+                Rectangle collisionRect = new(
+                    (int)entity.Position.X - entity.Width / 2 + tileSize / 2,
+                    (int)entity.Position.Y - entity.Height / 2 + tileSize / 2,
+                    entity.Width,
+                    entity.Height
+                );
+
+                //Is Sliding Collision for Player
+                if (futurePlayerRectY.Intersects(collisionRect))
+                {
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
+                }
+            }
+        }
+
+        public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager, Player player)
         {
             var futurePlayerRectX = new Rectangle(
                 (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
@@ -113,7 +151,7 @@ namespace SkyTown.LogicManagers
                 //Is Sliding Collision for Player
                 if (futurePlayerRectX.Intersects(collisionRect))
                 {
-                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect);
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
                 }
             }
 
@@ -136,12 +174,12 @@ namespace SkyTown.LogicManagers
                 //Is Sliding Collision for Player
                 if (futurePlayerRectY.Intersects(collisionRect))
                 {
-                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
                 }
             }
         }
 
-        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems)
+        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems, Player player)
         {
             List<Item> ItemsCopy = new List<Item>(AttainableItems);
 
@@ -163,7 +201,7 @@ namespace SkyTown.LogicManagers
         }
 
         #region Sliding Collision Resolvers
-        private void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect)
+        private void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect, Player player)
         {
             while (futurePlayerRectY.Intersects(collisionRect))
             {
@@ -186,7 +224,7 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        private void ResolveXSlidingCollision(Rectangle futurePlayerRectX, Rectangle collisionRect)
+        private void ResolveXSlidingCollision(Rectangle futurePlayerRectX, Rectangle collisionRect, Player player)
         {
             while (futurePlayerRectX.Intersects(collisionRect))
             {
@@ -211,7 +249,7 @@ namespace SkyTown.LogicManagers
         #endregion
 
         #region Collision Tile Identification
-        private List<Vector2> GetCollidableTilesAroundPlayer(Rectangle playerRect)
+        private List<Vector2> GetCollidableTilesAroundPlayer(Rectangle playerRect, Dictionary<Vector2, int> collisionMap)
         {
             List<Vector2> collidables = new();
 

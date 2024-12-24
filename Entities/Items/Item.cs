@@ -25,7 +25,7 @@ namespace SkyTown.Entities.Items
 
         public void LoadContent(ContentManager content)
         {
-            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 1, 1, 1));
+            base.LoadContent(content);
         }
         public void Update(GameTime gameTime)
         {
