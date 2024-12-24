@@ -11,8 +11,7 @@ namespace SkyTown.Entities.Characters
 {
     public class NPCManager
     {
-        private List<NPC> AllNPCs = new List<NPC>();
-        public List<NPC> CurrentSceneNPCs = new List<NPC>();
+        public List<NPC> NPCs = new List<NPC>();
 
         public NPCManager()
         {
@@ -21,7 +20,7 @@ namespace SkyTown.Entities.Characters
 
         public void LoadContent(ContentManager content)
         {
-            foreach (NPC n in AllNPCs)
+            foreach (NPC n in NPCs)
             {
                 n.LoadContent(content);
             }
@@ -29,7 +28,7 @@ namespace SkyTown.Entities.Characters
 
         public void Update(GameTime gameTime)
         {
-            foreach (NPC n in AllNPCs)
+            foreach (NPC n in NPCs)
             {
                 n.Update(gameTime);
             }
@@ -37,7 +36,7 @@ namespace SkyTown.Entities.Characters
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (NPC n in CurrentSceneNPCs)
+            foreach (NPC n in NPCs)
             {
                 n.Draw(spriteBatch);
             }
@@ -45,12 +44,12 @@ namespace SkyTown.Entities.Characters
 
         public void Add(NPC npc)
         {
-            AllNPCs.Add(npc);
+            NPCs.Add(npc);
         }
 
         public void Remove(NPC npc)
         {
-            AllNPCs.Remove(npc);
+            NPCs.Remove(npc);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Assimp;
 using Microsoft.Xna.Framework;
+using SkyTown.Entities.Base;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Items;
 using SkyTown.Map;
@@ -18,7 +19,6 @@ namespace SkyTown.LogicManagers
         int ItemFollowSpeed = 200;
         //Player Items
         Player player;
-        private Vector2 _playerMinPos, _playerMaxPos;
 
         //
         NPCManager npcManager;
@@ -35,46 +35,20 @@ namespace SkyTown.LogicManagers
             this.tileSize = tileSize;
         }
 
-        public void SetPlayerBounds(Point mapSize, Point tileSize)
-        {
-            _playerMinPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
-            _playerMaxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
-        }
-
         public void Update(GameTime gameTime, MapScene scene)
         {
             HandlePlayerMapCollisions();
+            HandlePlayerNPCCollisions(gameTime, scene.npcManager);
 
             player.UpdatePosition();
             HandlePlayerItemInteractions(gameTime, scene.SceneItems);
         }
 
-        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems)
-        {
-            List<Item> ItemsCopy = new List<Item>(AttainableItems);
-
-            foreach (Item item in ItemsCopy)
-            {
-                float dist = (player.Position - item.Position).Length();
-                if (dist < 10){
-                    player.inventory.AddItem(item);
-                    AttainableItems.Remove(item);
-                }
-                else if (dist < ItemFollowDistance)
-                {
-                    Vector2 vel = (player.Position - item.Position);
-                    vel.Normalize();
-                    float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50/dist), 0, 1));
-                    item.Position += displacementScalar * vel;
-                }
-            }
-        }
-
         public void HandlePlayerMapCollisions()
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width/2 - player.HitboxWidth/2 + (int)player.hitboxOffset.X,
-                (int)player.Position.Y - tileSize / 2 + player.Height/2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
                 player.HitboxWidth,
                 player.HitboxHeight
             );
@@ -96,8 +70,8 @@ namespace SkyTown.LogicManagers
             }
 
             var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth/ 2 + (int)player.hitboxOffset.X,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight/ 2 + (int)player.hitboxOffset.Y,
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
                 player.HitboxWidth,
                 player.HitboxHeight
             );
@@ -114,6 +88,76 @@ namespace SkyTown.LogicManagers
                 if (collisionMap[tilePos] == 0)
                 {
                     ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
+                }
+            }
+        }
+
+        public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager)
+        {
+            var futurePlayerRectX = new Rectangle(
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
+            );
+
+            foreach (NPC npc in npcManager.NPCs)
+            {
+                Rectangle collisionRect = new(
+                    (int)npc.Position.X - npc.Width/2 + tileSize/2,
+                    (int)npc.Position.Y - npc.Height / 2 + tileSize/2,
+                    npc.Width,
+                    npc.Height
+                );
+
+                //Is Sliding Collision for Player
+                if (futurePlayerRectX.Intersects(collisionRect))
+                {
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect);
+                }
+            }
+
+            var futurePlayerRectY = new Rectangle(
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
+                player.HitboxWidth,
+                player.HitboxHeight
+            );
+
+            foreach (NPC npc in npcManager.NPCs)
+            {
+                Rectangle collisionRect = new(
+                    (int)npc.Position.X -  npc.Width / 2 + tileSize/2,
+                    (int)npc.Position.Y -  npc.Height / 2 + tileSize/2,
+                    npc.Width,
+                    npc.Height
+                );
+
+                //Is Sliding Collision for Player
+                if (futurePlayerRectY.Intersects(collisionRect))
+                {
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect);
+                }
+            }
+        }
+
+        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems)
+        {
+            List<Item> ItemsCopy = new List<Item>(AttainableItems);
+
+            foreach (Item item in ItemsCopy)
+            {
+                float dist = (player.Position - item.Position).Length();
+                if (dist < 10){
+                    player.inventory.AddItem(item);
+                    AttainableItems.Remove(item);
+                }
+                else if (dist < ItemFollowDistance)
+                {
+                    Vector2 vel = (player.Position - item.Position);
+                    vel.Normalize();
+                    float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50/dist), 0, 1));
+                    item.Position += displacementScalar * vel;
                 }
             }
         }

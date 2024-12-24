@@ -16,13 +16,14 @@ namespace SkyTown.Entities.Base
     {
         public string ID { get; set; }
         public Vector2 Position { get; set; }
-        public Rectangle Hitbox => new Rectangle((int)Position.X - Width/2, (int)Position.Y - Height/2, Width, Height); // Collision box
-        public Rectangle SourceRectangle { get; set; }  // Sprite sheet region
         public int Width { get; set; }
         public int Height { get; set; }
         protected readonly AnimationManager animationManager = new();
         protected NPCState AnimationState = NPCState.IdleForward;
-        public CollisionActionEnum CollisionAction { get; set; }
+
+        //Set default collision and interaction behavior
+        public CollisionActionEnum CollisionAction { get; set; } = CollisionActionEnum.PASS;
+        public HarvestActionEnum HarvestAction { get; set; } = HarvestActionEnum.NULL;
 
 
         public Entity(string ID)
@@ -53,5 +54,12 @@ namespace SkyTown.Entities.Base
         PASS,       //Can pass through
         SLIDING,    //Can slide up against
         COLLECT,    //Can be collected
+    }
+
+    public enum HarvestActionEnum
+    {
+        NULL,       //Cannot be harvested
+        AXE,        //Harvested with Axe
+        PICKAXE,    //Harvested with Pickaxe
     }
 }

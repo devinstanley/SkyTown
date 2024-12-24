@@ -34,16 +34,16 @@ namespace SkyTown.Map
         Dictionary<int, Rectangle> tileSource;
         Dictionary<Vector2, int> collisionMap = new();
 
-        //For Holding Various Items
-        public List<Item> SceneItems = new(); //Attainable Items
-        public List<Entity> SceneEntities = new();
-
-        //For Holding Player and NPC
-        private Player player;
-        
-        private NPCManager npcManager;
-        private bool DEBUG_COLLISIONS = false;
+        //Handles Majority of Collision and Interaction
         private CollisionManager collisionManager;
+        public List<Item> SceneItems = new(); //Attainable Items
+        public List<Entity> SceneEntities = new(); //Non-map collideables and interactables
+
+        //For Holding Player and NPCs
+        private Player player;
+        public NPCManager npcManager;
+
+        
 
 
         public MapScene(string ID)
@@ -63,6 +63,7 @@ namespace SkyTown.Map
         {
             this.player = player;
             this.npcManager = new NPCManager();
+            npcManager.Add(new NPC("Assets.Sprites.NPCs.Blurg"));
         }
         public void LoadContent(ContentManager content)
         {
@@ -96,6 +97,8 @@ namespace SkyTown.Map
             }
 
             collisionManager = new CollisionManager(player, npcManager, collisionMap, tileDims);
+            npcManager.LoadContent(content);
+            npcManager.NPCs.Last().Position = new Vector2(150, 150);
         }
 
         public void GenerateSources()
@@ -122,12 +125,13 @@ namespace SkyTown.Map
                 e.Update(gameTime);
             }
             player.Update(gameTime, inputManager, collisionManager);
+            npcManager.Update(gameTime);
             collisionManager.Update(gameTime, this);
             ViewCamera.SetPosition(player.Position);
         }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            int order = 0;
             foreach (var tileMap in tileMaps)
             {
                 foreach (var item in tileMap)
@@ -142,31 +146,12 @@ namespace SkyTown.Map
 
                     spriteBatch.Draw(TextureAtlas, dest, source, Color.White, 0f, new Vector2(tileDims / 2, tileDims / 2), 1, SpriteEffects.None, 0);
                 }
-                order += 1;
             }
 
             foreach (var entity in SceneItems)
             {
                 entity.Draw(spriteBatch, entity.Position, 0.5f);
             }
-
-            if (DEBUG_COLLISIONS)
-            {
-                foreach (var item in collisionMap)
-                {
-                    if (item.Value < 0)
-                    {
-                        continue;
-                    }
-
-                    Vector2 dest = new Vector2((int)item.Key.X * tileDims, (int)item.Key.Y * tileDims);
-
-                    Rectangle source = tileSource[item.Value];
-
-                    spriteBatch.Draw(collisionTextures, dest, source, Color.White, 0f, new Vector2(tileDims / 2, tileDims / 2), 1, SpriteEffects.None, 0);
-                }
-            }
-            
 
             npcManager.Draw(gameTime, spriteBatch);
             player.Draw(spriteBatch);
