@@ -16,6 +16,20 @@ namespace SkyTown.Entities.Characters
     {
         public Dictionary<int, InventorySlot> Items { get; private set; }
         public int CurrentSelectedItem = -1; 
+        public Item CurrentItem
+        {
+            get
+            {
+                if (Items.ContainsKey(CurrentSelectedItem))
+                {
+                    return Items[CurrentSelectedItem].Item;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
         public InventoryManager()
         {
             Items = new Dictionary<int, InventorySlot>();
@@ -121,7 +135,27 @@ namespace SkyTown.Entities.Characters
         {
             if (Items.ContainsKey(slot))
             {
+                if (Items[slot].Quantiy > 1)
+                {
+                    Items[slot].Quantiy -= 1;
+                }
+                else if (Items[slot].Quantiy == 1)
+                {
+                    RemoveStack(slot);
+                }
+            }
+        }
+
+        public void RemoveStack(int slot)
+        {
+            if (Items.ContainsKey(slot))
+            {
                 Items.Remove(slot);
+                //If it was the selected item, remove selection on empty slot
+                if (slot == CurrentSelectedItem)
+                {
+                    CurrentSelectedItem = -1;   
+                }
             }
         }
     }

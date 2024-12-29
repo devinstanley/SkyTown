@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
+using SkyTown.Entities.Items;
 
 namespace SkyTown.Entities.Characters
 {
@@ -21,9 +22,14 @@ namespace SkyTown.Entities.Characters
 
         public readonly string Name;
 
+        public double IsTalking = 0;
+        public string DefaultDialog = "I am Lorde, ya ya ya";
+        public string CurrentDialog = "";
+
         public NPC(string ID) : base(ID)
         {
             Name = "";
+            CurrentDialog = DefaultDialog;
         }
 
         public void LoadContent(ContentManager content)
@@ -34,11 +40,46 @@ namespace SkyTown.Entities.Characters
         new public void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (IsTalking > 0)
+            {
+                IsTalking -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                IsTalking = 0;
+            }
+        }
+
+        public void Talk(Item gift = null)
+        {
+            if (true)
+            {
+                IsTalking = 5;
+                if (gift == null)
+                {
+                    
+                    CurrentDialog = DefaultDialog;
+                }
+                else
+                {
+                    CurrentDialog = "Thanks for the gift! \n\r And thank you Beyonce!!";
+                }
+                
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            if (IsTalking > 0)
+            {
+                spriteBatch.DrawString(
+                    ResourceManager.LoadFont("Assets.Font.Arial"),
+                    CurrentDialog,
+                    Position,
+                    Color.White
+                    );
+            }
         }
     }
     public enum NPCState

@@ -11,6 +11,7 @@ using SkyTown.LogicManagers;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Items;
+using SkyTown.Logic;
 
 namespace SkyTown.Map
 {
@@ -34,7 +35,8 @@ namespace SkyTown.Map
         Dictionary<int, Rectangle> tileSource;
 
         //Handles Majority of Collision and Interaction
-        private CollisionManager collisionManager;
+        private CollisionManager collisionManager = new();
+        private InteractionManager interactionManager = new();
         public List<Item> SceneItems = new(); //Attainable Items
         public List<Entity> SceneEntities = new(); //Non-map collideables and interactables
         public Dictionary<Vector2, int> collisionMap = new();
@@ -105,8 +107,6 @@ namespace SkyTown.Map
                 entity.LoadContent(content);
                 entity.Position = new Vector2(300 + t.NextInt64(-150, 150), 200 + t.NextInt64(-150, 150));
             }
-
-            collisionManager = new CollisionManager();
             npcManager.LoadContent(content);
             npcManager.NPCs.Last().Position = new Vector2(150, 150);
         }
@@ -141,6 +141,7 @@ namespace SkyTown.Map
             player.Update(gameTime, inputManager, collisionManager);
             npcManager.Update(gameTime);
             collisionManager.Update(gameTime, this, player);
+            interactionManager.Update(gameTime, inputManager, this, player);
             ViewCamera.SetPosition(player.Position);
         }
 

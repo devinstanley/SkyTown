@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using SharpFont.Cache;
+using SkyTown.Entities.Items;
 
 namespace SkyTown.Entities.Base
 {
@@ -18,12 +19,12 @@ namespace SkyTown.Entities.Base
         public Vector2 Position { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        protected readonly AnimationManager animationManager = new();
+        protected AnimationManager animationManager = new();
         protected NPCState AnimationState = NPCState.IdleForward;
 
         //Set default collision and interaction behavior
-        public CollisionActionEnum CollisionAction { get; set; } = CollisionActionEnum.PASS;
-        public HarvestActionEnum HarvestAction { get; set; } = HarvestActionEnum.NULL;
+        public CollisionActionEnum CollisionAction { get; set; } = CollisionActionEnum.SLIDING;
+        public HarvestActionEnum HarvestAction { get; set; } = HarvestActionEnum.HAND;
 
 
         public Entity(string ID)
@@ -53,6 +54,18 @@ namespace SkyTown.Entities.Base
         {
             animationManager.Draw(spriteBatch, pos, scale);
         }
+
+
+        //Upcast entity to item
+        public Item ToItem()
+        {
+            Item item = new Item(ID);
+            item.Position = Position;
+            item.AnimationState = AnimationState;
+            item.animationManager = animationManager;
+
+            return item;
+        }
     }
 
     public enum CollisionActionEnum{
@@ -64,6 +77,7 @@ namespace SkyTown.Entities.Base
     public enum HarvestActionEnum
     {
         NULL,       //Cannot be harvested
+        HAND,       //Can just be picked up and added to inventory
         AXE,        //Harvested with Axe
         PICKAXE,    //Harvested with Pickaxe
     }
