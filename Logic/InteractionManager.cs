@@ -57,7 +57,7 @@ namespace SkyTown.Logic
                         );
                     if (entityRect.Contains(inputManager.GetMousePosition()))
                     {
-                        if (player.inventory.CurrentItem.Giftable)
+                        if (player.inventory.CurrentItem != null && player.inventory.CurrentItem.Giftable)
                         {
                             npc.Talk(player.inventory.CurrentItem);
                             player.inventory.RemoveItem(player.inventory.CurrentSelectedItem);
