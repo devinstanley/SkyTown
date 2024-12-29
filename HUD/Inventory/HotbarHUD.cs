@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 
 namespace SkyTown.HUD.Inventory
 {
@@ -29,28 +30,26 @@ namespace SkyTown.HUD.Inventory
 
         new public void HandleInput(InputManager inputManager)
         {
-            //Check if we are dragging item
-            if (inputManager.IsLeftClicked() && SelectingSlot == -1)
+            Keys[] numKeys = {
+                Keys.NumPad1, Keys.D1,
+                Keys.NumPad2, Keys.D2,
+                Keys.NumPad3, Keys.D3,
+                Keys.NumPad4, Keys.D4,
+                Keys.NumPad5, Keys.D5,
+                Keys.NumPad6, Keys.D6,
+                Keys.NumPad7, Keys.D7,
+                Keys.NumPad8, Keys.D8,
+                Keys.NumPad9, Keys.D9,
+            };
+            foreach (Keys key in numKeys)
             {
-                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
-            }
-            if (SelectingSlot != -1)
-            {
-                if (inputManager.IsLeftClickDown())
+                if (inputManager.IsKeyDown(key))
                 {
-                    _inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
-                }
-                else
-                {
-                    int newLoc = GetKeyAtPos(inputManager);
-                    if (newLoc != -1)
-                    {
-                        _inventory.Swap(SelectingSlot, newLoc);
-                    }
-                    SelectingSlot = -1;
-                    _inventory.CurrentSelectedItem = newLoc;
+
                 }
             }
+
+            inputManager.IsKeyDown
         }
 
         new public int GetKeyAtPos(InputManager inputManager)
@@ -137,5 +136,21 @@ namespace SkyTown.HUD.Inventory
                 itemSlot.Value.Draw(spriteBatch, position, scale - 0.05f);
             }
         }
+    }
+
+    public static class NumKeys
+    {
+        static List<NumKey> numKeys = new List<NumKey>();
+
+        public static void NumKey()
+        {
+
+        }
+    }
+
+    public class NumKey
+    {
+        public int Value;
+        public List<Keys> keys;
     }
 }

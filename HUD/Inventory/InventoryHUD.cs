@@ -58,7 +58,6 @@ namespace SkyTown.HUD.Inventory
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
             {
                 SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
-                _inventory.CurrentSelectedItem = SelectingSlot;
             }
             if (SelectingSlot != -1)
             {
@@ -82,7 +81,6 @@ namespace SkyTown.HUD.Inventory
                                 if (_inventory.Items[SelectingSlot].Quantiy == 0)
                                 {
                                     _inventory.Items.Remove(SelectingSlot);
-                                    _inventory.CurrentSelectedItem = newLoc;
                                     SelectingSlot = -1;
                                     return;
                                 }
@@ -94,7 +92,6 @@ namespace SkyTown.HUD.Inventory
                         }
                     }
                     SelectingSlot = -1;
-                    _inventory.CurrentSelectedItem = newLoc;
                 }
             }
         }

@@ -116,7 +116,19 @@ namespace SkyTown.Entities.Characters
                     return;
                 }
             }
-            for (int i = 0; i < InventoryHUD.MAXSLOTS; i++)
+
+            //Try to add to hotbar first
+            for (int i = InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT-1); i < InventoryHUD.MAXSLOTS; i++)
+            {
+                if (!Items.ContainsKey(i))
+                {
+                    Items.Add(i, new InventorySlot(item));
+                    return;
+                }
+            }
+
+            //Try to add to rest of inventory
+            for (int i = 0; i < InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT - 1); i++)
             {
                 if (!Items.ContainsKey(i))
                 {
