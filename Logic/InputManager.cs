@@ -55,6 +55,51 @@ namespace SkyTown.LogicManagers
             return currentKeyboardState.IsKeyDown(key);
         }
 
+        //Returns current number key pressed, if none -1
+        public int GetNumKeyDown()
+        {
+            foreach (Keys key in currentKeyboardState.GetPressedKeys())
+            {
+                if (key == Keys.D1 || key == Keys.NumPad1)
+                {
+                    return 1;
+                }
+                if (key == Keys.D2 || key == Keys.NumPad2)
+                {
+                    return 2;
+                }
+                if (key == Keys.D3 || key == Keys.NumPad3)
+                {
+                    return 3;
+                }
+                if (key == Keys.D4 || key == Keys.NumPad4)
+                {
+                    return 4;
+                }
+                if (key == Keys.D5 || key == Keys.NumPad5)
+                {
+                    return 5;
+                }
+                if (key == Keys.D6 || key == Keys.NumPad6)
+                {
+                    return 6;
+                }
+                if (key == Keys.D7 || key == Keys.NumPad7)
+                {
+                    return 7;
+                }
+                if (key == Keys.D8 || key == Keys.NumPad8)
+                {
+                    return 8;
+                }
+                if (key == Keys.D9 || key == Keys.NumPad9)
+                {
+                    return 9;
+                }
+            }
+            return -1;
+        }
+
         #region MouseHandling
         public Vector2 GetMousePosition()
         {
