@@ -90,9 +90,9 @@ namespace SkyTown.Entities.Characters
         {
             base.Draw(spriteBatch);
             //Draw platyer current held item
-            if (inventory.CurrentSelectedItem != -1)
+            if (inventory.CurrentItem != null)
             {
-                inventory.Items[inventory.CurrentSelectedItem].Draw(spriteBatch, new Vector2(Position.X - Width/4, Position.Y - Height/4), 0.25f);
+                inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X - Width/4, Position.Y - Height/4), 0.25f);
             }
         }
 
