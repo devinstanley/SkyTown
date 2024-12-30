@@ -23,19 +23,6 @@ namespace SkyTown.Entities.Items
         {
             MaxInventoryStack = maxStack;
         }
-
-        public void LoadContent(ContentManager content)
-        {
-            base.LoadContent(content);
-        }
-        public void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-        public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)
-        {
-            base.Draw(spriteBatch, pos, scale);
-        }
     }
 
     public enum ItemType{

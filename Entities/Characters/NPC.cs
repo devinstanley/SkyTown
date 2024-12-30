@@ -32,7 +32,7 @@ namespace SkyTown.Entities.Characters
             CurrentDialog = DefaultDialog;
         }
 
-        public void LoadContent(ContentManager content)
+        new public void LoadContent(ContentManager content)
         {
             animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 2, 1, 1));
         }
@@ -68,7 +68,7 @@ namespace SkyTown.Entities.Characters
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        new public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
             if (IsTalking > 0)
