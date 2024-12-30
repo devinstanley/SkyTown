@@ -96,7 +96,7 @@ namespace SkyTown.HUD.Inventory
                 {
                     position = new(
                     game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y + player.Height / 2 + inventoryTexture.Height / 2 - 16 + game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    game.ViewCamera._position.Y + player.Height / 2 + inventoryTexture.Height / 2 - 2 + game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
                     );
                 }
                 else {
@@ -109,6 +109,7 @@ namespace SkyTown.HUD.Inventory
                 if (itemSlot.Key == _inventory.CurrentSelectedItem)
                 {
                     //Draw selected item highlight
+                    position.Y += 0.5f;
                     spriteBatch.Draw(
                         selectedItemHighlight,
                         position,
@@ -116,9 +117,9 @@ namespace SkyTown.HUD.Inventory
                         Color.White,
                         0f,
                         new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
-                        scale + 0.05f, SpriteEffects.None, 0f);
+                        scale, SpriteEffects.None, 0f);
                 }
-                itemSlot.Value.Draw(spriteBatch, position, scale - 0.05f);
+                itemSlot.Value.Draw(spriteBatch, position, scale - 0.2f);
             }
         }
     }
