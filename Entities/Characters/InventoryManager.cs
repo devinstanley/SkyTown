@@ -203,11 +203,11 @@ namespace SkyTown.Entities.Characters
             spriteBatch.DrawString(
                 font,
                 amt,
-                pos + new Vector2(10, 10),
+                pos + new Vector2(16*scale, 16 * scale - 1),
                 Color.White,
                 0f,
                 new Vector2(0, 0),
-                0.7f,
+                scale,
                 SpriteEffects.None,
                 0f
                 );
