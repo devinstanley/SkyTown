@@ -25,6 +25,10 @@ namespace SkyTown.HUD.Inventory
         new public void Update(GameTime gameTime, InputManager inputManager)
         {
             HandleInput(inputManager);
+            if (inputManager.IsLeftClicked())
+            {
+                Debug.WriteLine(GetKeyAtPos(inputManager));
+            }
             _inventory.Update(gameTime);
         }
 
@@ -33,6 +37,7 @@ namespace SkyTown.HUD.Inventory
             int keyNum = inputManager.GetNumKeyDown();
             if (keyNum != -1)
             {
+                //Convert Key Number to Position in Hotbar
                 _inventory.CurrentSelectedItem = keyNum + InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT - 1) - 1;
             }
         }
