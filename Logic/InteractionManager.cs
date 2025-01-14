@@ -15,6 +15,8 @@ namespace SkyTown.Logic
     public class InteractionManager
     {
         int InteractionDistance = 40;
+        int ItemFollowDistance = 100;
+        int ItemFollowSpeed = 200;
         public InteractionManager()
         {
 
@@ -24,6 +26,7 @@ namespace SkyTown.Logic
         {
             HandlePlayerNPCInteractions(gameTime, inputManager, scene.npcManager, player);
             HandlePlayerEntityInteractions(gameTime, inputManager, scene.SceneEntities, player);
+            HandlePlayerItemInteractions(gameTime, scene.SceneItems, player);
         }
 
         public void HandlePlayerNPCInteractions(GameTime gameTime, InputManager inputManager, NPCManager npcManager, Player player)
@@ -36,17 +39,19 @@ namespace SkyTown.Logic
                 player.Height + InteractionDistance
                 );
 
-            //Get All NPCs Inside of the Players Interaction Range
-            foreach (NPC npc in npcManager.NPCs)
-            {
-                if (playerRangeRect.Contains(npc.Position))
-                {
-                    interactableNPCs.Add(npc);
-                }
-            }
+            
 
             if (inputManager.IsRightClicked())
             {
+                //Get All NPCs Inside of the Players Interaction Range
+                foreach (NPC npc in npcManager.NPCs)
+                {
+                    if (playerRangeRect.Contains(npc.Position))
+                    {
+                        interactableNPCs.Add(npc);
+                    }
+                }
+
                 foreach (NPC npc in interactableNPCs)
                 {
                     Rectangle entityRect = new Rectangle(
@@ -109,6 +114,28 @@ namespace SkyTown.Logic
                             sceneEntities.Remove(entity);
                         }
                     }
+                }
+            }
+        }
+
+        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems, Player player)
+        {
+            List<Item> ItemsCopy = new List<Item>(AttainableItems);
+
+            foreach (Item item in ItemsCopy)
+            {
+                float dist = (player.Position - item.Position).Length();
+                if (dist < 10)
+                {
+                    player.inventory.AddItem(item);
+                    AttainableItems.Remove(item);
+                }
+                else if (dist < ItemFollowDistance)
+                {
+                    Vector2 vel = (player.Position - item.Position);
+                    vel.Normalize();
+                    float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50 / dist), 0, 1));
+                    item.Position += displacementScalar * vel;
                 }
             }
         }

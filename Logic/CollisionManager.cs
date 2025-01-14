@@ -15,8 +15,6 @@ namespace SkyTown.LogicManagers
 {
     public class CollisionManager
     {
-        int ItemFollowDistance = 100;
-        int ItemFollowSpeed = 200;
         int tileSize = 32;
 
         public CollisionManager()
@@ -30,7 +28,6 @@ namespace SkyTown.LogicManagers
             HandlePlayerEntityCollisions(gameTime, scene.SceneEntities, player);
 
             player.UpdatePosition();
-            HandlePlayerItemInteractions(gameTime, scene.SceneItems,player);
         }
 
         public void HandlePlayerMapCollisions(GameTime gameTime, Dictionary<Vector2, int> collisionMap, Player player)
@@ -179,26 +176,6 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        public void HandlePlayerItemInteractions(GameTime gameTime, List<Item> AttainableItems, Player player)
-        {
-            List<Item> ItemsCopy = new List<Item>(AttainableItems);
-
-            foreach (Item item in ItemsCopy)
-            {
-                float dist = (player.Position - item.Position).Length();
-                if (dist < 10){
-                    player.inventory.AddItem(item);
-                    AttainableItems.Remove(item);
-                }
-                else if (dist < ItemFollowDistance)
-                {
-                    Vector2 vel = (player.Position - item.Position);
-                    vel.Normalize();
-                    float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50/dist), 0, 1));
-                    item.Position += displacementScalar * vel;
-                }
-            }
-        }
 
         #region Sliding Collision Resolvers
         private void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect, Player player)
