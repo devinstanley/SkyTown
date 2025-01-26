@@ -19,9 +19,7 @@ namespace SkyTown.HUD.Inventory
         public Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
         public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItem"); }
         public static Vector2 InventoryStartLoc = new Vector2(14, 73);
-        public static int INVENTORYWIDTH = 9;
-        public static int INVENTORYHEIGHT = 4;
-        public static int MAXSLOTS = INVENTORYHEIGHT * INVENTORYWIDTH;
+        
         public int InventorySlotDimensions = 32;
         public int InventorySpacer = 3;
         protected Game1 game;
@@ -55,7 +53,7 @@ namespace SkyTown.HUD.Inventory
                 _inventory.SplitStack(SelectingSlot);
                 SelectingSlot = -1;
             }
-            if (inputManager.IsLeftClicked() && SelectingSlot == -1)
+            if (inputManager.IsLeftClicked() && SelectingSlot == -1) 
             {
                 SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
             }
@@ -70,26 +68,7 @@ namespace SkyTown.HUD.Inventory
                     int newLoc = GetKeyAtPos(inputManager);
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
-                        if (_inventory.Items.ContainsKey(newLoc) //Make sure new location has an item slot
-                            && _inventory.Items[newLoc].Item.ID == _inventory.Items[SelectingSlot].Item.ID //Check if item slots contain the same item
-                            && (_inventory.Items[newLoc].Quantiy < _inventory.Items[newLoc].MaxQuantity) //Make sure new location not at max
-                            && (_inventory.Items[SelectingSlot].Quantiy < _inventory.Items[SelectingSlot].MaxQuantity)) //Make sure old location not at max
-                        {
-                            while (_inventory.Items[newLoc].AddedQuantity())
-                            {
-                                _inventory.Items[SelectingSlot].Quantiy -= 1;
-                                if (_inventory.Items[SelectingSlot].Quantiy == 0)
-                                {
-                                    _inventory.Items.Remove(SelectingSlot);
-                                    SelectingSlot = -1;
-                                    return;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            _inventory.Swap(SelectingSlot, newLoc);
-                        }
+                        _inventory.SwapOrStack(SelectingSlot, newLoc);
                     }
                     SelectingSlot = -1;
                 }
@@ -114,10 +93,10 @@ namespace SkyTown.HUD.Inventory
             float slotY = relativeY / (InventorySlotDimensions + InventorySpacer);
 
             // Check if within grid bounds
-            if (slotX >= 0 && slotX < INVENTORYWIDTH && slotY >= 0 && slotY < INVENTORYHEIGHT)
+            if (slotX >= 0 && slotX < InventoryManager.INVENTORYWIDTH && slotY >= 0 && slotY < InventoryManager.INVENTORYHEIGHT)
             {
                 // Convert 2D grid coordinates to the flattened key
-                return (int)slotY * INVENTORYWIDTH + (int)slotX;
+                return (int)slotY * InventoryManager.INVENTORYWIDTH + (int)slotX;
             }
 
             // Return -1 if the mouse position is outside the grid
@@ -136,8 +115,8 @@ namespace SkyTown.HUD.Inventory
                 1f, SpriteEffects.None, 0f);
             foreach (var itemSlot in _inventory.Items)
             {
-                int slotX = itemSlot.Key % INVENTORYWIDTH; // Column index
-                int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
+                int slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
+                int slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
                 Vector2 position = new(
                     game.ViewCamera._position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
@@ -149,7 +128,7 @@ namespace SkyTown.HUD.Inventory
                     position.Y += 1;
                 }
 
-                if (itemSlot.Key == _inventory.CurrentSelectedItem)
+                if (itemSlot.Key == _inventory.CurrentItemKey)
                 {
                     //Draw selected item highlight
                     spriteBatch.Draw(

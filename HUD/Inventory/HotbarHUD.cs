@@ -25,10 +25,6 @@ namespace SkyTown.HUD.Inventory
         new public void Update(GameTime gameTime, InputManager inputManager)
         {
             HandleInput(inputManager);
-            if (inputManager.IsLeftClicked())
-            {
-                Debug.WriteLine(GetKeyAtPos(inputManager));
-            }
             _inventory.Update(gameTime);
         }
 
@@ -38,7 +34,12 @@ namespace SkyTown.HUD.Inventory
             if (keyNum != -1)
             {
                 //Convert Key Number to Position in Hotbar
-                _inventory.CurrentSelectedItem = keyNum + InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT - 1) - 1;
+                _inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
+            }
+
+            if (SelectingSlot != -1)
+            {
+
             }
         }
 
@@ -56,10 +57,10 @@ namespace SkyTown.HUD.Inventory
             float slotY = relativeY / (InventorySlotDimensions + InventorySpacer);
 
             // Check if within grid bounds
-            if (slotX >= 0 && slotX < INVENTORYWIDTH && slotY == 0)
+            if (slotX >= 0 && slotX < InventoryManager.INVENTORYWIDTH && slotY == 0)
             {
                 // Convert 2D grid coordinates to the flattened key
-                return (int)3 * INVENTORYWIDTH + (int)slotX;
+                return (int)3 * InventoryManager.INVENTORYWIDTH + (int)slotX;
             }
 
             // Return -1 if the mouse position is outside the grid
@@ -89,8 +90,8 @@ namespace SkyTown.HUD.Inventory
 
             foreach (var itemSlot in _inventory.Items)
             {
-                int slotX = itemSlot.Key % INVENTORYWIDTH; // Column index
-                int slotY = itemSlot.Key / INVENTORYWIDTH; // Row index
+                int slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
+                int slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
                 if (slotY != 3)
                 {
@@ -111,7 +112,7 @@ namespace SkyTown.HUD.Inventory
                     );
                 }
 
-                if (itemSlot.Key == _inventory.CurrentSelectedItem)
+                if (itemSlot.Key == _inventory.CurrentItemKey)
                 {
                     //Draw selected item highlight
                     position.Y += 0.5f;

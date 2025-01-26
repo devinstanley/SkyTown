@@ -15,14 +15,17 @@ namespace SkyTown.Entities.Characters
     public class InventoryManager
     {
         public Dictionary<int, InventorySlot> Items { get; private set; }
-        public int CurrentSelectedItem = -1; 
+        public static int INVENTORYWIDTH = 9;
+        public static int INVENTORYHEIGHT = 4;
+        public static int MAXSLOTS = INVENTORYHEIGHT * INVENTORYWIDTH;
+        public int CurrentItemKey { get; set; } = -1; 
         public Item CurrentItem
         {
             get
             {
-                if (Items.ContainsKey(CurrentSelectedItem))
+                if (Items.ContainsKey(CurrentItemKey))
                 {
-                    return Items[CurrentSelectedItem].Item;
+                    return Items[CurrentItemKey].Item;
                 }
                 else
                 {
@@ -56,31 +59,53 @@ namespace SkyTown.Entities.Characters
 
         }
 
-        public void Swap(int key1, int key2)
+        public void SwapOrStack(int key1, int key2)
         {
+            //Make sure keys are valid and we are not swapping with self
+            if (key1 < 0 || key2 < 0 || key1 >= MAXSLOTS || key2 >= MAXSLOTS || key1 == key2)
+            {
+                return;
+            }
+
+            //Case 1: Both keys are present
             if (Items.Keys.Contains(key1) && Items.Keys.Contains(key2))
             {
-                // Case 1: Both keys are present, swap their values
-                var temp = Items[key1];
-                Items[key1] = Items[key2];
-                Items[key2] = temp;
+                
+                // Case 1a: Both keys point to the same item -> Stack
+                if (Items[key1].Item.ID == Items[key2].Item.ID)
+                {
+                    while (Items[key2].AddedQuantity())
+                    {
+                        Items[key1].Quantiy -= 1;
+                        if (Items[key1].Quantiy == 0)
+                        {
+                            Items.Remove(key1);
+                            return;
+                        }
+                    }
+                }
+                // Case 1b: Keys point to different items -> Swap
+                else
+                {
+                    var temp = Items[key1];
+                    Items[key1] = Items[key2];
+                    Items[key2] = temp;
+                    return;
+                }
             }
-            else if (Items.Keys.Contains(key1) && !Items.Keys.Contains(key2))
+            if (Items.Keys.Contains(key1) && !Items.Keys.Contains(key2))
             {
                 // Case 2: key1 is present, key2 is not
                 Items[key2] = Items[key1]; // Add key2 with the value from key1
                 Items.Remove(key1);       // Remove key1
+                return;
             }
-            else if (!Items.Keys.Contains(key1) && Items.Keys.Contains(key2))
+            if (!Items.Keys.Contains(key1) && Items.Keys.Contains(key2))
             {
                 // Case 3: key2 is present, key1 is not
                 Items[key1] = Items[key2]; // Add key1 with the value from key2
                 Items.Remove(key2);        // Remove key2
-            }
-            else
-            {
-                // Optional: Handle case where neither key is present (if needed)
-                Debug.WriteLine("Neither key is present in the inventory.");
+                return;
             }
         }
 
@@ -90,7 +115,7 @@ namespace SkyTown.Entities.Characters
             {
                 return;
             }
-            for (int i = 0; i < InventoryHUD.MAXSLOTS; i++)
+            for (int i = 0; i < MAXSLOTS; i++)
             {
                 if (!Items.ContainsKey(i))
                 {
@@ -118,7 +143,7 @@ namespace SkyTown.Entities.Characters
             }
 
             //Try to add to hotbar first
-            for (int i = InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT-1); i < InventoryHUD.MAXSLOTS; i++)
+            for (int i = INVENTORYWIDTH * (INVENTORYHEIGHT-1); i < MAXSLOTS; i++)
             {
                 if (!Items.ContainsKey(i))
                 {
@@ -128,7 +153,7 @@ namespace SkyTown.Entities.Characters
             }
 
             //Try to add to rest of inventory
-            for (int i = 0; i < InventoryHUD.INVENTORYWIDTH * (InventoryHUD.INVENTORYHEIGHT - 1); i++)
+            for (int i = 0; i < INVENTORYWIDTH * (INVENTORYHEIGHT - 1); i++)
             {
                 if (!Items.ContainsKey(i))
                 {
@@ -164,9 +189,9 @@ namespace SkyTown.Entities.Characters
             {
                 Items.Remove(slot);
                 //If it was the selected item, remove selection on empty slot
-                if (slot == CurrentSelectedItem)
+                if (slot == CurrentItemKey)
                 {
-                    CurrentSelectedItem = -1;   
+                    CurrentItemKey = -1;   
                 }
             }
         }

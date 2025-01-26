@@ -65,7 +65,7 @@ namespace SkyTown.Logic
                         if (player.inventory.CurrentItem != null && player.inventory.CurrentItem.Giftable)
                         {
                             npc.Talk(player.inventory.CurrentItem);
-                            player.inventory.RemoveItem(player.inventory.CurrentSelectedItem);
+                            player.inventory.RemoveItem(player.inventory.CurrentItemKey);
                         }
                         else
                         {
