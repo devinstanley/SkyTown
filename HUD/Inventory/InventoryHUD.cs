@@ -46,6 +46,14 @@ namespace SkyTown.HUD.Inventory
 
         public void HandleInput(InputManager inputManager)
         {
+            //Change held item - need to merge some logic with hotbar hud
+            int keyNum = inputManager.GetNumKeyDown();
+            if (keyNum != -1)
+            {
+                //Convert Key Number to Position in Hotbar
+                _inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
+            }
+
             //Check if we are dragging item
             if (inputManager.IsRightClicked() && SelectingSlot == -1)
             {
@@ -69,6 +77,10 @@ namespace SkyTown.HUD.Inventory
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
                         _inventory.SwapOrStack(SelectingSlot, newLoc);
+                    }
+                    if (newLoc > InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1)
+                    {
+                        _inventory.CurrentItemKey = newLoc;
                     }
                     SelectingSlot = -1;
                 }
@@ -105,6 +117,7 @@ namespace SkyTown.HUD.Inventory
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            //Draw inventory HUD
             spriteBatch.Draw(
                 inventoryTexture,
                 game.ViewCamera._position,
@@ -113,12 +126,32 @@ namespace SkyTown.HUD.Inventory
                 0f,
                 new Vector2(inventoryTexture.Width/2, inventoryTexture.Height/2),
                 1f, SpriteEffects.None, 0f);
+
+            //Draw Current Item Selection
+            //Draw selection highlight
+            int slotX = _inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
+            int slotY = InventoryManager.INVENTORYHEIGHT - 1; // Row index
+            Vector2 position = new();
+            position = new(
+                    game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - inventoryTexture.Width / 2,
+                    game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - inventoryTexture.Height / 2
+                    );
+            //Draw selected item highlight
+            spriteBatch.Draw(
+                selectedItemHighlight,
+                position,
+                null,
+                Color.White,
+                0f,
+                new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
+                1.0f, SpriteEffects.None, 0f);
+
             foreach (var itemSlot in _inventory.Items)
             {
-                int slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
-                int slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
+                slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
+                slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
-                Vector2 position = new(
+                position = new(
                     game.ViewCamera._position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
                     game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
                     );
@@ -126,19 +159,6 @@ namespace SkyTown.HUD.Inventory
                 if (slotY == 3)
                 {
                     position.Y += 1;
-                }
-
-                if (itemSlot.Key == _inventory.CurrentItemKey)
-                {
-                    //Draw selected item highlight
-                    spriteBatch.Draw(
-                        selectedItemHighlight,
-                        position,
-                        null,
-                        Color.White,
-                        0f,
-                        new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
-                        1.0f, SpriteEffects.None, 0f);
                 }
                 if (itemSlot.Key == SelectingSlot)
                 {

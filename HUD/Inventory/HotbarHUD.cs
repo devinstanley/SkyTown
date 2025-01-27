@@ -16,14 +16,22 @@ namespace SkyTown.HUD.Inventory
     internal class HotbarHUD: InventoryHUD
     {
         new Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.HotbarHUD"); }
-        new Vector2 InventoryStartLoc = new(8, 8);
-        float scale = 0.5f;
+        new Vector2 InventoryStartLoc = new(5, 5);
+        new int InventorySlotDimensions = 16;
+        bool bottomRender { 
+            get
+            {
+                return game.ViewCamera.TopScreenClamp;
+            } 
+        }
+        float tileScale = 0.5f;
         public HotbarHUD(Game1 game, Player player): base(game, player)
         {
         }
 
         new public void Update(GameTime gameTime, InputManager inputManager)
         {
+
             HandleInput(inputManager);
             _inventory.Update(gameTime);
         }
@@ -37,9 +45,39 @@ namespace SkyTown.HUD.Inventory
                 _inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
             }
 
+            if (inputManager.IsLeftClicked() && SelectingSlot == -1)
+            {
+                int curItem = GetKeyAtPos(inputManager) % InventoryManager.INVENTORYWIDTH;
+                if (curItem != -1)
+                {
+                    _inventory.CurrentItemKey = curItem;
+                }
+            }
+            if (inputManager.IsLeftClickHolding() && SelectingSlot == -1)
+            {
+                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+
+            }
             if (SelectingSlot != -1)
             {
+                if (inputManager.IsLeftClickHolding())
+                {
+                    _inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
+                }
+                else
+                {
+                    int newLoc = GetKeyAtPos(inputManager);
+                    if (newLoc != -1 && newLoc != SelectingSlot)
+                    {
+                        _inventory.SwapOrStack(SelectingSlot, newLoc);
+                    }
+                    if (newLoc > InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1)
+                    {
+                        _inventory.CurrentItemKey = newLoc;
+                    }
 
+                    SelectingSlot = -1;
+                }
             }
         }
 
@@ -48,13 +86,33 @@ namespace SkyTown.HUD.Inventory
             // Get the mouse position
             Vector2 mousePosition = inputManager.GetMousePosition();
 
+            float correctedMousePositionX = mousePosition.X - game.ViewCamera._position.X;
+            float correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y;
+
+            Debug.WriteLine($"Point Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
+
+            if (bottomRender)
+            {
+                correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y - game.ViewCamera._resolutionHeight / 2f - player.Height/2f - 16;
+            }
+            else
+            {
+                correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y + game.ViewCamera._resolutionHeight / 2f + player.Height/2f + 16;
+            }
+
+            Debug.WriteLine($"HUD Pos Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
+
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + scale*inventoryTexture.Width / 2f - scale*InventoryStartLoc.X + scale*InventorySlotDimensions - player.Position.X - player.Width / 2f + 16;
-            float relativeY = mousePosition.Y + scale*inventoryTexture.Height / 2f - scale * InventoryStartLoc.Y + 16 - player.Position.Y - player.Height / 2f + game.ViewCamera._resolutionHeight / 2 + 64;
+            float relativeX = correctedMousePositionX + inventoryTexture.Width / 2f - InventoryStartLoc.X;
+            float relativeY = correctedMousePositionY + inventoryTexture.Height / 2f - InventoryStartLoc.Y;
+
+            Debug.WriteLine($"HUD Pos Full Corrected: {relativeX}, {relativeY}");
 
             // Convert to slot indices
-            float slotX = relativeX / (InventorySlotDimensions + InventorySpacer);
-            float slotY = relativeY / (InventorySlotDimensions + InventorySpacer);
+            int slotX = (int) Math.Floor(relativeX / (InventorySlotDimensions + InventorySpacer));
+            int slotY = (int) Math.Floor(relativeY / (InventorySlotDimensions + InventorySpacer));
+
+            Debug.WriteLine($"Slots: {slotX}, {slotY}");
 
             // Check if within grid bounds
             if (slotX >= 0 && slotX < InventoryManager.INVENTORYWIDTH && slotY == 0)
@@ -69,16 +127,16 @@ namespace SkyTown.HUD.Inventory
 
         new public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            bool bottomRender = game.ViewCamera.TopScreenClamp;
             Vector2 hudPos = new();
             if (bottomRender)
             {
-                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2);
+                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y + 16 + player.Height / 2f + game.ViewCamera._resolutionHeight / 2f);
             }
             else
             {
-                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - player.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2);
+                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - 16 - player.Height / 2f - game.ViewCamera._resolutionHeight / 2f);
             }
+            //Draw hotbar HUD
             spriteBatch.Draw(
                 inventoryTexture,
                 hudPos,
@@ -86,46 +144,71 @@ namespace SkyTown.HUD.Inventory
                 Color.White,
                 0f,
                 new Vector2(inventoryTexture.Width / 2, inventoryTexture.Height / 2),
-                scale, SpriteEffects.None, 0f);
+                1f, SpriteEffects.None, 0f);
 
+            //Draw selection highlight
+            int slotX = _inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
+            int slotY = _inventory.CurrentItemKey / InventoryManager.INVENTORYWIDTH; // Row index
+            Vector2 position = new();
+            if (bottomRender)
+            {
+                position = new(
+                game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2
+                );
+            }
+            else
+            {
+                position = new(
+                game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                game.ViewCamera._position.Y - player.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2
+                );
+            }
+            position.Y += 0.5f;
+            spriteBatch.Draw(
+                selectedItemHighlight,
+                position,
+                null,
+                Color.White,
+                0f,
+                new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
+                tileScale, SpriteEffects.None, 0f);
+
+            
             foreach (var itemSlot in _inventory.Items)
             {
-                int slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
-                int slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
+                slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
+                slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
+                //Only Draw Hotbar Items
                 if (slotY != 3)
                 {
                     continue;
                 }
-                Vector2 position = new();
+                position = new();
                 if (bottomRender)
                 {
                     position = new(
-                    game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y + player.Height / 2 + inventoryTexture.Height / 2 - 2 + game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                    game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2
                     );
                 }
                 else {
                     position = new(
-                    game.ViewCamera._position.X - scale * inventoryTexture.Width / 2 + scale * InventoryStartLoc.X + scale * InventorySlotDimensions / 2 + (slotX * scale * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y - player.Height/2 - inventoryTexture.Height / 2 + 16 - game.ViewCamera._resolutionHeight / 2 - InventoryStartLoc.Y
+                    game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                    game.ViewCamera._position.Y - player.Height/2  - 16 - game.ViewCamera._resolutionHeight / 2
                     );
                 }
-
-                if (itemSlot.Key == _inventory.CurrentItemKey)
+                if (itemSlot.Key == SelectingSlot)
                 {
-                    //Draw selected item highlight
-                    position.Y += 0.5f;
-                    spriteBatch.Draw(
-                        selectedItemHighlight,
-                        position,
-                        null,
-                        Color.White,
-                        0f,
-                        new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
-                        scale, SpriteEffects.None, 0f);
+                    continue; //Skip drawing currently selected item
                 }
-                itemSlot.Value.Draw(spriteBatch, position, scale - 0.2f);
+                itemSlot.Value.Draw(spriteBatch, position, scale: tileScale - 0.05f);
+            }
+
+            if (SelectingSlot >= 0)
+            {
+                _inventory.Items[SelectingSlot].Draw(spriteBatch, _inventory.Items[SelectingSlot].Item.Position, scale: tileScale);
             }
         }
     }

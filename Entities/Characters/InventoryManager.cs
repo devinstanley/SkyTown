@@ -188,11 +188,6 @@ namespace SkyTown.Entities.Characters
             if (Items.ContainsKey(slot))
             {
                 Items.Remove(slot);
-                //If it was the selected item, remove selection on empty slot
-                if (slot == CurrentItemKey)
-                {
-                    CurrentItemKey = -1;   
-                }
             }
         }
     }
@@ -225,14 +220,15 @@ namespace SkyTown.Entities.Characters
             Item.Draw(spriteBatch, pos, scale);
             string amt = Quantiy.ToString();
             SpriteFont font = ResourceManager.LoadFont("Assets.Font.Arial");
+            Vector2 size = font.MeasureString(amt);
             spriteBatch.DrawString(
                 font,
                 amt,
-                pos + new Vector2(16*scale, 16 * scale - 1),
+                pos + new Vector2(16*scale, 16*scale) - size*scale,
                 Color.White,
                 0f,
-                new Vector2(0, 0),
-                scale,
+                new Vector2(),
+                scale * 1.2f,
                 SpriteEffects.None,
                 0f
                 );
