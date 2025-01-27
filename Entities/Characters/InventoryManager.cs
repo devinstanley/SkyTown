@@ -14,10 +14,12 @@ namespace SkyTown.Entities.Characters
 {
     public class InventoryManager
     {
-        public Dictionary<int, InventorySlot> Items { get; private set; }
         public static int INVENTORYWIDTH = 9;
         public static int INVENTORYHEIGHT = 4;
         public static int MAXSLOTS = INVENTORYHEIGHT * INVENTORYWIDTH;
+
+        public Dictionary<int, InventorySlot> Items { get; private set; }
+        
         public int CurrentItemKey { get; set; } = -1; 
         public Item CurrentItem
         {
@@ -50,7 +52,7 @@ namespace SkyTown.Entities.Characters
         {
             foreach (var item in Items)
             {
-                item.Value.Item.Update(gameTime);
+                item.Value.Update(gameTime);
             }
         }
 
@@ -134,6 +136,7 @@ namespace SkyTown.Entities.Characters
 
         public void AddItem(Item item)
         {
+            //First check if item can be stacked into existing slot
             foreach (var slot in Items.Where(u => u.Value.Item.ID.Equals(item.ID)).Select(u => u.Value))
             {
                 if (slot.AddedQuantity())
@@ -142,7 +145,7 @@ namespace SkyTown.Entities.Characters
                 }
             }
 
-            //Try to add to hotbar first
+            //Next, try to add to hotbar
             for (int i = INVENTORYWIDTH * (INVENTORYHEIGHT-1); i < MAXSLOTS; i++)
             {
                 if (!Items.ContainsKey(i))
@@ -152,7 +155,7 @@ namespace SkyTown.Entities.Characters
                 }
             }
 
-            //Try to add to rest of inventory
+            //Lastly, try to add to inventory
             for (int i = 0; i < INVENTORYWIDTH * (INVENTORYHEIGHT - 1); i++)
             {
                 if (!Items.ContainsKey(i))
@@ -213,6 +216,11 @@ namespace SkyTown.Entities.Characters
                 return true;
             }
             return false;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            Item.Update(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)

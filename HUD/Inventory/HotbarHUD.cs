@@ -15,13 +15,13 @@ namespace SkyTown.HUD.Inventory
 {
     internal class HotbarHUD: InventoryHUD
     {
-        new Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.HotbarHUD"); }
+        new Texture2D InventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.HotbarHUD"); }
         new Vector2 InventoryStartLoc = new(5, 5);
         new int InventorySlotDimensions = 16;
-        bool bottomRender { 
+        bool BottomRender { 
             get
             {
-                return game.ViewCamera.TopScreenClamp;
+                return Game.ViewCamera.TopScreenClamp;
             } 
         }
         float tileScale = 0.5f;
@@ -33,7 +33,7 @@ namespace SkyTown.HUD.Inventory
         {
 
             HandleInput(inputManager);
-            _inventory.Update(gameTime);
+            Inventory.Update(gameTime);
         }
 
         new public void HandleInput(InputManager inputManager)
@@ -42,7 +42,7 @@ namespace SkyTown.HUD.Inventory
             if (keyNum != -1)
             {
                 //Convert Key Number to Position in Hotbar
-                _inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
+                Inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
             }
 
             if (inputManager.IsLeftClicked() && SelectingSlot == -1)
@@ -50,19 +50,19 @@ namespace SkyTown.HUD.Inventory
                 int curItem = GetKeyAtPos(inputManager) % InventoryManager.INVENTORYWIDTH;
                 if (curItem != -1)
                 {
-                    _inventory.CurrentItemKey = curItem;
+                    Inventory.CurrentItemKey = curItem;
                 }
             }
             if (inputManager.IsLeftClickHolding() && SelectingSlot == -1)
             {
-                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                SelectingSlot = Inventory.GetItemAtKey(GetKeyAtPos(inputManager));
 
             }
             if (SelectingSlot != -1)
             {
                 if (inputManager.IsLeftClickHolding())
                 {
-                    _inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
+                    Inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
                 }
                 else
                 {
@@ -74,11 +74,11 @@ namespace SkyTown.HUD.Inventory
                     }
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
-                        _inventory.SwapOrStack(SelectingSlot, newLoc);
+                        Inventory.SwapOrStack(SelectingSlot, newLoc);
                     }
                     if (newLoc > InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1)
                     {
-                        _inventory.CurrentItemKey = newLoc;
+                        Inventory.CurrentItemKey = newLoc;
                     }
 
                     SelectingSlot = -1;
@@ -91,25 +91,25 @@ namespace SkyTown.HUD.Inventory
             // Get the mouse position
             Vector2 mousePosition = inputManager.GetMousePosition();
 
-            float correctedMousePositionX = mousePosition.X - game.ViewCamera._position.X;
-            float correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y;
+            float correctedMousePositionX = mousePosition.X - Game.ViewCamera._position.X;
+            float correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y;
 
             Debug.WriteLine($"Point Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
 
-            if (bottomRender)
+            if (BottomRender)
             {
-                correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y - game.ViewCamera._resolutionHeight / 2f - player.Height/2f - 16;
+                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2f - Player1.Height/2f - 16;
             }
             else
             {
-                correctedMousePositionY = mousePosition.Y - game.ViewCamera._position.Y + game.ViewCamera._resolutionHeight / 2f + player.Height/2f + 16;
+                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2f + Player1.Height/2f + 16;
             }
 
             Debug.WriteLine($"HUD Pos Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
 
             // Calculate grid-relative mouse position
-            float relativeX = correctedMousePositionX + inventoryTexture.Width / 2f - InventoryStartLoc.X;
-            float relativeY = correctedMousePositionY + inventoryTexture.Height / 2f - InventoryStartLoc.Y;
+            float relativeX = correctedMousePositionX + InventoryTexture.Width / 2f - InventoryStartLoc.X;
+            float relativeY = correctedMousePositionY + InventoryTexture.Height / 2f - InventoryStartLoc.Y;
 
             Debug.WriteLine($"HUD Pos Full Corrected: {relativeX}, {relativeY}");
 
@@ -133,40 +133,40 @@ namespace SkyTown.HUD.Inventory
         new public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Vector2 hudPos = new();
-            if (bottomRender)
+            if (BottomRender)
             {
-                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y + 16 + player.Height / 2f + game.ViewCamera._resolutionHeight / 2f);
+                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y + 16 + Player1.Height / 2f + Game.ViewCamera._resolutionHeight / 2f);
             }
             else
             {
-                hudPos = new Vector2(game.ViewCamera._position.X, game.ViewCamera._position.Y - 16 - player.Height / 2f - game.ViewCamera._resolutionHeight / 2f);
+                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y - 16 - Player1.Height / 2f - Game.ViewCamera._resolutionHeight / 2f);
             }
             //Draw hotbar HUD
             spriteBatch.Draw(
-                inventoryTexture,
+                InventoryTexture,
                 hudPos,
                 null,
                 Color.White,
                 0f,
-                new Vector2(inventoryTexture.Width / 2, inventoryTexture.Height / 2),
+                new Vector2(InventoryTexture.Width / 2, InventoryTexture.Height / 2),
                 1f, SpriteEffects.None, 0f);
 
             //Draw selection highlight
-            int slotX = _inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
-            int slotY = _inventory.CurrentItemKey / InventoryManager.INVENTORYWIDTH; // Row index
+            int slotX = Inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
+            int slotY = Inventory.CurrentItemKey / InventoryManager.INVENTORYWIDTH; // Row index
             Vector2 position = new();
-            if (bottomRender)
+            if (BottomRender)
             {
                 position = new(
-                game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2
+                Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                Game.ViewCamera._position.Y + Player1.Height / 2 + 16 + Game.ViewCamera._resolutionHeight / 2
                 );
             }
             else
             {
                 position = new(
-                game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                game.ViewCamera._position.Y - player.Height / 2 - 16 - game.ViewCamera._resolutionHeight / 2
+                Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                Game.ViewCamera._position.Y - Player1.Height / 2 - 16 - Game.ViewCamera._resolutionHeight / 2
                 );
             }
             position.Y += 0.5f;
@@ -180,7 +180,7 @@ namespace SkyTown.HUD.Inventory
                 tileScale, SpriteEffects.None, 0f);
 
             
-            foreach (var itemSlot in _inventory.Items)
+            foreach (var itemSlot in Inventory.Items)
             {
                 slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
                 slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
@@ -191,17 +191,17 @@ namespace SkyTown.HUD.Inventory
                     continue;
                 }
                 position = new();
-                if (bottomRender)
+                if (BottomRender)
                 {
                     position = new(
-                    game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y + player.Height / 2 + 16 + game.ViewCamera._resolutionHeight / 2
+                    Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                    Game.ViewCamera._position.Y + Player1.Height / 2 + 16 + Game.ViewCamera._resolutionHeight / 2
                     );
                 }
                 else {
                     position = new(
-                    game.ViewCamera._position.X - inventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                    game.ViewCamera._position.Y - player.Height/2  - 16 - game.ViewCamera._resolutionHeight / 2
+                    Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
+                    Game.ViewCamera._position.Y - Player1.Height/2  - 16 - Game.ViewCamera._resolutionHeight / 2
                     );
                 }
                 if (itemSlot.Key == SelectingSlot)
@@ -213,7 +213,7 @@ namespace SkyTown.HUD.Inventory
 
             if (SelectingSlot >= 0)
             {
-                _inventory.Items[SelectingSlot].Draw(spriteBatch, _inventory.Items[SelectingSlot].Item.Position, scale: tileScale);
+                Inventory.Items[SelectingSlot].Draw(spriteBatch, Inventory.Items[SelectingSlot].Item.Position, scale: tileScale);
             }
         }
     }

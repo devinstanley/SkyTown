@@ -11,16 +11,40 @@ namespace SkyTown.Map
     internal class Tile
     {
         public string AtlasID;
-        private Texture2D tileAtlas { 
+        public string TextureID;
+        private Texture2D TileAtlas { 
             get
             {
                 return ResourceManager.LoadTexture(AtlasID);
             } 
         }
-        public bool IsWalkable = true;
-        public Tile(string atlas)
+        CollisionActions CollisionAction { get; set; }
+        CollisionShapes CollisionShapes { get; set; }
+
+        public Tile(string ID)
         {
-            AtlasID = atlas;
+            AtlasID = ID.Split('.')[0];
+            TextureID = ID.Split(".")[1];
         }
+    }
+
+    public enum CollisionActions
+    {
+        None = 0,
+        Block = 1,
+        Transport = 2,
+    }
+    public enum CollisionShapes
+    {
+        None = 0,
+        Entire = 1,
+        TopHalf = 2,
+        BottomHalf = 3,
+        LeftHalf = 4,
+        RightHalf = 5,
+        TopRightQuad = 6,
+        BottomRightQuad = 7,
+        TopLeftQuad = 8,
+        BottomLeftQuad = 9,
     }
 }

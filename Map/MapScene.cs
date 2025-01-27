@@ -39,10 +39,10 @@ namespace SkyTown.Map
         private InteractionManager interactionManager = new();
         public List<Item> SceneItems = new(); //Attainable Items
         public List<Entity> SceneEntities = new(); //Non-map collideables and interactables
-        public Dictionary<Vector2, int> collisionMap = new();
+        public Dictionary<Vector2, int> CollisionMap = new();
 
         //For Holding Player and NPCs
-        private Player player;
+        private Player Player1;
         public NPCManager npcManager;
 
         
@@ -67,7 +67,7 @@ namespace SkyTown.Map
         }
         public void Initialize(Player player)
         {
-            this.player = player;
+            this.Player1 = player;
             this.npcManager = new NPCManager();
             npcManager.Add(new NPC("Assets.Sprites.NPCs.Blurg"));
         }
@@ -75,7 +75,7 @@ namespace SkyTown.Map
         {
             TextureAtlas = content.Load<Texture2D>($"Assets\\Maps\\MapSheet");
             collisionTextures = content.Load<Texture2D>($"Assets\\Maps\\Collisions");
-            collisionMap = content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}Collisions").Where(u => u.Value != -1 && u.Value != 2).ToDictionary();
+            CollisionMap = content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}Collisions").Where(u => u.Value != -1 && u.Value != 2).ToDictionary();
             GenerateSources();
             int layer = 0;
             while (true)
@@ -93,7 +93,7 @@ namespace SkyTown.Map
             int numRows = (int)tileMaps.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)tileMaps.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numRows, numCols);
-            player.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
+            Player1.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
 
             Random t = new Random();
             foreach (Item item in SceneItems)
@@ -138,11 +138,11 @@ namespace SkyTown.Map
             {
                 e.Update(gameTime);
             }
-            player.Update(gameTime, inputManager, collisionManager);
+            Player1.Update(gameTime, inputManager, collisionManager);
             npcManager.Update(gameTime);
-            collisionManager.Update(gameTime, this, player);
-            interactionManager.Update(gameTime, inputManager, this, player);
-            ViewCamera.SetPosition(player.Position);
+            collisionManager.Update(gameTime, this, Player1);
+            interactionManager.Update(gameTime, inputManager, this, Player1);
+            ViewCamera.SetPosition(Player1.Position);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -173,7 +173,7 @@ namespace SkyTown.Map
             }
 
             npcManager.Draw(gameTime, spriteBatch);
-            player.Draw(spriteBatch);
+            Player1.Draw(spriteBatch);
         }
     }
 }

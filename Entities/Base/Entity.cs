@@ -45,6 +45,7 @@ namespace SkyTown.Entities.Base
             Height = animationManager.AnimationHeight;
         }
 
+        //Draw at current position
         public void Draw(SpriteBatch spriteBatch)
         {
             animationManager.Draw(spriteBatch, Position);

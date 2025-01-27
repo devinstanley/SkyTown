@@ -20,10 +20,10 @@ namespace SkyTown.Logic.GameStates
         const GameState myStateEnum = GameState.Playing;
         GameState mySubstate = GameState.Playing;
         private MapScene CurrentScene;
-        private Player player;
+        private Player Player1;
         private NPCManager NPCs = new NPCManager();
         private GameState_Paused pauseMenu;
-        private HotbarHUD hotbarHUD;
+        private HotbarHUD Hotbar;
         public Camera ViewCamera { get; set; }
 
         public GameState_Playing(Game1 game)
@@ -35,18 +35,18 @@ namespace SkyTown.Logic.GameStates
 
         public void Initialize()
         {
-            player = new Player("Assets.Sprites.spriteAnimationTest");
-            hotbarHUD = new HotbarHUD(game, player);
-            pauseMenu = new GameState_Paused(game, player);
-            CurrentScene.Initialize(player);
+            Player1 = new Player("Assets.Sprites.spriteAnimationTest");
+            Hotbar = new HotbarHUD(game, Player1);
+            pauseMenu = new GameState_Paused(game, Player1);
+            CurrentScene.Initialize(Player1);
         }
 
         public void LoadContent(ContentManager content)
         {
-            player.LoadContent(content);
+            Player1.LoadContent(content);
             pauseMenu.LoadContent(content);
             CurrentScene.LoadContent(content);
-            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, player);
+            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, Player1);
         }
 
         public void Update(GameTime gameTime, InputManager inputManager)
@@ -68,13 +68,12 @@ namespace SkyTown.Logic.GameStates
             {
                 case GameState.Playing:
                     CurrentScene.Update(gameTime, inputManager, ViewCamera);
-                    hotbarHUD.Update(gameTime, inputManager);
+                    Hotbar.Update(gameTime, inputManager);
                     break;
                 case GameState.Paused:
                     pauseMenu.Update(gameTime, inputManager);
                     break;
             }
-            
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -86,14 +85,14 @@ namespace SkyTown.Logic.GameStates
             }
             else
             {
-                hotbarHUD.Draw(gameTime, spriteBatch);
+                Hotbar.Draw(gameTime, spriteBatch);
             }
         }
 
         public void ChangeScene(MapScene newScene)
         {
             CurrentScene = newScene;
-            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, player);
+            ViewCamera.SetBounds(CurrentScene.MapDimension, CurrentScene.tileDims, Player1);
         }
     }
 }

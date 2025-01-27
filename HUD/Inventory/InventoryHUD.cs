@@ -16,22 +16,24 @@ namespace SkyTown.HUD.Inventory
 {
     internal class InventoryHUD
     {
-        public Texture2D inventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
+        public Texture2D InventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
         public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItem"); }
         public static Vector2 InventoryStartLoc = new Vector2(14, 73);
-        
         public int InventorySlotDimensions = 32;
         public int InventorySpacer = 3;
-        protected Game1 game;
-        protected Player player;
-        protected InventoryManager _inventory;
+
         public int SelectingSlot = -1;
+
+        protected Game1 Game;
+        protected Player Player1;
+        protected InventoryManager Inventory;
+        
 
         public InventoryHUD(Game1 game, Player player)
         {
-            this.game = game;
-            this.player = player;
-            _inventory = player.inventory;
+            Game = game;
+            Player1 = player;
+            Inventory = player.inventory;
         }
 
         public void LoadContent()
@@ -41,7 +43,7 @@ namespace SkyTown.HUD.Inventory
         public void Update(GameTime gameTime, InputManager inputManager)
         {
             HandleInput(inputManager);
-            _inventory.Update(gameTime);
+            Inventory.Update(gameTime);
         }
 
         public void HandleInput(InputManager inputManager)
@@ -51,36 +53,36 @@ namespace SkyTown.HUD.Inventory
             if (keyNum != -1)
             {
                 //Convert Key Number to Position in Hotbar
-                _inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
+                Inventory.CurrentItemKey = keyNum + InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1;
             }
 
             //Check if we are dragging item
             if (inputManager.IsRightClicked() && SelectingSlot == -1)
             {
-                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
-                _inventory.SplitStack(SelectingSlot);
+                SelectingSlot = Inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                Inventory.SplitStack(SelectingSlot);
                 SelectingSlot = -1;
             }
             if (inputManager.IsLeftClicked() && SelectingSlot == -1) 
             {
-                SelectingSlot = _inventory.GetItemAtKey(GetKeyAtPos(inputManager));
+                SelectingSlot = Inventory.GetItemAtKey(GetKeyAtPos(inputManager));
             }
             if (SelectingSlot != -1)
             {
                 if (inputManager.IsLeftClickDown())
                 {
-                    _inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
+                    Inventory.Items[SelectingSlot].Item.Position = inputManager.GetMousePosition();
                 }
                 else
                 {
                     int newLoc = GetKeyAtPos(inputManager);
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
-                        _inventory.SwapOrStack(SelectingSlot, newLoc);
+                        Inventory.SwapOrStack(SelectingSlot, newLoc);
                     }
                     if (newLoc > InventoryManager.INVENTORYWIDTH * (InventoryManager.INVENTORYHEIGHT - 1) - 1)
                     {
-                        _inventory.CurrentItemKey = newLoc;
+                        Inventory.CurrentItemKey = newLoc;
                     }
                     SelectingSlot = -1;
                 }
@@ -95,8 +97,8 @@ namespace SkyTown.HUD.Inventory
             Debug.WriteLine($"Mouse Pos: {mousePosition}");
 
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + inventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - game.ViewCamera._position.X - player.Width/2f;
-            float relativeY = mousePosition.Y + inventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - game.ViewCamera._position.Y - player.Height/2f;
+            float relativeX = mousePosition.X + InventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - Game.ViewCamera._position.X - Player1.Width/2f;
+            float relativeY = mousePosition.Y + InventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - Game.ViewCamera._position.Y - Player1.Height/2f;
 
             Debug.WriteLine($"Fixed Mouse Pos: {relativeX}, {relativeY}");
 
@@ -119,22 +121,22 @@ namespace SkyTown.HUD.Inventory
         {
             //Draw inventory HUD
             spriteBatch.Draw(
-                inventoryTexture,
-                game.ViewCamera._position,
+                InventoryTexture,
+                Game.ViewCamera._position,
                 null,
                 Color.White,
                 0f,
-                new Vector2(inventoryTexture.Width/2, inventoryTexture.Height/2),
+                new Vector2(InventoryTexture.Width/2, InventoryTexture.Height/2),
                 1f, SpriteEffects.None, 0f);
 
             //Draw Current Item Selection
             //Draw selection highlight
-            int slotX = _inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
+            int slotX = Inventory.CurrentItemKey % InventoryManager.INVENTORYWIDTH; // Column index
             int slotY = InventoryManager.INVENTORYHEIGHT - 1; // Row index
             Vector2 position = new();
             position = new(
-                    game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - inventoryTexture.Width / 2,
-                    game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - inventoryTexture.Height / 2
+                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - InventoryTexture.Width / 2,
+                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - InventoryTexture.Height / 2
                     );
             //Draw selected item highlight
             spriteBatch.Draw(
@@ -146,14 +148,14 @@ namespace SkyTown.HUD.Inventory
                 new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
                 1.0f, SpriteEffects.None, 0f);
 
-            foreach (var itemSlot in _inventory.Items)
+            foreach (var itemSlot in Inventory.Items)
             {
                 slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
                 slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
                 position = new(
-                    game.ViewCamera._position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - inventoryTexture.Width / 2,
-                    game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - inventoryTexture.Height / 2
+                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - InventoryTexture.Width / 2,
+                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY*(InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - InventoryTexture.Height / 2
                     );
 
                 if (slotY == 3)
@@ -169,7 +171,7 @@ namespace SkyTown.HUD.Inventory
             }
             if (SelectingSlot >= 0)
             {
-                _inventory.Items[SelectingSlot].Draw(spriteBatch, _inventory.Items[SelectingSlot].Item.Position, 1f);
+                Inventory.Items[SelectingSlot].Draw(spriteBatch, Inventory.Items[SelectingSlot].Item.Position, 1f);
             }
 
         }
