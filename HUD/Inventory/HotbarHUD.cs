@@ -67,6 +67,11 @@ namespace SkyTown.HUD.Inventory
                 else
                 {
                     int newLoc = GetKeyAtPos(inputManager);
+                    //Drop Item
+                    if (newLoc == -1)
+                    {
+
+                    }
                     if (newLoc != -1 && newLoc != SelectingSlot)
                     {
                         _inventory.SwapOrStack(SelectingSlot, newLoc);
