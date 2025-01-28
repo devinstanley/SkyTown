@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SkyTown.Entities.Base;
 using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
@@ -8,32 +10,51 @@ using System.Threading.Tasks;
 
 namespace SkyTown.Map
 {
-    internal class Tile
+    public class Tile
     {
         public string AtlasID;
         public string TextureID;
-        private Texture2D TileAtlas { 
-            get
-            {
-                return ResourceManager.LoadTexture(AtlasID);
-            } 
-        }
-        CollisionActions CollisionAction { get; set; }
-        CollisionShapes CollisionShapes { get; set; }
+        public Rectangle TextureSource;
+        CollisionShapes CollisionShape { get; set; }
 
-        public Tile(string ID)
+        public Tile(string ID, Rectangle textureSource, CollisionShapes collisionShape)
         {
             AtlasID = ID.Split('.')[0];
             TextureID = ID.Split(".")[1];
+            TextureSource = textureSource;
+            CollisionShape = collisionShape;
+        }
+
+        public void Draw(SpriteBatch spriteBatch, Texture2D tileMap, string tileID, Vector2 position)
+        {
+            spriteBatch.Draw(
+                tileMap,
+                position,
+                TextureSource,
+                Color.White,
+                0f,
+                new Vector2(TextureSource.Width / 2, TextureSource.Height / 2),
+                1,
+                SpriteEffects.None,
+                0
+            );
         }
     }
 
-    public enum CollisionActions
+
+    //Figure out way to handle animations here
+    public class AnimatedTile: Tile
     {
-        None = 0,
-        Block = 1,
-        Transport = 2,
+        Animation TileAnimation { get; set; }
+        public AnimatedTile(
+            string ID, 
+            List<Rectangle> SourceRectangles,  
+            CollisionShapes collisionShape
+        ) : base(ID, SourceRectangles[0], collisionShape)
+        {
+        }
     }
+
     public enum CollisionShapes
     {
         None = 0,

@@ -1,55 +1,63 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SkyTown.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyTown.Map
 {
     public static class TileManager
     {
-        static Dictionary<string, Tile> Tiles;
         static Dictionary<string, Atlas> AtlasManifest;
 
         static TileManager()
         {
-
+           
         }
 
-        static Atlas GetAtlas(string AtlasID)
+        static void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)
         {
-            if (AtlasManifest.ContainsKey(AtlasID))
+            //Get Atlas
+            string atlasID = tileID.Split('.')[0];
+            if (!AtlasManifest.ContainsKey(atlasID))
             {
-                return AtlasManifest[AtlasID];
+                LoadAtlas(atlasID);
             }
-            else
-            {
-
-            }
+            AtlasManifest[atlasID].Draw(spriteBatch, tileID.Split('.')[1], position);
         }
 
-        static void LoadAtlas(string AtlasID)
+        static void LoadAtlas(string atlasID)
         {
-
+            AtlasManifest.Add(atlasID, new Atlas(atlasID));
         }
 
-        static Tile GetTile(string tileID)
+        static void RemoveAtlas(string atlasID)
         {
-            if (Tiles.ContainsKey(tileID))
-            {
-                return Tiles[tileID];
-            }
-            else if 
-            {
-
-            }
+            AtlasManifest.Remove(atlasID);
         }
     }
 
     public class Atlas
     {
         string AtlasID;
-        Dictionary<string, Tuple<Vector2, Vector2>> IDMap;
+        public Texture2D TileMap;
+        Dictionary<string, Tile> Tiles;
+
+        public Atlas(string atlasID)
+        {
+            AtlasID = atlasID;
+            TileMap = ResourceManager.LoadTexture(atlasID);
+        }
+
+        public void LoadTiles()
+        {
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)
+        {
+            Tiles[tileID].Draw(spriteBatch, TileMap, tileID, position);
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace SkyTown.Logic
 
         public void Update(GameTime gameTime, InputManager inputManager, MapScene scene, Player player)
         {
-            HandlePlayerNPCInteractions(gameTime, inputManager, scene.npcManager, player);
+            HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
             HandlePlayerEntityInteractions(gameTime, inputManager, scene.SceneEntities, player);
             HandlePlayerItemInteractions(gameTime, scene.SceneItems, player);
         }

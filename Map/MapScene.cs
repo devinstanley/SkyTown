@@ -24,65 +24,44 @@ namespace SkyTown.Map
 
     public class MapScene
     {
+        public string MapID;
+
         //For Drawing on Screen
         public int tileDims = 32;
         public Vector2 MapDimension;
-        public float scale = 1;
-        public string SceneID;
-        Texture2D TextureAtlas;
-        Texture2D collisionTextures;
-        List<Dictionary<Vector2, int>> tileMaps = new();
-        Dictionary<int, Rectangle> tileSource;
+        
+        List<Dictionary<Vector2, string>> MapLayers = new();
+
 
         //Handles Majority of Collision and Interaction
         private CollisionManager collisionManager = new();
         private InteractionManager interactionManager = new();
         public List<Item> SceneItems = new(); //Attainable Items
         public List<Entity> SceneEntities = new(); //Non-map collideables and interactables
-        public Dictionary<Vector2, int> CollisionMap = new();
 
         //For Holding Player and NPCs
         private Player Player1;
-        public NPCManager npcManager;
+        public NPCManager NpcManager;
 
-        
-
-
+       
         public MapScene(string ID)
         {
-            SceneID = ID;
-
-            string testItemID = "Assets.Sprites.TestItem";
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-            SceneItems.Add(new Item(testItemID));
-
-            string testEntityID = "Assets.Sprites.TestItem";
-            SceneEntities.Add(new Entity(testEntityID));
-            SceneEntities.Add(new Entity(testEntityID));
+            MapID = ID;
         }
         public void Initialize(Player player)
         {
             this.Player1 = player;
-            this.npcManager = new NPCManager();
-            npcManager.Add(new NPC("Assets.Sprites.NPCs.Blurg"));
+            this.NpcManager = new NPCManager();
+            NpcManager.Add(new NPC("Assets.Sprites.NPCs.Blurg"));
         }
         public void LoadContent(ContentManager content)
         {
-            TextureAtlas = content.Load<Texture2D>($"Assets\\Maps\\MapSheet");
-            collisionTextures = content.Load<Texture2D>($"Assets\\Maps\\Collisions");
-            CollisionMap = content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}Collisions").Where(u => u.Value != -1 && u.Value != 2).ToDictionary();
-            GenerateSources();
             int layer = 0;
             while (true)
             {
                 try
                 {
-                    tileMaps.Add(content.Load<Dictionary<Vector2, int>>($"Assets\\Maps\\{SceneID}TileMapLayer{layer}"));
+                    MapLayers.Add(content.Load<Dictionary<Vector2, string>>($"Assets\\Maps\\{MapID}\\Layer0"));
                     layer++;
                 }
                 catch
@@ -90,56 +69,24 @@ namespace SkyTown.Map
                     break;
                 }
             }
-            int numRows = (int)tileMaps.Last().Select(u => u.Key.Y).Max();
-            int numCols = (int)tileMaps.Last().Select(u => u.Key.X).Max();
+            int numRows = (int)MapLayers.Last().Select(u => u.Key.Y).Max();
+            int numCols = (int)MapLayers.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numRows, numCols);
             Player1.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
-
-            Random t = new Random();
-            foreach (Item item in SceneItems)
-            {
-                item.LoadContent(content);
-                item.Position = new Vector2(150 + t.NextInt64(-50, 50), 150 + t.NextInt64(-50, 50));
-            }
-
-            foreach (Entity entity in SceneEntities)
-            {
-                entity.LoadContent(content);
-                entity.Position = new Vector2(300 + t.NextInt64(-150, 150), 200 + t.NextInt64(-150, 150));
-            }
-            npcManager.LoadContent(content);
-            npcManager.NPCs.Last().Position = new Vector2(150, 150);
-        }
-
-        public void GenerateSources()
-        {
-            int numRows = TextureAtlas.Height / tileDims;  // Rows are based on height
-            int numCols = TextureAtlas.Width / tileDims;   // Columns are based on width
-
-            tileSource = new();
-
-            for (int x = 0; x < numRows; x++)
-            {
-                for (int y = 0; y < numCols; y++)
-                {
-                    int index = y + (x * numCols);  // Flatten the 2D index to 1D
-                    tileSource[index] = new Rectangle(y * tileDims, x * tileDims, tileDims, tileDims);
-                }
-            }
         }
 
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
         {
-            foreach (Item e in SceneItems)
+            foreach (Item item in SceneItems)
             {
-                e.Update(gameTime);
+                item.Update(gameTime);
             }
-            foreach (Entity e in SceneEntities)
+            foreach (Entity entity in SceneEntities)
             {
-                e.Update(gameTime);
+                entity.Update(gameTime);
             }
             Player1.Update(gameTime, inputManager, collisionManager);
-            npcManager.Update(gameTime);
+            NpcManager.Update(gameTime);
             collisionManager.Update(gameTime, this, Player1);
             interactionManager.Update(gameTime, inputManager, this, Player1);
             ViewCamera.SetPosition(Player1.Position);
@@ -147,21 +94,7 @@ namespace SkyTown.Map
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (var tileMap in tileMaps)
-            {
-                foreach (var item in tileMap)
-                {
-                    if (item.Value < 0)
-                    {
-                        continue;
-                    }
-                    Vector2 dest = new Vector2((int)item.Key.X * tileDims, (int)item.Key.Y * tileDims);
-
-                    Rectangle source = tileSource[item.Value];
-
-                    spriteBatch.Draw(TextureAtlas, dest, source, Color.White, 0f, new Vector2(tileDims / 2, tileDims / 2), 1, SpriteEffects.None, 0);
-                }
-            }
+            //Draw Map Scene Here Using Tileset
 
             foreach (var e in SceneItems)
             {
@@ -172,7 +105,7 @@ namespace SkyTown.Map
                 e.Draw(spriteBatch, e.Position);
             }
 
-            npcManager.Draw(gameTime, spriteBatch);
+            NpcManager.Draw(gameTime, spriteBatch);
             Player1.Draw(spriteBatch);
         }
     }

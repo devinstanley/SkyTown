@@ -14,7 +14,6 @@ namespace SkyTown.Entities.Base
         private object _lastKey;
         public int AnimationWidth {get;set;}
         public int AnimationHeight {get;set; }
-        public bool DEBUG_COLLISIONS;
 
         public void AddAnimation(object key, Animation animation)
         {

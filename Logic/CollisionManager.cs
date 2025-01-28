@@ -24,7 +24,7 @@ namespace SkyTown.LogicManagers
         public void Update(GameTime gameTime, MapScene scene, Player player)
         {
             HandlePlayerMapCollisions(gameTime, scene.CollisionMap, player);
-            HandlePlayerNPCCollisions(gameTime, scene.npcManager, player);
+            HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player);
             HandlePlayerEntityCollisions(gameTime, scene.SceneEntities, player);
 
             player.UpdatePosition();
