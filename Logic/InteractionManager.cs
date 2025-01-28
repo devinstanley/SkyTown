@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using SkyTown.Entities.Base;
+﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
-using SkyTown.Entities.Items;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SkyTown.Logic
 {
@@ -39,7 +35,7 @@ namespace SkyTown.Logic
                 player.Height + InteractionDistance
                 );
 
-            
+
 
             if (inputManager.IsRightClicked())
             {
@@ -100,8 +96,8 @@ namespace SkyTown.Logic
                 foreach (Entity entity in interactableEntities)
                 {
                     Rectangle entityRect = new Rectangle(
-                        (int)entity.Position.X - entity.Width/2,
-                        (int)entity.Position.Y - entity.Height/2,
+                        (int)entity.Position.X - entity.Width / 2,
+                        (int)entity.Position.Y - entity.Height / 2,
                         entity.Width,
                         entity.Height
                         );

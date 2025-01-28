@@ -1,58 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
-using SkyTown.Entities.Items;
-using SkyTown.Logic;
 using SkyTown.LogicManagers;
+using System;
 
 namespace SkyTown.Entities.Characters
 {
-    public class Player : NPC
+    public class Player : GameObject
     {
         public InventoryManager inventory;
+
+        //Movement Related Variables
         float RunningSpeed = 1.2f;
-        public Vector2 hitboxOffset = new(0, 16);
-        public int HitboxWidth = 24;
-        public int HitboxHeight = 32;
-        
-        private Vector2 _minPos, _maxPos; 
+        public Vector2 vel;
+
+        private Vector2 _minPos, _maxPos;
         public Player(string ID) : base(ID)
         {
-            string testItemID = "Assets.Sprites.TestItem";
-            inventory = new();
-            inventory.AddItem(new Item(testItemID));
-            inventory.AddItem(new Item(testItemID));
-            inventory.AddItem(new Item(testItemID));
-            inventory.AddItem(new Item(testItemID));
+            inventory = new InventoryManager();
         }
 
         new public void LoadContent(ContentManager content)
         {
-            animationManager.AddAnimation(NPCState.IdleForward, new Animation(ID, 9, 4, 1, 3, [2, 3, 4, 5, 6, 7, 8]));
-            animationManager.AddAnimation(NPCState.IdleLeft, new Animation(ID, 9, 4, 1, 2, [1, 2, 3, 4, 5, 6, 7]));
-            animationManager.AddAnimation(NPCState.IdleBackward, new Animation(ID, 9, 4, 1, 1, [1, 2, 3, 4, 5, 6, 7]));
-            animationManager.AddAnimation(NPCState.IdleRight, new Animation(ID, 9, 4, 1, 4, [1, 2, 3, 4, 5, 6, 7]));
-
-            animationManager.AddAnimation(NPCState.WalkForward, new Animation(ID, 9, 4, 0.1f, 3));
-            animationManager.AddAnimation(NPCState.WalkLeft, new Animation(ID, 9, 4, 0.1f, 2));
-            animationManager.AddAnimation(NPCState.WalkBackward, new Animation(ID, 9, 4, 0.1f, 1));
-            animationManager.AddAnimation(NPCState.WalkRight, new Animation(ID, 9, 4, 0.1f, 4));
-
-            animationManager.AddAnimation(NPCState.RunForward, new Animation(ID, 9, 4, 0.1f, 3, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunLeft, new Animation(ID, 9, 4, 0.1f, 2, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunBackward, new Animation(ID, 9, 4, 0.1f, 1, [0, 2, 4, 6, 8]));
-            animationManager.AddAnimation(NPCState.RunRight, new Animation(ID, 9, 4, 0.1f, 4, [0, 2, 4, 6, 8]));
-
             inventory.LoadContent(content);
         }
 
@@ -62,7 +33,7 @@ namespace SkyTown.Entities.Characters
             _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
         }
 
-        public void Update(GameTime gameTime, InputManager input, CollisionManager collisionManager)
+        public void Update(GameTime gameTime, InputManager input)
         {
             if (input == null)
             {
@@ -70,7 +41,7 @@ namespace SkyTown.Entities.Characters
             }
 
             //Handle Input Update
-            int displacementScalar = (int)(_speed * gameTime.ElapsedGameTime.TotalSeconds);
+            int displacementScalar = (int)(RunningSpeed * gameTime.ElapsedGameTime.TotalSeconds);
             UpdateVelocity(input);
             vel *= displacementScalar;
 
@@ -81,9 +52,10 @@ namespace SkyTown.Entities.Characters
         {
             //Update Player Position
             Position += vel;
-            Position = Vector2.Clamp(Position, 
-                _minPos - new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2), 
-                _maxPos + new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2));
+            Position = Vector2.Clamp(Position,
+                _minPos - new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2),
+                _maxPos + new Vector2((Width - HitboxWidth) / 2, (Height - HitboxHeight) / 2)
+            );
         }
 
         public new void Draw(SpriteBatch spriteBatch)
@@ -92,7 +64,7 @@ namespace SkyTown.Entities.Characters
             //Draw platyer current held item
             if (inventory.CurrentItem != null)
             {
-                inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X - Width/4, Position.Y - Height/4), 0.25f);
+                inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X - Width / 4, Position.Y - Height / 4), 0.25f);
             }
         }
 
@@ -100,6 +72,7 @@ namespace SkyTown.Entities.Characters
         {
             vel = Vector2.Zero;
 
+            //Update Y Velocity and AnimationState
             if (input.IsKeyDown(Keys.W))
             {
                 vel.Y -= 1;
@@ -110,6 +83,8 @@ namespace SkyTown.Entities.Characters
                 vel.Y += 1;
                 AnimationState = NPCState.WalkForward;
             }
+
+            //Update X Velocity and AnimationState
             if (input.IsKeyDown(Keys.A))
             {
                 vel.X -= 1;
@@ -121,10 +96,13 @@ namespace SkyTown.Entities.Characters
                 AnimationState = NPCState.WalkRight;
             }
 
+            //Normalize Vector if it is Nonzero
             if (!vel.Equals(Vector2.Zero))
             {
                 vel.Normalize();
             }
+
+            //If Running Increase Change AnimationState
             if (input.IsKeyDown(Keys.LeftShift) || input.IsKeyDown(Keys.RightShift))
             {
                 AnimationState += 4;
@@ -135,7 +113,7 @@ namespace SkyTown.Entities.Characters
             {
                 AnimationState = (NPCState)((int)AnimationState % 4);
             }
-            
+
         }
     }
 }

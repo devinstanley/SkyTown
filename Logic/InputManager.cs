@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace SkyTown.LogicManagers
 {
@@ -31,7 +22,7 @@ namespace SkyTown.LogicManagers
             currentMouseState = Mouse.GetState();
             previousMouseState = Mouse.GetState();
 
-            
+
         }
 
         public void Update(Camera ViewCamera)

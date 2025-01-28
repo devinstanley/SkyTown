@@ -38,7 +38,7 @@ namespace SkyTown.Logic.GameStates
                 MediaPlayer.IsRepeating = false;
                 MediaPlayer.Play(ResourceManager.LoadSong("Assets.Sounds.StartEffect"));
                 StartGame();
-                
+
             }
         }
 

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 [ContentProcessor(DisplayName = "CSV Processor - AmpBoi")]
 public class CsvProcessor : ContentProcessor<string, Dictionary<Vector2, string>>

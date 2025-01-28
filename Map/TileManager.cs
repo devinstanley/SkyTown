@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Logic;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SkyTown.Map
 {
@@ -14,7 +12,7 @@ namespace SkyTown.Map
 
         static TileManager()
         {
-           
+
         }
 
         public static void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)

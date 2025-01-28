@@ -1,13 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SkyTown.Entities.Items;
-using SkyTown.HUD.Inventory;
 using SkyTown.Logic;
-using SkyTown.LogicManagers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SkyTown.Entities.Characters
@@ -19,8 +15,8 @@ namespace SkyTown.Entities.Characters
         public static int MAXSLOTS = INVENTORYHEIGHT * INVENTORYWIDTH;
 
         public Dictionary<int, InventorySlot> Items { get; private set; }
-        
-        public int CurrentItemKey { get; set; } = -1; 
+
+        public int CurrentItemKey { get; set; } = -1;
         public Item CurrentItem
         {
             get
@@ -72,7 +68,7 @@ namespace SkyTown.Entities.Characters
             //Case 1: Both keys are present
             if (Items.Keys.Contains(key1) && Items.Keys.Contains(key2))
             {
-                
+
                 // Case 1a: Both keys point to the same item -> Stack
                 if (Items[key1].Item.ID == Items[key2].Item.ID)
                 {
@@ -146,7 +142,7 @@ namespace SkyTown.Entities.Characters
             }
 
             //Next, try to add to hotbar
-            for (int i = INVENTORYWIDTH * (INVENTORYHEIGHT-1); i < MAXSLOTS; i++)
+            for (int i = INVENTORYWIDTH * (INVENTORYHEIGHT - 1); i < MAXSLOTS; i++)
             {
                 if (!Items.ContainsKey(i))
                 {
@@ -198,7 +194,7 @@ namespace SkyTown.Entities.Characters
     public class InventorySlot
     {
         public Item Item { get; private set; }
-        public int MaxQuantity {  get; private set; }
+        public int MaxQuantity { get; private set; }
         public int Quantiy { get; set; }
 
         public InventorySlot(Item item, int quantity = 1)
@@ -232,7 +228,7 @@ namespace SkyTown.Entities.Characters
             spriteBatch.DrawString(
                 font,
                 amt,
-                pos + new Vector2(16*scale, 16*scale) - size*scale,
+                pos + new Vector2(16 * scale, 16 * scale) - size * scale,
                 Color.White,
                 0f,
                 new Vector2(),

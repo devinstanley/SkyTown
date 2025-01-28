@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Content.Pipeline;
-using System.ComponentModel;
 using System.IO;
 
 [ContentImporter(".csv", DisplayName = "CSV Importer - AmpBoi", DefaultProcessor = nameof(CsvProcessor))]

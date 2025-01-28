@@ -18,7 +18,7 @@ public class Camera
     public bool TopScreenClamp;
 
 
-    public Camera(Viewport viewport, int resWidth,int resHeight)
+    public Camera(Viewport viewport, int resWidth, int resHeight)
     {
         _viewport = viewport;
         _position = Vector2.Zero;
@@ -34,7 +34,7 @@ public class Camera
         float screenHeight = graphicsDevice.PresentationParameters.BackBufferHeight;
         float screenWidth = graphicsDevice.PresentationParameters.BackBufferWidth;
 
-        if (screenWidth/ _resolutionWidth > screenHeight / _resolutionHeight)
+        if (screenWidth / _resolutionWidth > screenHeight / _resolutionHeight)
         {
             float aspect = (float)screenHeight / _resolutionHeight;
             virtualWidth = (int)(aspect * _resolutionWidth);
@@ -62,7 +62,7 @@ public class Camera
     {
         return Matrix.CreateTranslation(new Vector3(-_position, 0)) *
                Matrix.CreateRotationZ(_rotation) *
-               Matrix.CreateScale(_resolutionScalar*_zoom) * 
+               Matrix.CreateScale(_resolutionScalar * _zoom) *
                Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
     }
 

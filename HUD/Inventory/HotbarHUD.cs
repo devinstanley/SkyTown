@@ -1,31 +1,26 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
-using System.Diagnostics;
-using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace SkyTown.HUD.Inventory
 {
-    internal class HotbarHUD: InventoryHUD
+    internal class HotbarHUD : InventoryHUD
     {
         new Texture2D InventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.HotbarHUD"); }
         new Vector2 InventoryStartLoc = new(5, 5);
         new int InventorySlotDimensions = 16;
-        bool BottomRender { 
+        bool BottomRender
+        {
             get
             {
                 return Game.ViewCamera.TopScreenClamp;
-            } 
+            }
         }
         float tileScale = 0.5f;
-        public HotbarHUD(Game1 game, Player player): base(game, player)
+        public HotbarHUD(Game1 game, Player player) : base(game, player)
         {
         }
 
@@ -96,11 +91,11 @@ namespace SkyTown.HUD.Inventory
 
             if (BottomRender)
             {
-                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2f - Player1.Height/2f - 16;
+                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2f - Player1.Height / 2f - 16;
             }
             else
             {
-                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2f + Player1.Height/2f + 16;
+                correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2f + Player1.Height / 2f + 16;
             }
 
 
@@ -110,8 +105,8 @@ namespace SkyTown.HUD.Inventory
 
 
             // Convert to slot indices
-            int slotX = (int) Math.Floor(relativeX / (InventorySlotDimensions + InventorySpacer));
-            int slotY = (int) Math.Floor(relativeY / (InventorySlotDimensions + InventorySpacer));
+            int slotX = (int)Math.Floor(relativeX / (InventorySlotDimensions + InventorySpacer));
+            int slotY = (int)Math.Floor(relativeY / (InventorySlotDimensions + InventorySpacer));
 
 
             // Check if within grid bounds
@@ -173,7 +168,7 @@ namespace SkyTown.HUD.Inventory
                 new Vector2(selectedItemHighlight.Width / 2, selectedItemHighlight.Height / 2),
                 tileScale, SpriteEffects.None, 0f);
 
-            
+
             foreach (var itemSlot in Inventory.Items)
             {
                 slotX = itemSlot.Key % InventoryManager.INVENTORYWIDTH; // Column index
@@ -192,10 +187,11 @@ namespace SkyTown.HUD.Inventory
                     Game.ViewCamera._position.Y + Player1.Height / 2 + 16 + Game.ViewCamera._resolutionHeight / 2
                     );
                 }
-                else {
+                else
+                {
                     position = new(
                     Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                    Game.ViewCamera._position.Y - Player1.Height/2  - 16 - Game.ViewCamera._resolutionHeight / 2
+                    Game.ViewCamera._position.Y - Player1.Height / 2 - 16 - Game.ViewCamera._resolutionHeight / 2
                     );
                 }
                 if (itemSlot.Key == SelectingSlot)

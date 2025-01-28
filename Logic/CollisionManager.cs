@@ -1,15 +1,7 @@
-﻿using Assimp;
-using Microsoft.Xna.Framework;
-using SkyTown.Entities.Base;
+﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
-using SkyTown.Entities.Items;
 using SkyTown.Map;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyTown.LogicManagers
 {
@@ -52,7 +44,7 @@ namespace SkyTown.LogicManagers
                             tileHitbox.Width,
                             tileHitbox.Height
                         );
-                        
+
                         ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
                     }
                 }
@@ -103,7 +95,7 @@ namespace SkyTown.LogicManagers
                 //Is Sliding Collision for Player
                 if (futurePlayerRectX.Intersects(collisionRect))
                 {
-                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect,player);
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
                 }
             }
 
@@ -143,8 +135,8 @@ namespace SkyTown.LogicManagers
             foreach (NPC npc in npcManager.NPCs)
             {
                 Rectangle collisionRect = new(
-                    (int)npc.Position.X - npc.Width/2 + tileSize/2,
-                    (int)npc.Position.Y - npc.Height / 2 + tileSize/2,
+                    (int)npc.Position.X - npc.Width / 2 + tileSize / 2,
+                    (int)npc.Position.Y - npc.Height / 2 + tileSize / 2,
                     npc.Width,
                     npc.Height
                 );
@@ -166,8 +158,8 @@ namespace SkyTown.LogicManagers
             foreach (NPC npc in npcManager.NPCs)
             {
                 Rectangle collisionRect = new(
-                    (int)npc.Position.X -  npc.Width / 2 + tileSize/2,
-                    (int)npc.Position.Y -  npc.Height / 2 + tileSize/2,
+                    (int)npc.Position.X - npc.Width / 2 + tileSize / 2,
+                    (int)npc.Position.Y - npc.Height / 2 + tileSize / 2,
                     npc.Width,
                     npc.Height
                 );

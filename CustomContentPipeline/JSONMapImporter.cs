@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Content.Pipeline;
-using System.ComponentModel;
 using System.IO;
 
 [ContentImporter(".txt", DisplayName = "JSON Importer - AmpBoi", DefaultProcessor = nameof(JSONMapProcessor))]

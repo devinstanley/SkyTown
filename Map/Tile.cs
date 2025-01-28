@@ -1,12 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SkyTown.Entities.Base;
-using SkyTown.Logic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyTown.Map
 {
@@ -38,19 +31,6 @@ namespace SkyTown.Map
                 SpriteEffects.None,
                 0
             );
-        }
-    }
-
-
-    //Figure out way to handle animations here
-    public class AnimatedTile: Tile
-    {
-        Animation TileAnimation { get; set; }
-        public AnimatedTile(
-            string ID, 
-            List<Rectangle> SourceRectangles
-        ) : base(ID, SourceRectangles[0])
-        {
         }
     }
 }

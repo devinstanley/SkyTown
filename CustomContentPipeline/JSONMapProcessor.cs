@@ -1,13 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content.Pipeline;
-using Microsoft.Xna.Framework.Content.Pipeline.Processors;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Content.Pipeline;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 [ContentProcessor(DisplayName = "JSON Processor - AmpBoi")]
 //One day I will add a message library to pass tiles, but today is not that day...

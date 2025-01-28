@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using SkyTown.Logic;
 using SkyTown.Logic.GameStates;
 using SkyTown.LogicManagers;
-using SkyTown.Logic;
 
 namespace SkyTown
 {
@@ -74,13 +73,13 @@ namespace SkyTown
         {
             GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.Viewport = ViewCamera._viewport;
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp ,transformMatrix: GameState.ViewCamera.GetTransformation());
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: GameState.ViewCamera.GetTransformation());
             GameState.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
 
-            
+
 
             base.Draw(gameTime);
         }
