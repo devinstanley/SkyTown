@@ -89,7 +89,7 @@ public class Camera
         TopScreenClamp = _minPos.Y > position.Y ? true : false;
 
         // Clamp the camera position to the valid range considering the map boundaries
-        _position.X = MathHelper.Clamp(_position.X, _minPos.X + 104, _maxPos.X + 56);
-        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y + 44, _maxPos.Y -204);
+        _position.X = MathHelper.Clamp(_position.X, _minPos.X + 104, _maxPos.X + 56); //Both 160 off???
+        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y + 44, _maxPos.Y - 204);
     }
 }

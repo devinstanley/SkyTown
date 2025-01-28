@@ -17,7 +17,6 @@ namespace SkyTown.Logic.GameStates
     internal class GameState_Playing : IGameState
     {
         private Game1 game;
-        const GameState myStateEnum = GameState.Playing;
         GameState mySubstate = GameState.Playing;
         private MapScene CurrentScene;
         private Player Player1;
