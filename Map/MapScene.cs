@@ -30,8 +30,7 @@ namespace SkyTown.Map
         public int tileDims = 32;
         public Vector2 MapDimension;
         
-        List<Dictionary<Vector2, string>> MapLayers = new();
-
+        public List<Dictionary<Vector2, string>> TileMapLayers = new();
 
         //Handles Majority of Collision and Interaction
         private CollisionManager collisionManager = new();
@@ -61,7 +60,7 @@ namespace SkyTown.Map
             {
                 try
                 {
-                    MapLayers.Add(content.Load<Dictionary<Vector2, string>>($"Assets\\Maps\\{MapID}\\Layer0"));
+                    TileMapLayers.Add(content.Load<Dictionary<Vector2, string>>($"Assets\\Maps\\{MapID}\\Layer{layer}"));
                     layer++;
                 }
                 catch
@@ -69,14 +68,15 @@ namespace SkyTown.Map
                     break;
                 }
             }
-            int numRows = (int)MapLayers.Last().Select(u => u.Key.Y).Max();
-            int numCols = (int)MapLayers.Last().Select(u => u.Key.X).Max();
+            int numRows = (int)TileMapLayers.Last().Select(u => u.Key.Y).Max();
+            int numCols = (int)TileMapLayers.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numRows, numCols);
             Player1.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
         }
 
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
         {
+            
             foreach (Item item in SceneItems)
             {
                 item.Update(gameTime);
@@ -95,7 +95,13 @@ namespace SkyTown.Map
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             //Draw Map Scene Here Using Tileset
-
+            foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
+            {
+                foreach (KeyValuePair<Vector2, string> tileDict in TileMapLayer)
+                {
+                    TileManager.Draw(spriteBatch, tileDict.Value, tileDict.Key * tileDims);
+                }
+            }
             foreach (var e in SceneItems)
             {
                 e.Draw(spriteBatch, e.Position, 0.5f);

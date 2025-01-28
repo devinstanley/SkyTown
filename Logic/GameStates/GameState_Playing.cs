@@ -29,7 +29,7 @@ namespace SkyTown.Logic.GameStates
         public GameState_Playing(Game1 game)
         {
             this.game = game;
-            CurrentScene = new MapScene("DevelopmentMap");
+            CurrentScene = new MapScene("TestMap");
             this.ViewCamera = game.ViewCamera;
         }
 

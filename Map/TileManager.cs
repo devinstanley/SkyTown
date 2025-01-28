@@ -9,14 +9,15 @@ namespace SkyTown.Map
 {
     public static class TileManager
     {
-        static Dictionary<string, Atlas> AtlasManifest;
+        public static readonly int BASE_TILESIZE = 32;
+        static Dictionary<string, Atlas> AtlasManifest = new();
 
         static TileManager()
         {
            
         }
 
-        static void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)
+        public static void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)
         {
             //Get Atlas
             string atlasID = tileID.Split('.')[0];
@@ -36,18 +37,30 @@ namespace SkyTown.Map
         {
             AtlasManifest.Remove(atlasID);
         }
+
+        public static Tile GetTile(string tileID)
+        {
+            //Get Atlas
+            string atlasID = tileID.Split('.')[0];
+            tileID = tileID.Split(".")[1];
+            if (!AtlasManifest.ContainsKey(atlasID))
+            {
+                LoadAtlas(atlasID);
+            }
+            return AtlasManifest[atlasID].Tiles[tileID];
+        }
     }
 
     public class Atlas
     {
         string AtlasID;
         public Texture2D TileMap;
-        Dictionary<string, Tile> Tiles;
+        public Dictionary<string, Tile> Tiles;
 
         public Atlas(string atlasID)
         {
             AtlasID = atlasID;
-            TileMap = ResourceManager.LoadTexture(atlasID);
+            TileMap = ResourceManager.LoadTexture($"Assets\\Tilesets\\{atlasID}");
         }
 
         public void LoadTiles()

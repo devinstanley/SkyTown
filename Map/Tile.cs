@@ -15,14 +15,14 @@ namespace SkyTown.Map
         public string AtlasID;
         public string TextureID;
         public Rectangle TextureSource;
-        CollisionShapes CollisionShape { get; set; }
+        public Rectangle? CollisionRectangle;
 
-        public Tile(string ID, Rectangle textureSource, CollisionShapes collisionShape)
+        public Tile(string ID, Rectangle textureSource, Rectangle? collisionRectangle = null)
         {
             AtlasID = ID.Split('.')[0];
             TextureID = ID.Split(".")[1];
             TextureSource = textureSource;
-            CollisionShape = collisionShape;
+            CollisionRectangle = collisionRectangle;
         }
 
         public void Draw(SpriteBatch spriteBatch, Texture2D tileMap, string tileID, Vector2 position)
@@ -48,24 +48,9 @@ namespace SkyTown.Map
         Animation TileAnimation { get; set; }
         public AnimatedTile(
             string ID, 
-            List<Rectangle> SourceRectangles,  
-            CollisionShapes collisionShape
-        ) : base(ID, SourceRectangles[0], collisionShape)
+            List<Rectangle> SourceRectangles
+        ) : base(ID, SourceRectangles[0])
         {
         }
-    }
-
-    public enum CollisionShapes
-    {
-        None = 0,
-        Entire = 1,
-        TopHalf = 2,
-        BottomHalf = 3,
-        LeftHalf = 4,
-        RightHalf = 5,
-        TopRightQuad = 6,
-        BottomRightQuad = 7,
-        TopLeftQuad = 8,
-        BottomLeftQuad = 9,
     }
 }
