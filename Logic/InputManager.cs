@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,11 @@ namespace SkyTown.LogicManagers
 
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
+
+            if (IsLeftClicked())
+            {
+                Debug.WriteLine(GetMousePosition());
+            }
         }
 
         public bool IsNewKeyPressed(Keys key)

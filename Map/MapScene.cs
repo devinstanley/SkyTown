@@ -71,6 +71,8 @@ namespace SkyTown.Map
             int numRows = (int)TileMapLayers.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)TileMapLayers.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numRows, numCols);
+            NpcManager.LoadContent(content);
+            NpcManager.NPCs.Last().Position = new Vector2(80, 80);
             Player1.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
         }
 

@@ -1,0 +1,8 @@
+"MapSheet.grass0": (0, 0, 32, 32)
+"MapSheet.grass1": (32, 32, 32, 32), (0, 0, 16, 32)
+"MapSheet.grass2": (0, 0, 0, 0)
+"MapSheet.grass3": (0, 0, 0, 0)
+"MapSheet.grass4": (0, 0, 0, 0)
+"MapSheet.grass5": (0, 0, 0, 0)
+"MapSheet.grass6": (0, 0, 0, 0)
+"MapSheet.grass7": (0, 0, 0, 0)

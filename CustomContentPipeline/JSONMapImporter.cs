@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 
-[ContentImporter(".json", DisplayName = "JSON Importer - AmpBoi", DefaultProcessor = nameof(JSONMapProcessor))]
+[ContentImporter(".txt", DisplayName = "JSON Importer - AmpBoi", DefaultProcessor = nameof(JSONMapProcessor))]
 public class JSONMapImporter : ContentImporter<string>
 {
     public override string Import(string filename, ContentImporterContext context)

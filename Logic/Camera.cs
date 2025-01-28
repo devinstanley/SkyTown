@@ -74,11 +74,11 @@ public class Camera
     public void SetBounds(Vector2 mapSize, int tileSize, Player player)
     {
         // Calculate the map size (considering the size of the map in world coordinates)
-        _minPos = new Vector2(_resolutionWidth / 2 + 104, _resolutionHeight / 2 + 44);
+        _minPos = new Vector2(_resolutionWidth / 2, _resolutionHeight / 2);
 
         // Max position calculation (the camera can go as far as the end of the map minus half of its size)
-        _maxPos = new Vector2(mapSize.X * tileSize - _resolutionWidth / 2 + 24,
-                              mapSize.Y * tileSize - _resolutionHeight / 2 - 172);
+        _maxPos = new Vector2(mapSize.X * tileSize - _resolutionWidth / 2,
+                              mapSize.Y * tileSize - _resolutionHeight / 2);
     }
 
     public void SetPosition(Vector2 position)
@@ -89,7 +89,7 @@ public class Camera
         TopScreenClamp = _minPos.Y > position.Y ? true : false;
 
         // Clamp the camera position to the valid range considering the map boundaries
-        _position.X = MathHelper.Clamp(_position.X, _minPos.X, _maxPos.X);
-        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y, _maxPos.Y);
+        _position.X = MathHelper.Clamp(_position.X, _minPos.X + 104, _maxPos.X + 56);
+        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y + 44, _maxPos.Y -204);
     }
 }

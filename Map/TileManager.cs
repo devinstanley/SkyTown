@@ -61,11 +61,7 @@ namespace SkyTown.Map
         {
             AtlasID = atlasID;
             TileMap = ResourceManager.LoadTexture($"Assets\\Tilesets\\{atlasID}");
-        }
-
-        public void LoadTiles()
-        {
-
+            Tiles = ResourceManager.LoadTiles($"Assets\\Tilesets\\{atlasID}TileManifest");
         }
 
         public void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)

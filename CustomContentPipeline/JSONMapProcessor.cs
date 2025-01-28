@@ -1,44 +1,42 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-[ContentProcessor(DisplayName = "CSV Processor - AmpBoi")]
-public class JSONMapProcessor : ContentProcessor<string, Dictionary<Vector2, int>>
+[ContentProcessor(DisplayName = "JSON Processor - AmpBoi")]
+//One day I will add a message library to pass tiles, but today is not that day...
+public class JSONMapProcessor : ContentProcessor<string, Dictionary<string, List<int>>>
 {
-    public override Dictionary<Vector2, int> Process(string input, ContentProcessorContext context)
+    public override Dictionary<string, List<int>> Process(string input, ContentProcessorContext context)
     {
-        // Create the dictionary to store the parsed data.
-        Dictionary<Vector2, int> dictionary = new Dictionary<Vector2, int>();
+        var result = new Dictionary<string, List<int>>();
 
-        // Split the input string into lines.
         var lines = input.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-        // Iterate over each row.
-        for (int y = 0; y < lines.Length; y++)
+        foreach (var line in lines)
         {
-            // Split the line by commas to get individual values (columns).
-            var columns = lines[y].Split(',');
+            line.Trim().Trim('"');
 
-            // Iterate over each column (this is the x index).
-            for (int x = 0; x < columns.Length; x++)
-            {
-                // Parse the value in the CSV cell.
-                if (int.TryParse(columns[x], out int value))
-                {
-                    // Add the parsed data to the dictionary with Vector2 as the key (x, y).
-                    dictionary[new Vector2(x, y)] = value;
-                }
-                else
-                {
-                    // Handle any parsing errors (e.g., log or handle as needed).
-                    context.Logger.LogImportantMessage($"Error parsing value '{columns[x]}' at ({x}, {y})");
-                }
-            }
+            // Split the line into key and value
+            var parts = line.Split(new[] { ':' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 2) continue;
+
+            string key = parts[0].Trim().Trim('"'); // Remove quotes from the key
+            string value = parts[1].Replace("(", "").Replace(")", "");
+
+            int mos = 0;
+            result[key] = value.Split(',')
+                    .Select(m => { int.TryParse(m, out mos); return mos; })
+                    .ToList();
         }
 
-        return dictionary;
+
+        return result;
     }
 }

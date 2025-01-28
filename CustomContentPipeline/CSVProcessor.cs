@@ -25,8 +25,12 @@ public class CsvProcessor : ContentProcessor<string, Dictionary<Vector2, string>
             // Iterate over each column (this is the x index).
             for (int x = 0; x < columns.Length; x++)
             {
+                if (String.IsNullOrEmpty(columns[x]))
+                {
+                    continue;
+                }
                 // Add the parsed data to the dictionary with Vector2 as the key (x, y).
-                dictionary[new Vector2(x, y)] = columns[x];
+                dictionary[new Vector2(x, y)] = columns[x].Trim();
             }
         }
 

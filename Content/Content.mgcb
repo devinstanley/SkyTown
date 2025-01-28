@@ -158,6 +158,11 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Tilesets/MapSheet.png
 
+#begin Assets/Tilesets/MapSheetTileManifest.txt
+/importer:JSONMapImporter
+/processor:JSONMapProcessor
+/build:Assets/Tilesets/MapSheetTileManifest.txt
+
 #begin Assets/Tilesets/TX Tileset Grass.png
 /importer:TextureImporter
 /processor:TextureProcessor

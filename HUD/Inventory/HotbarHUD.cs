@@ -94,8 +94,6 @@ namespace SkyTown.HUD.Inventory
             float correctedMousePositionX = mousePosition.X - Game.ViewCamera._position.X;
             float correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y;
 
-            Debug.WriteLine($"Point Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
-
             if (BottomRender)
             {
                 correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2f - Player1.Height/2f - 16;
@@ -105,19 +103,16 @@ namespace SkyTown.HUD.Inventory
                 correctedMousePositionY = mousePosition.Y - Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2f + Player1.Height/2f + 16;
             }
 
-            Debug.WriteLine($"HUD Pos Corrected: {correctedMousePositionX}, {correctedMousePositionY}");
 
             // Calculate grid-relative mouse position
             float relativeX = correctedMousePositionX + InventoryTexture.Width / 2f - InventoryStartLoc.X;
             float relativeY = correctedMousePositionY + InventoryTexture.Height / 2f - InventoryStartLoc.Y;
 
-            Debug.WriteLine($"HUD Pos Full Corrected: {relativeX}, {relativeY}");
 
             // Convert to slot indices
             int slotX = (int) Math.Floor(relativeX / (InventorySlotDimensions + InventorySpacer));
             int slotY = (int) Math.Floor(relativeY / (InventorySlotDimensions + InventorySpacer));
 
-            Debug.WriteLine($"Slots: {slotX}, {slotY}");
 
             // Check if within grid bounds
             if (slotX >= 0 && slotX < InventoryManager.INVENTORYWIDTH && slotY == 0)
@@ -169,7 +164,6 @@ namespace SkyTown.HUD.Inventory
                 Game.ViewCamera._position.Y - Player1.Height / 2 - 16 - Game.ViewCamera._resolutionHeight / 2
                 );
             }
-            position.Y += 0.5f;
             spriteBatch.Draw(
                 selectedItemHighlight,
                 position,
