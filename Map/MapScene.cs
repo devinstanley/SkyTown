@@ -31,7 +31,7 @@ namespace SkyTown.Map
         private CollisionManager collisionManager = new();
         private InteractionManager interactionManager = new();
         public List<Item> SceneItems = new(); //Attainable Items
-        public List<Entity> SceneEntities = new(); //Non-map collideables and interactables
+        public List<HarvestableObject> SceneHarvestables = new(); //Non-map collideables and interactables
 
         //Holds Player
         private Player Player1;
@@ -73,7 +73,7 @@ namespace SkyTown.Map
             {
                 item.Update(gameTime);
             }
-            foreach (Entity entity in SceneEntities)
+            foreach (HarvestableObject entity in SceneHarvestables)
             {
                 entity.Update(gameTime);
             }
@@ -100,7 +100,7 @@ namespace SkyTown.Map
             {
                 e.Draw(spriteBatch, e.Position, 0.5f);
             }
-            foreach (var e in SceneEntities)
+            foreach (var e in SceneHarvestables)
             {
                 e.Draw(spriteBatch, e.Position);
             }

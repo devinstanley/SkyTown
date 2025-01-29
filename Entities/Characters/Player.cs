@@ -27,7 +27,9 @@ namespace SkyTown.Entities.Characters
         new public void LoadContent(ContentManager content)
         {
             inventory.LoadContent(content);
+
             //Needs to be responsible for loading spritesheet, animation register, inventory status?
+            
         }
 
         public void SetBounds(Point mapSize, Point tileSize)

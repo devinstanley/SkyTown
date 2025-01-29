@@ -21,8 +21,8 @@ namespace SkyTown.Logic
 
         public void Update(GameTime gameTime, InputManager inputManager, MapScene scene, Player player)
         {
-            HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
-            HandlePlayerEntityInteractions(gameTime, inputManager, scene.SceneEntities, player);
+            //HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
+            HandlePlayerEntityInteractions(gameTime, inputManager, scene.SceneHarvestables, player);
             HandlePlayerItemInteractions(gameTime, scene.SceneItems, player);
         }
 
@@ -74,9 +74,9 @@ namespace SkyTown.Logic
             */
         }
 
-        public void HandlePlayerEntityInteractions(GameTime gameTime, InputManager inputManager, List<Entity> sceneEntities, Player player)
+        public void HandlePlayerEntityInteractions(GameTime gameTime, InputManager inputManager, List<HarvestableObject> sceneEntities, Player player)
         {
-            List<Entity> interactableEntities = new List<Entity>();
+            List<HarvestableObject> interactableEntities = new List<HarvestableObject>();
             Rectangle playerRangeRect = new Rectangle(
                 (int)(player.Position.X - player.Width / 2f - InteractionDistance / 2f),
                 (int)(player.Position.Y - player.Height / 2f - InteractionDistance / 2f),
@@ -85,7 +85,7 @@ namespace SkyTown.Logic
                 );
 
             //Get All Entities Inside of the Players Interaction Range
-            foreach (Entity entity in sceneEntities)
+            foreach (HarvestableObject entity in sceneEntities)
             {
                 if (playerRangeRect.Contains(entity.Position))
                 {
@@ -95,7 +95,7 @@ namespace SkyTown.Logic
 
             if (inputManager.IsRightClicked())
             {
-                foreach (Entity entity in interactableEntities)
+                foreach (HarvestableObject entity in interactableEntities)
                 {
                     Rectangle entityRect = new Rectangle(
                         (int)entity.Position.X - entity.Width / 2,
@@ -103,6 +103,7 @@ namespace SkyTown.Logic
                         entity.Width,
                         entity.Height
                         );
+                    /*
                     if (entityRect.Contains(inputManager.GetMousePosition()))
                     {
                         if (entity.HarvestAction == HarvestActionEnum.HAND)
@@ -112,6 +113,7 @@ namespace SkyTown.Logic
                             sceneEntities.Remove(entity);
                         }
                     }
+                    */
                 }
             }
         }

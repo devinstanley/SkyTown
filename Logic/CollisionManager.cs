@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
+using SkyTown.Entities.Items;
 using SkyTown.Map;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ namespace SkyTown.LogicManagers
         {
             HandlePlayerMapCollisions(gameTime, scene.TileMapLayers, player);
             //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
-            HandlePlayerEntityCollisions(gameTime, scene.SceneEntities, player);
+            HandlePlayerEntityCollisions(gameTime, scene.SceneHarvestables, player);
 
             player.UpdatePosition();
         }
@@ -74,7 +75,7 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        public void HandlePlayerEntityCollisions(GameTime gameTime, List<Entity> SceneEntities, Player player)
+        public void HandlePlayerEntityCollisions(GameTime gameTime, List<HarvestableObject> SceneEntities, Player player)
         {
             var futurePlayerRectX = new Rectangle(
                 (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
@@ -83,7 +84,7 @@ namespace SkyTown.LogicManagers
                 player.CollisionRectangle.Value.Height
             );
 
-            foreach (Entity entity in SceneEntities)
+            foreach (HarvestableObject entity in SceneEntities)
             {
                 Rectangle collisionRect = new(
                     (int)entity.Position.X - entity.Width / 2 + tileSize / 2,
@@ -106,7 +107,7 @@ namespace SkyTown.LogicManagers
                 player.CollisionRectangle.Value.Height
             );
 
-            foreach (Entity entity in SceneEntities)
+            foreach (HarvestableObject entity in SceneEntities)
             {
                 Rectangle collisionRect = new(
                     (int)entity.Position.X - entity.Width / 2 + tileSize / 2,

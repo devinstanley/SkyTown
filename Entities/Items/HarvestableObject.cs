@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SkyTown.Entities.Items
 {
-    internal class HarvestableObject : GameObject, IInteractor
+    public class HarvestableObject : GameObject, IInteractor
     {
         public bool DirectHarvest { get; set; }
         public int HarvestCount { get; set; } //HP of Sorts
