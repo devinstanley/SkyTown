@@ -6,6 +6,8 @@ using SkyTown.Entities.Base;
 using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SkyTown.Entities.Characters
 {
@@ -15,13 +17,16 @@ namespace SkyTown.Entities.Characters
         public InventoryManager inventory;
 
         //Movement Related Variables
+        float WalkingSpeed = 100f;
         float RunningSpeed = 1.2f;
-        public Vector2 vel;
+        public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
+        private int AnimationSequence;
 
         public Player(string ID) : base(ID)
         {
             inventory = new InventoryManager();
+            CollisionRectangle = new Rectangle(16, 32, 32, 32);
         }
 
         new public void LoadContent(ContentManager content)
@@ -29,7 +34,63 @@ namespace SkyTown.Entities.Characters
             inventory.LoadContent(content);
 
             //Needs to be responsible for loading spritesheet, animation register, inventory status?
-            
+            AnimationManager animations = new AnimationManager();
+            //Idle
+            animations.AddAnimation(0, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 0, 64, 64)])));
+            animations.AddAnimation(1, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 128, 64, 64)])));
+            animations.AddAnimation(2, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 64, 64, 64)])));
+            animations.AddAnimation(3, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 192, 64, 64)])));
+            //Walking
+            animations.AddAnimation(4, new Animation(ID, .2d, new List<Rectangle>([
+                new Rectangle(0, 0, 64, 64),
+                new Rectangle(128, 0, 64, 64),
+                new Rectangle(128*2, 0, 64, 64),
+                new Rectangle(128*3, 0, 64, 64)
+                ])));
+            animations.AddAnimation(5, new Animation(ID, .2d, new List<Rectangle>([
+                new Rectangle(0, 128, 64, 64),
+                new Rectangle(128, 128, 64, 64),
+                new Rectangle(128*2, 128, 64, 64),
+                new Rectangle(128*3, 128, 64, 64)
+                ])));
+            animations.AddAnimation(6, new Animation(ID, .2d, new List<Rectangle>([
+                new Rectangle(0, 64, 64, 64),
+                new Rectangle(128, 64, 64, 64),
+                new Rectangle(128*2, 64, 64, 64),
+                new Rectangle(128*3, 64, 64, 64)
+                ])));
+            animations.AddAnimation(7, new Animation(ID, .2d, new List<Rectangle>([
+                new Rectangle(0, 192, 64, 64),
+                new Rectangle(128, 192, 64, 64),
+                new Rectangle(128*2, 192, 64, 64),
+                new Rectangle(128*3, 192, 64, 64)
+                ])));
+            //Runnin
+            animations.AddAnimation(8, new Animation(ID, .1d, new List<Rectangle>([
+                new Rectangle(0, 0, 64, 64),
+                new Rectangle(128, 0, 64, 64),
+                new Rectangle(128*2, 0, 64, 64),
+                new Rectangle(128*3, 0, 64, 64)
+                ])));
+            animations.AddAnimation(9, new Animation(ID, .1d, new List<Rectangle>([
+                new Rectangle(0, 128, 64, 64),
+                new Rectangle(128, 128, 64, 64),
+                new Rectangle(128*2, 128, 64, 64),
+                new Rectangle(128*3, 128, 64, 64)
+                ])));
+            animations.AddAnimation(10, new Animation(ID, .1d, new List<Rectangle>([
+                new Rectangle(0, 64, 64, 64),
+                new Rectangle(128, 64, 64, 64),
+                new Rectangle(128*2, 64, 64, 64),
+                new Rectangle(128*3, 64, 64, 64)
+                ])));
+            animations.AddAnimation(11, new Animation(ID, .1d, new List<Rectangle>([
+                new Rectangle(0, 192, 64, 64),
+                new Rectangle(128, 192, 64, 64),
+                new Rectangle(128*2, 192, 64, 64),
+                new Rectangle(128*3, 192, 64, 64)
+                ])));
+            AnimationHandler = animations;
         }
 
         public void SetBounds(Point mapSize, Point tileSize)
@@ -46,9 +107,9 @@ namespace SkyTown.Entities.Characters
             }
 
             //Handle Input Update
-            int displacementScalar = (int)(RunningSpeed * gameTime.ElapsedGameTime.TotalSeconds);
+            float displacementScalar = WalkingSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             UpdateVelocity(input);
-            vel *= displacementScalar;
+            Velocity *= displacementScalar;
 
             base.Update(gameTime);
         }
@@ -56,7 +117,7 @@ namespace SkyTown.Entities.Characters
         public void UpdatePosition()
         {
             //Update Player Position
-            Position += vel;
+            Position += Velocity;
             Position = Vector2.Clamp(Position,
                 _minPos - new Vector2(Width, Height),
                 _maxPos + new Vector2(Width, Height)
@@ -79,51 +140,55 @@ namespace SkyTown.Entities.Characters
 
         }
 
+
         public void UpdateVelocity(InputManager input)
         {
-            vel = Vector2.Zero;
-            var animationManager = (AnimationManager)AnimationHandler;
+            Velocity = Vector2.Zero;
 
             //Update Y Velocity and AnimationState
             if (input.IsKeyDown(Keys.W))
             {
-                vel.Y -= 1;
-                animationManager.UpdateAnimationSequence(0); //Walk Away
+                Velocity.Y -= 1;
+                AnimationSequence = 4; //Walk Away
             }
             else if (input.IsKeyDown(Keys.S))
             {
-                vel.Y += 1;
-                animationManager.UpdateAnimationSequence(1); //Walk Toward
+                Velocity.Y += 1;
+                AnimationSequence = 5; //Walk Toward
             }
-
             //Update X Velocity and AnimationState
             if (input.IsKeyDown(Keys.A))
             {
-                vel.X -= 1;
-                animationManager.UpdateAnimationSequence(2); //Walk Left
+                Velocity.X -= 1;
+                AnimationSequence = 6; //Walk Left
             }
             else if (input.IsKeyDown(Keys.D))
             {
-                vel.X += 1;
-                animationManager.UpdateAnimationSequence(3); //Walk Right
+                Velocity.X += 1;
+                AnimationSequence = 7; //Walk Right
             }
 
             //Normalize Vector if it is Nonzero
-            if (!vel.Equals(Vector2.Zero))
+            if (!Velocity.Equals(Vector2.Zero))
             {
-                vel.Normalize();
+                Velocity.Normalize();
+
+                //If Running Increase Change AnimationState
+                if (input.IsKeyDown(Keys.LeftShift) || input.IsKeyDown(Keys.RightShift))
+                {
+                    Velocity *= RunningSpeed;
+                    AnimationSequence += 4;
+                }
             }
 
-            //If Running Increase Change AnimationState
-            if (input.IsKeyDown(Keys.LeftShift) || input.IsKeyDown(Keys.RightShift))
-            {
-                vel *= RunningSpeed;
-            }
             //Transition To Idle in Same Direction
-            if (vel.Equals(Vector2.Zero))
+            if (Velocity.Equals(Vector2.Zero))
             {
-                animationManager.UpdateAnimationSequence(4); //Stationary
+                AnimationSequence = AnimationSequence % 4; //Stationary
             }
+
+            var animationManager = (AnimationManager)AnimationHandler;
+            animationManager.UpdateAnimationSequence(AnimationSequence);
         }
     }
 }

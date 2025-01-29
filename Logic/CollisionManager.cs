@@ -3,6 +3,7 @@ using SkyTown.Entities.Characters;
 using SkyTown.Entities.Items;
 using SkyTown.Map;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SkyTown.LogicManagers
 {
@@ -28,7 +29,7 @@ namespace SkyTown.LogicManagers
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {
                 var futurePlayerRectX = new Rectangle(
-                    (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                    (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
                     (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
@@ -52,7 +53,7 @@ namespace SkyTown.LogicManagers
 
                 var futurePlayerRectY = new Rectangle(
                     (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                    (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                    (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
                 );
@@ -78,7 +79,7 @@ namespace SkyTown.LogicManagers
         public void HandlePlayerEntityCollisions(GameTime gameTime, List<HarvestableObject> SceneEntities, Player player)
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
                 (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
@@ -102,7 +103,7 @@ namespace SkyTown.LogicManagers
 
             var futurePlayerRectY = new Rectangle(
                 (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
             );
@@ -127,7 +128,7 @@ namespace SkyTown.LogicManagers
         public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager, Player player)
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
                 (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
@@ -151,7 +152,7 @@ namespace SkyTown.LogicManagers
 
             var futurePlayerRectY = new Rectangle(
                 (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
             );
@@ -179,21 +180,21 @@ namespace SkyTown.LogicManagers
         {
             while (futurePlayerRectY.Intersects(collisionRect))
             {
-                if (player.vel.Y < 1 && player.vel.Y > -1)
+                if (player.Velocity.Y < 1 && player.Velocity.Y > -1)
                 {
-                    player.vel.Y = 0;
+                    player.Velocity.Y = 0;
                     break;
                 }
                 //Check player direction
-                if (player.vel.Y > 0)
+                if (player.Velocity.Y > 0)
                 {
                     futurePlayerRectY.Y -= 1;
-                    player.vel.Y -= 1;
+                    player.Velocity.Y -= 1;
                 }
-                else if (player.vel.Y < 0)
+                else if (player.Velocity.Y < 0)
                 {
                     futurePlayerRectY.Y += 1;
-                    player.vel.Y += 1;
+                    player.Velocity.Y += 1;
                 }
             }
         }
@@ -202,21 +203,21 @@ namespace SkyTown.LogicManagers
         {
             while (futurePlayerRectX.Intersects(collisionRect))
             {
-                if (player.vel.X < 1 && player.vel.X > -1)
+                if (player.Velocity.X < 1 && player.Velocity.X > -1)
                 {
-                    player.vel.X = 0;
+                    player.Velocity.X = 0;
                     break;
                 }
                 //Check player direction
-                if (player.vel.X > 0)
+                if (player.Velocity.X > 0)
                 {
                     futurePlayerRectX.X -= 1;
-                    player.vel.X -= 1;
+                    player.Velocity.X -= 1;
                 }
-                else if (player.vel.X < 0)
+                else if (player.Velocity.X < 0)
                 {
                     futurePlayerRectX.X += 1;
-                    player.vel.X += 1;
+                    player.Velocity.X += 1;
                 }
             }
         }

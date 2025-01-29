@@ -33,6 +33,7 @@ namespace SkyTown.Entities.Interfaces
         public void AddAnimation(object key, Animation animation)
         {
             _animations.Add(key, animation);
+            CurrentAnimationKey = key;
             PreviousAnimationKey = key; //Ensures previous animation key exists as fall back
         }
 
@@ -83,7 +84,7 @@ namespace SkyTown.Entities.Interfaces
             get { return FrameSources[CurrentFrame].Width; }
         }
 
-        public Animation(string textureID, int frameTime, List<Rectangle> frameSources)
+        public Animation(string textureID, double frameTime, List<Rectangle> frameSources)
         {
             _textureID = textureID;
             TimePerFrame = frameTime;
