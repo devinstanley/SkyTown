@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
+using SkyTown.Entities.Items;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System;
@@ -36,7 +37,7 @@ namespace SkyTown.Logic
                 );
 
 
-
+            /*
             if (inputManager.IsRightClicked())
             {
                 //Get All NPCs Inside of the Players Interaction Range
@@ -70,6 +71,7 @@ namespace SkyTown.Logic
                     }
                 }
             }
+            */
         }
 
         public void HandlePlayerEntityInteractions(GameTime gameTime, InputManager inputManager, List<Entity> sceneEntities, Player player)

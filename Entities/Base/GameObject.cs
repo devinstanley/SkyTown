@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SkyTown.Entities.Interfaces;
 
 namespace SkyTown.Entities.Base
 {
@@ -8,11 +10,25 @@ namespace SkyTown.Entities.Base
         public string ID { get; set; }
         public Vector2 Position { get; set; }
         public Rectangle? CollisionRectangle { get; set; }
-        public IAnimationProvider AnimationHandler { get; set; }
+        public IAnimator AnimationHandler { get; set; }
+
+        public int Height
+        {
+            get { return AnimationHandler.Height; }
+        }
+        public int Width
+        {
+            get { return AnimationHandler.Width; }
+        }
 
         public GameObject(string id)
         {
             ID = id;
+        }
+
+        public virtual void LoadContent(ContentManager content)
+        {
+
         }
 
         public virtual void Update(GameTime gameTime)
@@ -20,9 +36,16 @@ namespace SkyTown.Entities.Base
             AnimationHandler?.Update(gameTime);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2? position = null, float scale = -1)
         {
-            AnimationHandler?.Draw(spriteBatch, Position);
+            if (position.HasValue)
+            {
+                AnimationHandler?.Draw(spriteBatch, position.Value, scale);
+            }
+            else
+            {
+                AnimationHandler?.Draw(spriteBatch, Position, scale);
+            }
         }
     }
 }

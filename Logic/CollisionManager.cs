@@ -16,7 +16,7 @@ namespace SkyTown.LogicManagers
         public void Update(GameTime gameTime, MapScene scene, Player player)
         {
             HandlePlayerMapCollisions(gameTime, scene.TileMapLayers, player);
-            HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player);
+            //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
             HandlePlayerEntityCollisions(gameTime, scene.SceneEntities, player);
 
             player.UpdatePosition();
@@ -27,10 +27,10 @@ namespace SkyTown.LogicManagers
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {
                 var futurePlayerRectX = new Rectangle(
-                    (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                    (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                    player.HitboxWidth,
-                    player.HitboxHeight
+                    (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                    (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                    player.CollisionRectangle.Value.Width,
+                    player.CollisionRectangle.Value.Height
                 );
                 List<Vector2> localCollidablesX = GetCollidableTilesAroundPlayer(futurePlayerRectX, TileMapLayer);
                 foreach (var tilePos in localCollidablesX)
@@ -50,10 +50,10 @@ namespace SkyTown.LogicManagers
                 }
 
                 var futurePlayerRectY = new Rectangle(
-                    (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                    (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                    player.HitboxWidth,
-                    player.HitboxHeight
+                    (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                    (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                    player.CollisionRectangle.Value.Width,
+                    player.CollisionRectangle.Value.Height
                 );
                 List<Vector2> localCollidablesY = GetCollidableTilesAroundPlayer(futurePlayerRectY, TileMapLayer);
                 foreach (var tilePos in localCollidablesY)
@@ -77,10 +77,10 @@ namespace SkyTown.LogicManagers
         public void HandlePlayerEntityCollisions(GameTime gameTime, List<Entity> SceneEntities, Player player)
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                player.HitboxWidth,
-                player.HitboxHeight
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                player.CollisionRectangle.Value.Width,
+                player.CollisionRectangle.Value.Height
             );
 
             foreach (Entity entity in SceneEntities)
@@ -100,10 +100,10 @@ namespace SkyTown.LogicManagers
             }
 
             var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                player.HitboxWidth,
-                player.HitboxHeight
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                player.CollisionRectangle.Value.Width,
+                player.CollisionRectangle.Value.Height
             );
 
             foreach (Entity entity in SceneEntities)
@@ -126,10 +126,10 @@ namespace SkyTown.LogicManagers
         public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager, Player player)
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                player.HitboxWidth,
-                player.HitboxHeight
+                (int)(player.Position.X + player.vel.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                player.CollisionRectangle.Value.Width,
+                player.CollisionRectangle.Value.Height
             );
 
             foreach (NPC npc in npcManager.NPCs)
@@ -149,10 +149,10 @@ namespace SkyTown.LogicManagers
             }
 
             var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.HitboxWidth / 2 + (int)player.hitboxOffset.X,
-                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.HitboxHeight / 2 + (int)player.hitboxOffset.Y,
-                player.HitboxWidth,
-                player.HitboxHeight
+                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)(player.Position.Y + player.vel.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                player.CollisionRectangle.Value.Width,
+                player.CollisionRectangle.Value.Height
             );
 
             foreach (NPC npc in npcManager.NPCs)

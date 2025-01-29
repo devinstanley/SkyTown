@@ -2,22 +2,21 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Base;
+using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SkyTown.Entities.Characters
 {
-    public class NPC : GameObject, IInteractionProvider
+    public class NPC : GameObject, IInteractor
     {
-        public string ID { get; set; }
         public string Name { get; set; }
 
-        public NPC(string id) : base()
+        public NPC(string id) : base(id)
         {
             List<string> parsedID = new List<string>(id.Split(','));
             Name = parsedID.Last();
-            ID = id; 
         }
 
         new public void LoadContent(ContentManager content)

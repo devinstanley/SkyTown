@@ -1,8 +1,8 @@
 ﻿using SkyTown.Entities.Characters;
 
-namespace SkyTown.Entities.Base
+namespace SkyTown.Entities.Interfaces
 {
-    public interface IInteractionProvider
+    public interface IInteractor
     {
         public abstract void Interact(Player player);
     }

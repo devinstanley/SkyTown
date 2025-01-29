@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SkyTown.Entities.Items;
 using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
@@ -194,19 +195,17 @@ namespace SkyTown.Entities.Characters
     public class InventorySlot
     {
         public Item Item { get; private set; }
-        public int MaxQuantity { get; private set; }
         public int Quantiy { get; set; }
 
         public InventorySlot(Item item, int quantity = 1)
         {
             this.Item = item;
             this.Quantiy = quantity;
-            this.MaxQuantity = item.MaxInventoryStack;
         }
 
         public bool AddedQuantity()
         {
-            if (Quantiy < MaxQuantity)
+            if (Quantiy < Item.MaxStack)
             {
                 Quantiy += 1;
                 return true;

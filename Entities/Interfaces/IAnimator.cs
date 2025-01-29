@@ -5,19 +5,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SkyTown.Entities.Base
+namespace SkyTown.Entities.Interfaces
 {
-    public interface IAnimationProvider
+    public interface IAnimator
     {
+        int Height { get; }
+        int Width { get; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = -1);
     }
 
-    public class AnimationManager : IAnimationProvider
+    public class AnimationManager : IAnimator
     {
         private readonly Dictionary<object, Animation> _animations = new();
         private object CurrentAnimationKey;
         private object PreviousAnimationKey;
+
+        public int Height
+        {
+            get { return _animations[CurrentAnimationKey].Height; }
+        }
+        public int Width
+        {
+            get { return _animations[(int)CurrentAnimationKey].Width; }
+        }
 
         public void AddAnimation(object key, Animation animation)
         {
@@ -41,7 +52,7 @@ namespace SkyTown.Entities.Base
 
         public void Update(GameTime gameTime)
         {
-            if (_animations.ContainsKey(key))
+            if (_animations.ContainsKey(CurrentAnimationKey))
             {
                 _animations[CurrentAnimationKey].Update(gameTime);
             }
@@ -53,7 +64,7 @@ namespace SkyTown.Entities.Base
         }
     }
 
-    public class Animation : IAnimationProvider
+    public class Animation : IAnimator
     {
         private readonly string _textureID;
         private readonly List<Rectangle> FrameSources = new();
@@ -62,8 +73,15 @@ namespace SkyTown.Entities.Base
         private readonly double TimePerFrame;
         private double RemainingTimeOnFrame;
         private bool IsAnimated = true;
-        public int CurrentWidth { get; private set; }
-        public int CurrentHeight { get; private set; }
+
+        public int Height
+        {
+            get { return FrameSources[CurrentFrame].Height; }
+        }
+        public int Width
+        {
+            get { return FrameSources[CurrentFrame].Width; }
+        }
 
         public Animation(string textureID, int frameTime, List<Rectangle> frameSources)
         {
@@ -96,9 +114,7 @@ namespace SkyTown.Entities.Base
             if (RemainingTimeOnFrame < 0)
             {
                 RemainingTimeOnFrame = TimePerFrame;
-                CurrentFrame = (CurrentFrame + 1) % (TotalFrames);
-                CurrentHeight = FrameSources[CurrentFrame].Height;
-                CurrentWidth = FrameSources[CurrentFrame].Width;
+                CurrentFrame = (CurrentFrame + 1) % TotalFrames;
             }
         }
 
@@ -108,7 +124,7 @@ namespace SkyTown.Entities.Base
                 ResourceManager.LoadTexture(_textureID),
                 pos,
                 FrameSources[CurrentFrame],
-                Color.White, 0f, new Vector2(CurrentWidth / 2, CurrentHeight / 2),
+                Color.White, 0f, new Vector2(Width / 2, Height / 2),
                 scale < 0 ? 1 : scale, //Draw as normal scale unless specified
                 SpriteEffects.None,
                 0f
