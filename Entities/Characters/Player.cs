@@ -26,7 +26,7 @@ namespace SkyTown.Entities.Characters
         public Player(string ID) : base(ID)
         {
             inventory = new InventoryManager();
-            CollisionRectangle = new Rectangle(16, 32, 32, 32);
+            CollisionRectangle = new Rectangle(16, 16, 32, 48);
         }
 
         new public void LoadContent(ContentManager content)
@@ -95,7 +95,7 @@ namespace SkyTown.Entities.Characters
 
         public void SetBounds(Point mapSize, Point tileSize)
         {
-            _minPos = new Vector2(tileSize.X / 2, tileSize.X / 2);
+            _minPos = new Vector2(tileSize.X / 2 + Width/2 + 32 - CollisionRectangle.Value.X, tileSize.X / 2 + Height/2 + 32 - CollisionRectangle.Value.Y);
             _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
         }
 

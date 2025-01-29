@@ -29,8 +29,8 @@ namespace SkyTown.LogicManagers
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {
                 var futurePlayerRectX = new Rectangle(
-                    (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                    (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                    (int)(player.Position.X + player.Velocity.X + player.CollisionRectangle.Value.X - player.Width/2),
+                    (int)(player.Position.Y + player.CollisionRectangle.Value.Y - player.Height/2),
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
                 );
@@ -41,8 +41,8 @@ namespace SkyTown.LogicManagers
                     {
 
                         Rectangle collisionRect = new(
-                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left,
-                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top,
+                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left - TileManager.BASE_TILESIZE/2,
+                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top - TileManager.BASE_TILESIZE/2,
                             tileHitbox.Width,
                             tileHitbox.Height
                         );
@@ -52,8 +52,8 @@ namespace SkyTown.LogicManagers
                 }
 
                 var futurePlayerRectY = new Rectangle(
-                    (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                    (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                    (int)(player.Position.X + player.CollisionRectangle.Value.X - player.Width/2),
+                    (int)(player.Position.Y + player.Velocity.Y + player.CollisionRectangle.Value.Y - player.Height/2),
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
                 );
@@ -64,8 +64,8 @@ namespace SkyTown.LogicManagers
                     {
 
                         Rectangle collisionRect = new(
-                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left,
-                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top,
+                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left - TileManager.BASE_TILESIZE / 2,
+                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top - TileManager.BASE_TILESIZE / 2,
                             tileHitbox.Width,
                             tileHitbox.Height
                         );
@@ -235,9 +235,9 @@ namespace SkyTown.LogicManagers
             int bottomTile = (int)(playerRect.Bottom / tileSize);
 
             // Loop through the bounding box to collect collidable tiles
-            for (int x = leftTile; x <= rightTile; x++)
+            for (int x = leftTile; x <= rightTile + 1; x++)
             {
-                for (int y = topTile; y <= bottomTile; y++)
+                for (int y = topTile; y <= bottomTile + 1; y++)
                 {
                     Vector2 tilePosition = new(x, y);
 

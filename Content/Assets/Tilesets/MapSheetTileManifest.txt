@@ -6,3 +6,6 @@
 "MapSheet.grass5": (0, 0, 0, 0)
 "MapSheet.grass6": (0, 0, 0, 0)
 "MapSheet.grass7": (0, 0, 0, 0)
+"MapSheet.stone0": (352, 96, 32, 32)
+"MapSheet.stone1": (544, 32, 32, 32), (0, 0, 32, 32)
+"MapSheet.stone2": (414, 384, 32, 32), (0, 0, 16, 16)
