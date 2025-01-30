@@ -22,7 +22,6 @@ namespace SkyTown.Map
         public string MapID;
 
         //For Drawing on Screen
-        public int tileDims = 32;
         public Vector2 MapDimension;
 
         public List<Dictionary<Vector2, string>> TileMapLayers = new();
@@ -62,8 +61,8 @@ namespace SkyTown.Map
             }
             int numRows = (int)TileMapLayers.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)TileMapLayers.Last().Select(u => u.Key.X).Max();
-            MapDimension = new(numRows, numCols);
-            Player1.SetBounds(new Point(numCols, numRows), new Point(tileDims, tileDims));
+            MapDimension = new(numCols, numRows);
+            Player1.SetBounds(new Point(numCols, numRows));
         }
 
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
@@ -91,7 +90,7 @@ namespace SkyTown.Map
             {
                 foreach (KeyValuePair<Vector2, string> tileDict in TileMapLayer)
                 {
-                    TileManager.Draw(spriteBatch, tileDict.Value, tileDict.Key * tileDims);
+                    TileManager.Draw(spriteBatch, tileDict.Value, tileDict.Key * TileManager.BASE_TILESIZE);
                 }
             }
 

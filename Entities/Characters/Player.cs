@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
+using SkyTown.Map;
 using System.Collections.Generic;
 
 namespace SkyTown.Entities.Characters
@@ -91,10 +92,13 @@ namespace SkyTown.Entities.Characters
             AnimationHandler = animations;
         }
 
-        public void SetBounds(Point mapSize, Point tileSize)
+        public void SetBounds(Point mapSize)
         {
-            _minPos = new Vector2(tileSize.X / 2 + Width / 2 + 32 - CollisionRectangle.Value.X, tileSize.X / 2 + Height / 2 + 32 - CollisionRectangle.Value.Y);
-            _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
+            _minPos = new Vector2(-TileManager.BASE_TILESIZE/2 + Width / 2 - CollisionRectangle.Value.X, -TileManager.BASE_TILESIZE / 2 + Height / 2 - CollisionRectangle.Value.Y);
+            _maxPos = new Vector2(
+                -TileManager.BASE_TILESIZE / 2 + (mapSize.X + 1) * TileManager.BASE_TILESIZE - Width/2 + (Width - CollisionRectangle.Value.X - CollisionRectangle.Value.Width),
+                -TileManager.BASE_TILESIZE / 2 + (mapSize.Y + 1) * TileManager.BASE_TILESIZE - Height/2 + (Height - CollisionRectangle.Value.Y - CollisionRectangle.Value.Height)
+                );
         }
 
         public void Update(GameTime gameTime, InputManager input)
@@ -116,10 +120,7 @@ namespace SkyTown.Entities.Characters
         {
             //Update Player Position
             Position += Velocity;
-            Position = Vector2.Clamp(Position,
-                _minPos - new Vector2(Width, Height),
-                _maxPos + new Vector2(Width, Height)
-            );
+            Position = Vector2.Clamp(Position, _minPos, _maxPos);
         }
 
         public new void Draw(SpriteBatch spriteBatch)

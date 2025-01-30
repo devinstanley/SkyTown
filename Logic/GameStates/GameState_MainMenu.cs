@@ -49,7 +49,7 @@ namespace SkyTown.Logic.GameStates
                 Vector2.Zero,
                 null,
                 Color.White, 0f, new Vector2(ResourceManager.LoadTexture("Assets.Menus.StartMenu").Width / 2, ResourceManager.LoadTexture("Assets.Menus.StartMenu").Height / 2),
-                1,
+                2,
                 SpriteEffects.None,
                 0f
             );
@@ -58,7 +58,7 @@ namespace SkyTown.Logic.GameStates
         public void StartGame()
         {
             game.ChangeGameState(new GameState_Playing(game));
-            game.ViewCamera.SetZoom(0.5f);
+            game.ViewCamera.SetZoom(1.0f);
         }
     }
 }

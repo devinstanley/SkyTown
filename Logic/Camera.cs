@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
+using SkyTown.Map;
 
 public class Camera
 {
@@ -71,14 +72,18 @@ public class Camera
         _zoom = newZoom;
     }
 
-    public void SetBounds(Vector2 mapSize, int tileSize, Player player)
+    public void SetBounds(Vector2 mapSize)
     {
+        //TODO: Handle zoom type issues HERE, for bounding to work in current state, zoom must be 1!
+        float halfWidth = (_resolutionWidth / 2f) / _zoom;
+        float halfHeight = (_resolutionHeight / 2f) / _zoom;
+
         // Calculate the map size (considering the size of the map in world coordinates)
-        _minPos = new Vector2(_resolutionWidth / 2, _resolutionHeight / 2);
+        _minPos = new Vector2(halfWidth - TileManager.BASE_TILESIZE/2, halfHeight - TileManager.BASE_TILESIZE / 2);
 
         // Max position calculation (the camera can go as far as the end of the map minus half of its size)
-        _maxPos = new Vector2(mapSize.X * tileSize - _resolutionWidth / 2,
-                              mapSize.Y * tileSize - _resolutionHeight / 2);
+        _maxPos = new Vector2((mapSize.X + 1) * TileManager.BASE_TILESIZE - halfWidth - TileManager.BASE_TILESIZE / 2,
+                              (mapSize.Y + 1) * TileManager.BASE_TILESIZE - halfHeight - TileManager.BASE_TILESIZE / 2);
     }
 
     public void SetPosition(Vector2 position)
@@ -89,7 +94,6 @@ public class Camera
         TopScreenClamp = _minPos.Y > position.Y ? true : false;
 
         // Clamp the camera position to the valid range considering the map boundaries
-        _position.X = MathHelper.Clamp(_position.X, _minPos.X, _maxPos.X); //Both 160 off??? +104 +56
-        _position.Y = MathHelper.Clamp(_position.Y, _minPos.Y, _maxPos.Y); //+44 -204
+        _position = Vector2.Clamp(_position, _minPos, _maxPos);
     }
 }

@@ -13,8 +13,8 @@ namespace SkyTown
 
         private IGameState GameState;
 
-        private int _resolutionWidth = 240;
-        private int _resolutionHeight = 120;
+        private int _resolutionWidth = 480;
+        private int _resolutionHeight = 240;
 
         public Camera ViewCamera;
 
@@ -24,8 +24,8 @@ namespace SkyTown
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = _resolutionWidth * 8;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = _resolutionHeight * 8;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.PreferredBackBufferWidth = _resolutionWidth * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = _resolutionHeight * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             ResourceManager.content = Content;

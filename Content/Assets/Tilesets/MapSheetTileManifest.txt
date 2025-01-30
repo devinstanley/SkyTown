@@ -1,1 +1,2 @@
 "Assets.Tilesets.MapSheet>grass0": (0, 0, 32, 32)
+"Assets.Tilesets.MapSheet>grass1": (32, 128, 32, 32)
