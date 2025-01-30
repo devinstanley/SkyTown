@@ -30,6 +30,7 @@ namespace SkyTown.Logic.GameStates
         public void Initialize()
         {
             Player1 = new Player("Assets.Sprites.spriteAnimationTest>PlayerSprite");
+            Player1.Position = new Vector2(64, 64);
             Hotbar = new HotbarHUD(game, Player1);
             pauseMenu = new GameState_Paused(game, Player1);
             CurrentScene.Initialize(Player1);

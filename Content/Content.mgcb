@@ -159,8 +159,8 @@
 /build:Assets/Tilesets/MapSheet.png
 
 #begin Assets/Tilesets/MapSheetTileManifest.txt
-/importer:JSONMapImporter
-/processor:JSONMapProcessor
+/importer:TextImporter
+/processor:TextProcessor
 /build:Assets/Tilesets/MapSheetTileManifest.txt
 
 #begin Assets/Tilesets/TX Tileset Grass.png

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Content.Pipeline;
 using System.IO;
 
-[ContentImporter(".txt", DisplayName = "JSON Importer - AmpBoi", DefaultProcessor = nameof(JSONMapProcessor))]
-public class JSONMapImporter : ContentImporter<string>
+[ContentImporter(".txt", DisplayName = "Text Importer - AmpBoi", DefaultProcessor = nameof(TextProcessor))]
+public class TextImporter : ContentImporter<string>
 {
     public override string Import(string filename, ContentImporterContext context)
     {
