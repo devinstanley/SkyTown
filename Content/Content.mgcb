@@ -57,6 +57,11 @@
 /processorParam:TextureFormat=Color
 /build:Assets/HUDs/SelectedItem.png
 
+#begin Assets/Items/ItemsManifest.txt
+/importer:TextImporter
+/processor:TextProcessor
+/build:Assets/Items/ItemsManifest.txt
+
 #begin Assets/Maps/TestMap/Layer0.csv
 /importer:CsvImporter
 /processor:CsvProcessor

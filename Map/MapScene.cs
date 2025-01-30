@@ -67,7 +67,7 @@ namespace SkyTown.Map
 
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
         {
-
+            TileManager.Update(gameTime);
             foreach (Item item in SceneItems)
             {
                 item.Update(gameTime);

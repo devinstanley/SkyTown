@@ -8,11 +8,19 @@ namespace SkyTown.Map
     public static class TileManager
     {
         public static readonly int BASE_TILESIZE = 32;
-        public static Dictionary<string, Tile> TileManifest = new();
+        public static Dictionary<string, BaseTile> TileManifest = new();
 
         static TileManager()
         {
             TileManifest = ResourceManager.LoadTiles($"Assets\\Tilesets\\MapSheetTileManifest");
+        }
+
+        public static void Update(GameTime gameTime)
+        {
+            foreach (var tile in TileManifest)
+            {
+                tile.Value.Update(gameTime);
+            }
         }
 
         public static void Draw(SpriteBatch spriteBatch, string tileID, Vector2 position)
@@ -25,7 +33,7 @@ namespace SkyTown.Map
             TileManifest[tileID].Draw(spriteBatch, position);
         }
 
-        public static Tile GetTile(string tileID)
+        public static BaseTile GetTile(string tileID)
         {
             if (!TileManifest.ContainsKey(tileID))
             {

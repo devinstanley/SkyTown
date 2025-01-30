@@ -13,6 +13,12 @@ namespace SkyTown.Entities.Items
 
         }
 
+        public HarvestableObject(string id, bool directHarvest, int harvestCount): base(id)
+        {
+            DirectHarvest = directHarvest;
+            HarvestCount = harvestCount;
+        }
+
         public void Interact(Player player)
         {
 

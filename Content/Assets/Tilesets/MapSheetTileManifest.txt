@@ -1,2 +1,4 @@
-"Assets.Tilesets.MapSheet>grass0": (0, 0, 32, 32)
-"Assets.Tilesets.MapSheet>grass1": (32, 128, 32, 32), (0, 0, 32, 32)
+"Assets.Tilesets.MapSheet::grass0": {Rect: (0, 0, 32, 32)}
+"Assets.Tilesets.MapSheet::grass1": {Rect: (32, 128, 32, 32), CollisionRect: (0, 0, 32, 32)}
+"Assets.Tilesets.MapSheet::grass2": {Rects: [1, (0, 128, 32, 32), (32, 128, 32, 32)]}
+"Assets.Tilesets.MapSheet::grass3": {Rects: [0.5, (64, 128, 32, 32), (32, 128, 32, 32)], CollisionRect: (0, 0, 32, 32)}

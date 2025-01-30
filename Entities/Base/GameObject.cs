@@ -10,11 +10,11 @@ namespace SkyTown.Entities.Base
         public string FullID { get; set; }
         public string TextureID
         {
-            get { return FullID.Split(">")[0]; }
+            get { return FullID.Split("::")[0]; }
         }
         public string ItemID
         {
-            get { return FullID.Split(">")[1]; }
+            get { return FullID.Split("::")[1]; }
         }
         public Vector2 Position { get; set; }
         public Rectangle? CollisionRectangle { get; set; }

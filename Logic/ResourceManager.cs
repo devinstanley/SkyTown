@@ -57,27 +57,10 @@ namespace SkyTown.Logic
             return fontLibrary[fontID];
         }
 
-        public static Dictionary<string, Tile> LoadTiles(string manifestID)
+        public static Dictionary<string, BaseTile> LoadTiles(string manifestID)
         {
-            Dictionary<string, Tile> result = new Dictionary<string, Tile>();
-            var tiles = content.Load<Dictionary<string, List<int>>>(manifestID);
-
-            foreach (var pair in tiles)
-            {
-                Rectangle rect1;
-                Rectangle? rect2 = null;
-                if (pair.Value.Count < 4)
-                {
-                    continue;
-                }
-                rect1 = new Rectangle(pair.Value[0], pair.Value[1], pair.Value[2], pair.Value[3]);
-                if (pair.Value.Count == 8)
-                {
-                    rect2 = new Rectangle(pair.Value[4], pair.Value[5], pair.Value[6], pair.Value[7]);
-                }
-                result.Add(pair.Key.Split(">")[1], new Tile(pair.Key, rect1, rect2));
-            }
-            return result;
+            string lines = content.Load<string>(manifestID);
+            return ObjectParser.ParseTileManifest(lines);
         }
     }
 }
