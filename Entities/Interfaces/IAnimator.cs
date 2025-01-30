@@ -67,11 +67,11 @@ namespace SkyTown.Entities.Interfaces
 
     public class Animation : IAnimator
     {
-        private readonly string _textureID;
+        private readonly string TextureID;
         private readonly List<Rectangle> FrameSources = new();
         private readonly int TotalFrames;
-        private int CurrentFrame;
         private readonly double TimePerFrame;
+        private int CurrentFrame;
         private double RemainingTimeOnFrame;
         private bool IsAnimated = true;
 
@@ -86,7 +86,7 @@ namespace SkyTown.Entities.Interfaces
 
         public Animation(string textureID, double frameTime, List<Rectangle> frameSources)
         {
-            _textureID = textureID;
+            TextureID = textureID;
             TimePerFrame = frameTime;
             RemainingTimeOnFrame = TimePerFrame;
             FrameSources = frameSources;
@@ -122,7 +122,7 @@ namespace SkyTown.Entities.Interfaces
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale = -1)
         {
             spriteBatch.Draw(
-                ResourceManager.LoadTexture(_textureID),
+                ResourceManager.LoadTexture(TextureID),
                 pos,
                 FrameSources[CurrentFrame],
                 Color.White, 0f, new Vector2(Width / 2, Height / 2),

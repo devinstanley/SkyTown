@@ -75,7 +75,7 @@ namespace SkyTown.Logic
                 {
                     rect2 = new Rectangle(pair.Value[4], pair.Value[5], pair.Value[6], pair.Value[7]);
                 }
-                result.Add(pair.Key.Split('.')[1], new Tile(pair.Key, rect1, rect2));
+                result.Add(pair.Key.Split(">")[1], new Tile(pair.Key, rect1, rect2));
             }
             return result;
         }

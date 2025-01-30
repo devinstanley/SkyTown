@@ -7,7 +7,15 @@ namespace SkyTown.Entities.Base
 {
     public abstract class GameObject
     {
-        public string ID { get; set; }
+        public string FullID { get; set; }
+        public string TextureID
+        {
+            get { return FullID.Split(">")[0]; }
+        }
+        public string ItemID
+        {
+            get { return FullID.Split(">")[1]; }
+        }
         public Vector2 Position { get; set; }
         public Rectangle? CollisionRectangle { get; set; }
         public IAnimator AnimationHandler { get; set; }
@@ -23,7 +31,7 @@ namespace SkyTown.Entities.Base
 
         public GameObject(string id)
         {
-            ID = id;
+            FullID = id;
         }
 
         public virtual void LoadContent(ContentManager content)

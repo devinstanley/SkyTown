@@ -36,55 +36,55 @@ namespace SkyTown.Entities.Characters
             //Needs to be responsible for loading spritesheet, animation register, inventory status?
             AnimationManager animations = new AnimationManager();
             //Idle
-            animations.AddAnimation(0, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 0, 64, 64)])));
-            animations.AddAnimation(1, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 128, 64, 64)])));
-            animations.AddAnimation(2, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 64, 64, 64)])));
-            animations.AddAnimation(3, new Animation(ID, 1, new List<Rectangle>([new Rectangle(0, 192, 64, 64)])));
+            animations.AddAnimation(0, new Animation(TextureID, 1, new List<Rectangle>([new Rectangle(0, 0, 64, 64)])));
+            animations.AddAnimation(1, new Animation(TextureID, 1, new List<Rectangle>([new Rectangle(0, 128, 64, 64)])));
+            animations.AddAnimation(2, new Animation(TextureID, 1, new List<Rectangle>([new Rectangle(0, 64, 64, 64)])));
+            animations.AddAnimation(3, new Animation(TextureID, 1, new List<Rectangle>([new Rectangle(0, 192, 64, 64)])));
             //Walking
-            animations.AddAnimation(4, new Animation(ID, .2d, new List<Rectangle>([
+            animations.AddAnimation(4, new Animation(TextureID, .2d, new List<Rectangle>([
                 new Rectangle(0, 0, 64, 64),
                 new Rectangle(128, 0, 64, 64),
                 new Rectangle(128*2, 0, 64, 64),
                 new Rectangle(128*3, 0, 64, 64)
                 ])));
-            animations.AddAnimation(5, new Animation(ID, .2d, new List<Rectangle>([
+            animations.AddAnimation(5, new Animation(TextureID, .2d, new List<Rectangle>([
                 new Rectangle(0, 128, 64, 64),
                 new Rectangle(128, 128, 64, 64),
                 new Rectangle(128*2, 128, 64, 64),
                 new Rectangle(128*3, 128, 64, 64)
                 ])));
-            animations.AddAnimation(6, new Animation(ID, .2d, new List<Rectangle>([
+            animations.AddAnimation(6, new Animation(TextureID, .2d, new List<Rectangle>([
                 new Rectangle(0, 64, 64, 64),
                 new Rectangle(128, 64, 64, 64),
                 new Rectangle(128*2, 64, 64, 64),
                 new Rectangle(128*3, 64, 64, 64)
                 ])));
-            animations.AddAnimation(7, new Animation(ID, .2d, new List<Rectangle>([
+            animations.AddAnimation(7, new Animation(TextureID, .2d, new List<Rectangle>([
                 new Rectangle(0, 192, 64, 64),
                 new Rectangle(128, 192, 64, 64),
                 new Rectangle(128*2, 192, 64, 64),
                 new Rectangle(128*3, 192, 64, 64)
                 ])));
             //Runnin
-            animations.AddAnimation(8, new Animation(ID, .1d, new List<Rectangle>([
+            animations.AddAnimation(8, new Animation(TextureID, .1d, new List<Rectangle>([
                 new Rectangle(0, 0, 64, 64),
                 new Rectangle(128, 0, 64, 64),
                 new Rectangle(128*2, 0, 64, 64),
                 new Rectangle(128*3, 0, 64, 64)
                 ])));
-            animations.AddAnimation(9, new Animation(ID, .1d, new List<Rectangle>([
+            animations.AddAnimation(9, new Animation(TextureID, .1d, new List<Rectangle>([
                 new Rectangle(0, 128, 64, 64),
                 new Rectangle(128, 128, 64, 64),
                 new Rectangle(128*2, 128, 64, 64),
                 new Rectangle(128*3, 128, 64, 64)
                 ])));
-            animations.AddAnimation(10, new Animation(ID, .1d, new List<Rectangle>([
+            animations.AddAnimation(10, new Animation(TextureID, .1d, new List<Rectangle>([
                 new Rectangle(0, 64, 64, 64),
                 new Rectangle(128, 64, 64, 64),
                 new Rectangle(128*2, 64, 64, 64),
                 new Rectangle(128*3, 64, 64, 64)
                 ])));
-            animations.AddAnimation(11, new Animation(ID, .1d, new List<Rectangle>([
+            animations.AddAnimation(11, new Animation(TextureID, .1d, new List<Rectangle>([
                 new Rectangle(0, 192, 64, 64),
                 new Rectangle(128, 192, 64, 64),
                 new Rectangle(128*2, 192, 64, 64),

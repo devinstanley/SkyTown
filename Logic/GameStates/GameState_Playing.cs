@@ -29,7 +29,7 @@ namespace SkyTown.Logic.GameStates
 
         public void Initialize()
         {
-            Player1 = new Player("Assets.Sprites.spriteAnimationTest");
+            Player1 = new Player("Assets.Sprites.spriteAnimationTest>PlayerSprite");
             Hotbar = new HotbarHUD(game, Player1);
             pauseMenu = new GameState_Paused(game, Player1);
             CurrentScene.Initialize(Player1);

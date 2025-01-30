@@ -71,7 +71,7 @@ namespace SkyTown.Entities.Characters
             {
 
                 // Case 1a: Both keys point to the same item -> Stack
-                if (Items[key1].Item.ID == Items[key2].Item.ID)
+                if (Items[key1].Item.FullID == Items[key2].Item.FullID)
                 {
                     while (Items[key2].AddedQuantity())
                     {
@@ -134,7 +134,7 @@ namespace SkyTown.Entities.Characters
         public void AddItem(Item item)
         {
             //First check if item can be stacked into existing slot
-            foreach (var slot in Items.Where(u => u.Value.Item.ID.Equals(item.ID)).Select(u => u.Value))
+            foreach (var slot in Items.Where(u => u.Value.Item.FullID.Equals(item.FullID)).Select(u => u.Value))
             {
                 if (slot.AddedQuantity())
                 {
