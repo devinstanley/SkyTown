@@ -6,7 +6,6 @@ using SkyTown.Entities.Items;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SkyTown.Map

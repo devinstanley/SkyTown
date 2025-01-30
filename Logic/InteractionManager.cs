@@ -5,7 +5,6 @@ using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SkyTown.Logic
 {

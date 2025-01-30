@@ -3,7 +3,6 @@ using SkyTown.Entities.Characters;
 using SkyTown.Entities.Items;
 using SkyTown.Map;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace SkyTown.LogicManagers
 {
@@ -29,8 +28,8 @@ namespace SkyTown.LogicManagers
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {
                 var futurePlayerRectX = new Rectangle(
-                    (int)(player.Position.X + player.Velocity.X + player.CollisionRectangle.Value.X - player.Width/2),
-                    (int)(player.Position.Y + player.CollisionRectangle.Value.Y - player.Height/2),
+                    (int)(player.Position.X + player.Velocity.X + player.CollisionRectangle.Value.X - player.Width / 2),
+                    (int)(player.Position.Y + player.CollisionRectangle.Value.Y - player.Height / 2),
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
                 );
@@ -41,8 +40,8 @@ namespace SkyTown.LogicManagers
                     {
 
                         Rectangle collisionRect = new(
-                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left - TileManager.BASE_TILESIZE/2,
-                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top - TileManager.BASE_TILESIZE/2,
+                            (int)tilePos.X * TileManager.BASE_TILESIZE + tileHitbox.Left - TileManager.BASE_TILESIZE / 2,
+                            (int)tilePos.Y * TileManager.BASE_TILESIZE + tileHitbox.Top - TileManager.BASE_TILESIZE / 2,
                             tileHitbox.Width,
                             tileHitbox.Height
                         );
@@ -52,8 +51,8 @@ namespace SkyTown.LogicManagers
                 }
 
                 var futurePlayerRectY = new Rectangle(
-                    (int)(player.Position.X + player.CollisionRectangle.Value.X - player.Width/2),
-                    (int)(player.Position.Y + player.Velocity.Y + player.CollisionRectangle.Value.Y - player.Height/2),
+                    (int)(player.Position.X + player.CollisionRectangle.Value.X - player.Width / 2),
+                    (int)(player.Position.Y + player.Velocity.Y + player.CollisionRectangle.Value.Y - player.Height / 2),
                     player.CollisionRectangle.Value.Width,
                     player.CollisionRectangle.Value.Height
                 );

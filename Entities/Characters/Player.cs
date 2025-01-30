@@ -5,9 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace SkyTown.Entities.Characters
 {
@@ -95,7 +93,7 @@ namespace SkyTown.Entities.Characters
 
         public void SetBounds(Point mapSize, Point tileSize)
         {
-            _minPos = new Vector2(tileSize.X / 2 + Width/2 + 32 - CollisionRectangle.Value.X, tileSize.X / 2 + Height/2 + 32 - CollisionRectangle.Value.Y);
+            _minPos = new Vector2(tileSize.X / 2 + Width / 2 + 32 - CollisionRectangle.Value.X, tileSize.X / 2 + Height / 2 + 32 - CollisionRectangle.Value.Y);
             _maxPos = new Vector2(mapSize.X * tileSize.X - tileSize.X / 2, mapSize.Y * tileSize.Y - tileSize.X / 2);
         }
 

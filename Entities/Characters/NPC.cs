@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Interfaces;
-using SkyTown.Logic;
 using System.Collections.Generic;
 using System.Linq;
 
