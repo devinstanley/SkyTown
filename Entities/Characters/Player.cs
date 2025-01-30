@@ -7,6 +7,7 @@ using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SkyTown.Entities.Characters
 {
@@ -18,6 +19,7 @@ namespace SkyTown.Entities.Characters
         //Movement Related Variables
         float WalkingSpeed = 100f;
         float RunningSpeed = 1.2f;
+        bool isRunning = false;
         public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
         private int AnimationSequence;
@@ -112,6 +114,7 @@ namespace SkyTown.Entities.Characters
             float displacementScalar = WalkingSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             UpdateVelocity(input);
             Velocity *= displacementScalar;
+            UpdateAnimation();
 
             base.Update(gameTime);
         }
@@ -123,7 +126,7 @@ namespace SkyTown.Entities.Characters
             Position = Vector2.Clamp(Position, _minPos, _maxPos);
         }
 
-        public new void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
             //Draw platyer current held item
@@ -136,7 +139,40 @@ namespace SkyTown.Entities.Characters
         //Update animation here depending on velocity and held item
         public void UpdateAnimation()
         {
+            //Transition To Idle in Same Direction
+            if (Velocity.Equals(Vector2.Zero))
+            {
+                AnimationSequence = AnimationSequence % 4; //Stationary
+            }
+            else
+            {
+                double angle = System.Math.Atan2(Velocity.X, Velocity.Y);
 
+                if (angle <= 3 * MathHelper.PiOver4 + 0.1 && angle >= MathHelper.PiOver4 - 0.1)
+                {
+                    AnimationSequence = 7;
+                }
+                else if (angle > -3 * MathHelper.PiOver4 - 0.1 && angle < -MathHelper.PiOver4 + 0.1)
+                {
+                    AnimationSequence = 6;
+                }
+                else if (angle > -MathHelper.PiOver4 &&  angle < MathHelper.PiOver4)
+                {
+                    AnimationSequence = 5;
+                }
+                else if (angle < -3 * MathHelper.PiOver4 || angle > 3 * MathHelper.PiOver4)
+                {
+                    AnimationSequence = 4;
+                }
+
+                if (isRunning)
+                {
+                    AnimationSequence += 4;
+                }
+            }
+
+            var animationManager = (AnimationManager)AnimationHandler;
+            animationManager.UpdateAnimationSequence(AnimationSequence);
         }
 
 
@@ -148,23 +184,19 @@ namespace SkyTown.Entities.Characters
             if (input.IsKeyDown(Keys.W))
             {
                 Velocity.Y -= 1;
-                AnimationSequence = 4; //Walk Away
             }
             else if (input.IsKeyDown(Keys.S))
             {
                 Velocity.Y += 1;
-                AnimationSequence = 5; //Walk Toward
             }
             //Update X Velocity and AnimationState
             if (input.IsKeyDown(Keys.A))
             {
                 Velocity.X -= 1;
-                AnimationSequence = 6; //Walk Left
             }
             else if (input.IsKeyDown(Keys.D))
             {
                 Velocity.X += 1;
-                AnimationSequence = 7; //Walk Right
             }
 
             //Normalize Vector if it is Nonzero
@@ -176,18 +208,13 @@ namespace SkyTown.Entities.Characters
                 if (input.IsKeyDown(Keys.LeftShift) || input.IsKeyDown(Keys.RightShift))
                 {
                     Velocity *= RunningSpeed;
-                    AnimationSequence += 4;
+                    isRunning = true;
+                }
+                else
+                {
+                    isRunning = false;
                 }
             }
-
-            //Transition To Idle in Same Direction
-            if (Velocity.Equals(Vector2.Zero))
-            {
-                AnimationSequence = AnimationSequence % 4; //Stationary
-            }
-
-            var animationManager = (AnimationManager)AnimationHandler;
-            animationManager.UpdateAnimationSequence(AnimationSequence);
         }
     }
 }
