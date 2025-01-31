@@ -1,0 +1,3 @@
+"Assets.Items.BerryBush::berrybush_harvest_ready": {Rect: }
+"Assets.Items.BerryBush::berrybush_harvested": 
+"Assets.Items.BerryBush::berries": {}

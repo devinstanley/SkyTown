@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
-using SkyTown.Entities.Items;
+using SkyTown.Entities.GameObjects;
 using SkyTown.Map;
 using System.Collections.Generic;
 

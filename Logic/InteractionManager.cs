@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
-using SkyTown.Entities.Items;
+using SkyTown.Entities.GameObjects;
+using SkyTown.Entities.GameObjects.Items;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using SkyTown.Entities.Base;
+using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.Interfaces;
 using System.Collections.Generic;
 
