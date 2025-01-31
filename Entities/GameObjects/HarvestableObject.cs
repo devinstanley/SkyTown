@@ -7,6 +7,8 @@ namespace SkyTown.Entities.GameObjects
     public class HarvestableObject : GameObject, IInteractor
     {
         public bool DirectHarvest { get; set; }
+        public string RequiredToolType { get; set; }
+        public int RequiredToolUpgrade { get; set; }    
         public int HarvestCount { get; set; } //HP of Sorts
         public Item DroppedItem { get; set; }
         public HarvestableObject(string id) : base(id)
@@ -28,7 +30,15 @@ namespace SkyTown.Entities.GameObjects
             }
             else
             {
-                if (player.inventory.CurrentItem is Tool HeldTool)
+                Tool HeldTool = player.inventory.CurrentItem as Tool;
+                if (HeldTool != null)
+                {
+                    if (RequiredToolType == HeldTool.ToolType && RequiredToolUpgrade == HeldTool.ToolUpgradeLevel)
+                    {
+                        HarvestCount =- HeldTool.ToolUpgradeLevel;
+                    }
+                }
+                else if (RequiredToolType == null)
                 {
 
                 }

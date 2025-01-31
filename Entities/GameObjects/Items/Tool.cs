@@ -2,9 +2,11 @@
 
 namespace SkyTown.Entities.GameObjects.Items
 {
-    public class Tool : GameObject
+    public class Tool : Item
     {
-        public Tool(string ID) : base(ID)
+        public string ToolType;
+        public int ToolUpgradeLevel;
+        public Tool(string ID) : base(ID, 1)
         {
 
         }
