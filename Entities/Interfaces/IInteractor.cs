@@ -14,6 +14,6 @@ namespace SkyTown.Entities.Interfaces
 
     public interface IGrowable : IInteractor
     {
-        public void Update();
+        public void Grow();
     }
 }

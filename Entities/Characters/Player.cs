@@ -13,7 +13,6 @@ namespace SkyTown.Entities.Characters
 {
     public class Player : GameObject
     {
-        //TODO: FIX ANIMATION LOGIC
         public InventoryManager inventory;
 
         //Movement Related Variables
