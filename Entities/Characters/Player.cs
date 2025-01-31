@@ -21,7 +21,9 @@ namespace SkyTown.Entities.Characters
         bool isRunning = false;
         public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
+
         private int AnimationSequence;
+        private bool AnimationLock = false;
 
         public Player(string ID) : base(ID)
         {
@@ -136,6 +138,21 @@ namespace SkyTown.Entities.Characters
             }
         }
 
+        public void StartSpecialAnimation(int animationRoot)
+        {
+            int directionKey = AnimationSequence % 4;
+            int animationKey = animationRoot + directionKey;
+            if (inventory.CurrentItem.AnimationHandler is AnimationManager animator)
+            {
+                AnimationLock = true;
+                animator.UpdateAnimationSequence(animationKey);
+            }
+            if (AnimationHandler is AnimationManager animationManager)
+            {
+                animationManager.UpdateAnimationSequence(animationKey);
+            }
+        }
+
         //Update animation here depending on velocity and held item
         public void UpdateAnimation()
         {
@@ -178,7 +195,12 @@ namespace SkyTown.Entities.Characters
 
         public void UpdateVelocity(InputManager input)
         {
+            
             Velocity = Vector2.Zero;
+            if (AnimationLock)
+            {
+                return;
+            }
 
             //Update Y Velocity and AnimationState
             if (input.IsKeyDown(Keys.W))
