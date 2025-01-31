@@ -194,7 +194,7 @@ namespace SkyTown.Entities.Characters
 
     public class InventorySlot
     {
-        public Item Item { get; private set; }
+        public Item Item { get; set; }
         public int Quantiy { get; set; }
 
         public InventorySlot(Item item, int quantity = 1)

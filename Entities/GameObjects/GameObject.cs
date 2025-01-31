@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Interfaces;
 
-namespace SkyTown.Entities.Base
+namespace SkyTown.Entities.GameObjects
 {
     public abstract class GameObject
     {

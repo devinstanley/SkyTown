@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.GameObjects;
+using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
-using SkyTown.Entities.Items;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace SkyTown.Entities.Characters
 {
@@ -98,10 +97,10 @@ namespace SkyTown.Entities.Characters
 
         public void SetBounds(Point mapSize)
         {
-            _minPos = new Vector2(-TileManager.BASE_TILESIZE/2 + Width / 2 - CollisionRectangle.Value.X, -TileManager.BASE_TILESIZE / 2 + Height / 2 - CollisionRectangle.Value.Y);
+            _minPos = new Vector2(-TileManager.BASE_TILESIZE / 2 + Width / 2 - CollisionRectangle.Value.X, -TileManager.BASE_TILESIZE / 2 + Height / 2 - CollisionRectangle.Value.Y);
             _maxPos = new Vector2(
-                -TileManager.BASE_TILESIZE / 2 + (mapSize.X + 1) * TileManager.BASE_TILESIZE - Width/2 + (Width - CollisionRectangle.Value.X - CollisionRectangle.Value.Width),
-                -TileManager.BASE_TILESIZE / 2 + (mapSize.Y + 1) * TileManager.BASE_TILESIZE - Height/2 + (Height - CollisionRectangle.Value.Y - CollisionRectangle.Value.Height)
+                -TileManager.BASE_TILESIZE / 2 + (mapSize.X + 1) * TileManager.BASE_TILESIZE - Width / 2 + (Width - CollisionRectangle.Value.X - CollisionRectangle.Value.Width),
+                -TileManager.BASE_TILESIZE / 2 + (mapSize.Y + 1) * TileManager.BASE_TILESIZE - Height / 2 + (Height - CollisionRectangle.Value.Y - CollisionRectangle.Value.Height)
                 );
         }
 
@@ -158,7 +157,7 @@ namespace SkyTown.Entities.Characters
                 {
                     AnimationSequence = 6;
                 }
-                else if (angle > -MathHelper.PiOver4 &&  angle < MathHelper.PiOver4)
+                else if (angle > -MathHelper.PiOver4 && angle < MathHelper.PiOver4)
                 {
                     AnimationSequence = 5;
                 }

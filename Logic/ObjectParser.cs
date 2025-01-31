@@ -1,15 +1,10 @@
-﻿using SharpDX.D3DCompiler;
-using SharpDX;
+﻿using Microsoft.Xna.Framework;
+using SkyTown.Entities.Interfaces;
 using SkyTown.Map;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using SkyTown.Entities.Interfaces;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 
 namespace SkyTown.Logic
@@ -83,7 +78,7 @@ namespace SkyTown.Logic
                     int.Parse(staticMatch.Groups[3].Value),
                     int.Parse(staticMatch.Groups[4].Value)
                 );
-                Animation animation = new Animation(TextureID, 1, new List<Rectangle>([ sourceRect ]));
+                Animation animation = new Animation(TextureID, 1, new List<Rectangle>([sourceRect]));
                 return new KeyValuePair<string, BaseTile>(TileID, new BaseTile(FullID, animation, CollisionRectangle));
             }
 
@@ -97,7 +92,7 @@ namespace SkyTown.Logic
             {
                 if (String.IsNullOrWhiteSpace(line))
                 {
-                    continue;   
+                    continue;
                 }
                 else
                 {

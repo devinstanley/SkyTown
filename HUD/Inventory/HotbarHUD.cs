@@ -126,11 +126,11 @@ namespace SkyTown.HUD.Inventory
             Vector2 hudPos = new();
             if (BottomRender)
             {
-                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2 - InventoryTexture.Height/2);
+                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2 - InventoryTexture.Height / 2);
             }
             else
             {
-                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2 + InventoryTexture.Height/2);
+                hudPos = new Vector2(Game.ViewCamera._position.X, Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2 + InventoryTexture.Height / 2);
             }
             //Draw hotbar HUD
             spriteBatch.Draw(
@@ -150,14 +150,14 @@ namespace SkyTown.HUD.Inventory
             {
                 position = new(
                 Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2 - InventoryTexture.Height/2
+                Game.ViewCamera._position.Y + Game.ViewCamera._resolutionHeight / 2 - InventoryTexture.Height / 2
                 );
             }
             else
             {
                 position = new(
                 Game.ViewCamera._position.X - InventoryTexture.Width / 2 + InventoryStartLoc.X + InventorySlotDimensions / 2 + (slotX * (InventorySlotDimensions + InventorySpacer)),
-                Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2 + InventoryTexture.Height/2
+                Game.ViewCamera._position.Y - Game.ViewCamera._resolutionHeight / 2 + InventoryTexture.Height / 2
                 );
             }
             spriteBatch.Draw(

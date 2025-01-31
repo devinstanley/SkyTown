@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SkyTown.Entities.Characters;
 
 namespace SkyTown.Entities.GameObjects.Items
 {
-    internal class Tool: GameObject
+    public class Tool : GameObject
     {
+        public Tool(string ID) : base(ID)
+        {
 
+        }
+
+        public void Interact(Player player)
+        {
+
+        }
     }
 }

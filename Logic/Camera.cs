@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SkyTown.Entities.Characters;
 using SkyTown.Map;
 
 public class Camera
@@ -79,7 +78,7 @@ public class Camera
         float halfHeight = (_resolutionHeight / 2f) / _zoom;
 
         // Calculate the map size (considering the size of the map in world coordinates)
-        _minPos = new Vector2(halfWidth - TileManager.BASE_TILESIZE/2, halfHeight - TileManager.BASE_TILESIZE / 2);
+        _minPos = new Vector2(halfWidth - TileManager.BASE_TILESIZE / 2, halfHeight - TileManager.BASE_TILESIZE / 2);
 
         // Max position calculation (the camera can go as far as the end of the map minus half of its size)
         _maxPos = new Vector2((mapSize.X + 1) * TileManager.BASE_TILESIZE - halfWidth - TileManager.BASE_TILESIZE / 2,

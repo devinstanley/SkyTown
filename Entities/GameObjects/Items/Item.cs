@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using SkyTown.Entities.Base;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Interfaces;
 using System.Collections.Generic;
 
-namespace SkyTown.Entities.Items
+namespace SkyTown.Entities.GameObjects.Items
 {
     public class Item : GameObject, IInteractor
     {

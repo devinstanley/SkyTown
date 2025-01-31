@@ -1,8 +1,8 @@
-﻿using SkyTown.Entities.Base;
-using SkyTown.Entities.Characters;
+﻿using SkyTown.Entities.Characters;
+using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
 
-namespace SkyTown.Entities.Items
+namespace SkyTown.Entities.GameObjects
 {
     public class HarvestableObject : GameObject, IInteractor
     {
@@ -14,7 +14,7 @@ namespace SkyTown.Entities.Items
 
         }
 
-        public HarvestableObject(string id, int harvestCount): base(id)
+        public HarvestableObject(string id, int harvestCount) : base(id)
         {
             DirectHarvest = harvestCount == -1;
             HarvestCount = harvestCount;
@@ -22,9 +22,16 @@ namespace SkyTown.Entities.Items
 
         public void Interact(Player player)
         {
-            if (HarvestCount <= 0)
+            if (HarvestCount == -1)
             {
                 Harvest(player);
+            }
+            else
+            {
+                if (player.inventory.CurrentItem is Tool HeldTool)
+                {
+
+                }
             }
         }
 
