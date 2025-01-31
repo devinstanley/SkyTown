@@ -45,7 +45,7 @@
 /processorParam:TextureFormat=Color
 /build:Assets/HUDs/InventoryHUD.png
 
-#begin Assets/HUDs/SelectedItem.png
+#begin Assets/HUDs/SelectedItemHotbarHUD.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -55,7 +55,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Assets/HUDs/SelectedItem.png
+/build:Assets/HUDs/SelectedItemHotbarHUD.png
+
+#begin Assets/HUDs/SelectedItemInventoryHUD.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/HUDs/SelectedItemInventoryHUD.png
 
 #begin Assets/Items/ItemsManifest.txt
 /importer:TextImporter

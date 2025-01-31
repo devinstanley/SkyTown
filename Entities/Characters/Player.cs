@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.Base;
 using SkyTown.Entities.Interfaces;
+using SkyTown.Entities.Items;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace SkyTown.Entities.Characters
         public Player(string ID) : base(ID)
         {
             inventory = new InventoryManager();
+            inventory.AddItem(new Item("Assets.Sprites.TestItem::Ball", 3));
             CollisionRectangle = new Rectangle(16, 16, 32, 48);
         }
 

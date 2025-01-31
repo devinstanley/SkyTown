@@ -1,4 +1,5 @@
 ﻿using SkyTown.Entities.Characters;
+using System.Drawing;
 
 namespace SkyTown.Entities.Interfaces
 {

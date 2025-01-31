@@ -10,7 +10,7 @@ namespace SkyTown.HUD.Inventory
     internal class InventoryHUD
     {
         public Texture2D InventoryTexture { get => ResourceManager.LoadTexture("Assets.HUDs.InventoryHUD"); }
-        public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItem"); }
+        public Texture2D selectedItemHighlight { get => ResourceManager.LoadTexture("Assets.HUDs.SelectedItemInventoryHUD"); }
         public static Vector2 InventoryStartLoc = new Vector2(14, 73);
         public int InventorySlotDimensions = 32;
         public int InventorySpacer = 3;
@@ -129,7 +129,7 @@ namespace SkyTown.HUD.Inventory
             Vector2 position = new();
             position = new(
                     Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - InventoryTexture.Width / 2,
-                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - InventoryTexture.Height / 2
+                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - InventoryTexture.Height / 2 + 1
                     );
             //Draw selected item highlight
             spriteBatch.Draw(
