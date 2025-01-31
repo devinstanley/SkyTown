@@ -6,7 +6,7 @@ namespace SkyTown.Map
 {
     public class BaseTile : GameObject
     {
-        public BaseTile(string ID, Animation animation, Rectangle? collisionRectangle = null) : base(ID)
+        public BaseTile(string ID, IAnimator animation, Rectangle? collisionRectangle = null) : base(ID)
         {
             CollisionRectangle = collisionRectangle;
             var animationSequence = animation;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Map;
 using System.Collections.Generic;
 
@@ -60,6 +61,12 @@ namespace SkyTown.Logic
         {
             string lines = content.Load<string>(manifestID);
             return ObjectParser.ParseTileManifest(lines);
+        }
+
+        public static Dictionary<string, ItemConstructor> LoadItems(string manifestID)
+        {
+            string lines = content.Load<string>(manifestID);
+            return ObjectParser.ParseItemManifest(lines);
         }
     }
 }

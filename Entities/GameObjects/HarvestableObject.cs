@@ -11,7 +11,7 @@ namespace SkyTown.Entities.GameObjects
         public int RequiredToolUpgrade { get; set; }    
         public int HarvestCount { get; set; } //HP of Sorts
         public Item DroppedItem { get; set; }
-        public HarvestableObject(string id) : base(id)
+        public HarvestableObject(string id, string dropped_item_id) : base(id)
         {
 
         }

@@ -1,3 +1,1 @@
-"Assets.Items.BerryBush::berrybush_harvest_ready": {Rect: }
-"Assets.Items.BerryBush::berrybush_harvested": 
-"Assets.Items.BerryBush::berries": {}
+"Assets.Items.BerryBush::berries": {Rect: (64, 0, 32, 32), MaxStack: 32}

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
 using SkyTown.Map;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
 
@@ -11,14 +13,7 @@ namespace SkyTown.Logic
 {
     public static class ObjectParser
     {
-        //Formats
-        //Regular Tile - Static Single Frame Animation
-        //path_to_png::id {Rect: (x, y, w, h)}
-        //path_to_png::id {Rect: (x, y, w, h), CollisionRect: (x, y, w, h)}
-        //Regular Tile - Multi-Frame Animation
-        //path_to_png::id {Rects: [<frame_time> (x, y, w, h), (x, y, w, h)]}
-        //path_to_png::id {Rects: [<frame_time> (x, y, w, h), (x, y, w, h)], CollisionRect: (x, y, w, h)}
-        public static KeyValuePair<string, BaseTile> ParseTileLine(string input)
+        public static string[] ParseID(string input)
         {
             // Extract TextureID and TileID
             string[] parts = input.Split(new[] { "::" }, StringSplitOptions.None);
@@ -31,9 +26,13 @@ namespace SkyTown.Logic
             // Extract content inside { ... }
             string content = input.Substring(input.IndexOf('{')).Trim();
 
-            // Collision Rectangle (optional)
+            return new string[] { TextureID, TileID, FullID, content};
+        }
+
+        public static Rectangle? ParseCollisionRectangle(string input)
+        {
             Rectangle? CollisionRectangle = null;
-            Match collisionMatch = Regex.Match(content, @"CollisionRect:\s*\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)");
+            Match collisionMatch = Regex.Match(input, @"CollisionRect:\s*\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)");
             if (collisionMatch.Success)
             {
                 CollisionRectangle = new Rectangle(
@@ -44,8 +43,12 @@ namespace SkyTown.Logic
                 );
             }
 
-            // Check for animation frames
-            Match animationMatch = Regex.Match(content, @"Rects:\s*\[([\d\.]+),((?:\s*\(\d+,\s*\d+,\s*\d+,\s*\d+\),?)+)\]");
+            return CollisionRectangle;
+        }
+
+        public static IAnimator ParseAnimationInformation(string input, string textureID)
+        {
+            Match animationMatch = Regex.Match(input, @"Rects:\s*\[([\d\.]+),((?:\s*\(\d+,\s*\d+,\s*\d+,\s*\d+\),?)+)\]");
             if (animationMatch.Success)
             {
                 // Parse frame time
@@ -63,13 +66,10 @@ namespace SkyTown.Logic
                         int.Parse(match.Groups[4].Value)
                     ));
                 }
-
-                Animation animation = new Animation(TextureID, frameTime, animationFrames);
-                return new KeyValuePair<string, BaseTile>(TileID, new BaseTile(FullID, animation, CollisionRectangle));
+                return new Animation(textureID, frameTime, animationFrames);
             }
-
             // Otherwise, check for a static single-frame tile
-            Match staticMatch = Regex.Match(content, @"Rect:\s*\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)");
+            Match staticMatch = Regex.Match(input, @"Rect:\s*\((\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)");
             if (staticMatch.Success)
             {
                 Rectangle sourceRect = new Rectangle(
@@ -78,11 +78,32 @@ namespace SkyTown.Logic
                     int.Parse(staticMatch.Groups[3].Value),
                     int.Parse(staticMatch.Groups[4].Value)
                 );
-                Animation animation = new Animation(TextureID, 1, new List<Rectangle>([sourceRect]));
-                return new KeyValuePair<string, BaseTile>(TileID, new BaseTile(FullID, animation, CollisionRectangle));
+                Animation animation = new Animation(textureID, 1, new List<Rectangle>([sourceRect]));
+                return animation;
             }
+            return null;
+        }
 
-            throw new FormatException("Invalid tile format: Missing Rects or Rect");
+        //Formats
+        //Regular Tile - Static Single Frame Animation
+        //path_to_png::id {Rect: (x, y, w, h)}
+        //path_to_png::id {Rect: (x, y, w, h), CollisionRect: (x, y, w, h)}
+        //Regular Tile - Multi-Frame Animation
+        //path_to_png::id {Rects: [<frame_time> (x, y, w, h), (x, y, w, h)]}
+        //path_to_png::id {Rects: [<frame_time> (x, y, w, h), (x, y, w, h)], CollisionRect: (x, y, w, h)}
+        public static KeyValuePair<string, BaseTile> ParseTileLine(string input)
+        {
+            string[] cleanedInput = ParseID(input);
+            string TextureID = cleanedInput[0];
+            string TileID = cleanedInput[1];
+            string FullID = cleanedInput[2];
+            string content = cleanedInput[3];
+
+            // Collision Rectangle (optional)
+            Rectangle? CollisionRectangle = ParseCollisionRectangle(content);
+
+            IAnimator animator = ParseAnimationInformation(content, TextureID);
+            return new KeyValuePair<string, BaseTile>(TileID, new BaseTile(FullID, animator, CollisionRectangle));
         }
 
         public static Dictionary<string, BaseTile> ParseTileManifest(string input)
@@ -99,6 +120,45 @@ namespace SkyTown.Logic
                     try
                     {
                         KeyValuePair<string, BaseTile> temp = ParseTileLine(line);
+                        result.Add(temp.Key, temp.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Failed to Parse Line: ", line);
+                    }
+                }
+            }
+            return result;
+        }
+
+        public static KeyValuePair<string, ItemConstructor> ParseItemLine(string input)
+        {
+            string[] cleanedInput = ParseID(input);
+            string TextureID = cleanedInput[0];
+            string ItemID = cleanedInput[1];
+            string FullID = cleanedInput[2];
+            string content = cleanedInput[3];
+
+            IAnimator animator = ParseAnimationInformation(content, TextureID);
+
+            return new KeyValuePair<string, ItemConstructor>(ItemID, new ItemConstructor(FullID, animator, 1));
+        }
+
+        public static Dictionary<string, ItemConstructor> ParseItemManifest(string input)
+        {
+
+            var result = new Dictionary<string, ItemConstructor>();
+            foreach (string line in input.Split(new char[] { '\r', '\n' }))
+            {
+                if (String.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+                else
+                {
+                    try
+                    {
+                        KeyValuePair<string, ItemConstructor> temp = ParseItemLine(line);
                         result.Add(temp.Key, temp.Value);
                     }
                     catch (Exception ex)

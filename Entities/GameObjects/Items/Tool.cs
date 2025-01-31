@@ -1,4 +1,5 @@
 ﻿using SkyTown.Entities.Characters;
+using SkyTown.Entities.Interfaces;
 
 namespace SkyTown.Entities.GameObjects.Items
 {
@@ -6,7 +7,7 @@ namespace SkyTown.Entities.GameObjects.Items
     {
         public string ToolType;
         public int ToolUpgradeLevel;
-        public Tool(string ID) : base(ID, 1)
+        public Tool(string ID, AnimationManager animation) : base(ID, 1, animation)
         {
 
         }

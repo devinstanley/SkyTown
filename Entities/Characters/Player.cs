@@ -27,7 +27,7 @@ namespace SkyTown.Entities.Characters
         public Player(string ID) : base(ID)
         {
             inventory = new InventoryManager();
-            inventory.AddItem(new Item("Assets.Sprites.TestItem::Ball", 3));
+            inventory.AddItem(ItemManager.GetItem("berries"));
             CollisionRectangle = new Rectangle(16, 16, 32, 48);
         }
 

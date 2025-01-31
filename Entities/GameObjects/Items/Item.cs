@@ -8,10 +8,9 @@ namespace SkyTown.Entities.GameObjects.Items
     public class Item : GameObject, IInteractor
     {
         public int MaxStack;
-        public Item(string id, int maxStack) : base(id)
+        public Item(string id, int maxStack, IAnimator animation) : base(id)
         {
             MaxStack = maxStack;
-            Animation animation = new Animation(id.Split("::")[0], 1, new List<Rectangle>([new Rectangle(0, 0, 32, 32)]));
             AnimationHandler = animation;
         }
 
