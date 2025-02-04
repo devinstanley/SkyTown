@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Map;
+using SkyTown.Parsing;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace SkyTown.Logic
 {
@@ -59,8 +61,13 @@ namespace SkyTown.Logic
 
         public static Dictionary<string, BaseTile> LoadTiles(string manifestID)
         {
-            string lines = content.Load<string>(manifestID);
-            return ObjectParser.ParseTileManifest(lines);
+            string json = content.Load<string>(manifestID);
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new TileDictionaryConverter(), new IAnimatorConverter() }, // Add both converters
+                PropertyNameCaseInsensitive = true
+            };
+            return JsonSerializer.Deserialize<Dictionary<string, BaseTile>>(json, options);
         }
 
         public static Dictionary<string, ItemConstructor> LoadItems(string manifestID)

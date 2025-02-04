@@ -13,7 +13,14 @@ namespace SkyTown.Logic
 {
     public static class ObjectParser
     {
-        public static string[] ParseID(string input)
+        public class ParsedLine
+        {
+            public string TextureID { get; set; }
+            public string ObjectID { get; set; }
+            public string FullID { get; set; }
+            public string Content { get; set; }
+        }
+        public static ParsedLine ParseLine(string input)
         {
             // Extract TextureID and TileID
             string[] parts = input.Split(new[] { "::" }, StringSplitOptions.None);
@@ -26,7 +33,13 @@ namespace SkyTown.Logic
             // Extract content inside { ... }
             string content = input.Substring(input.IndexOf('{')).Trim();
 
-            return new string[] { TextureID, TileID, FullID, content};
+            return new ParsedLine
+            {
+                TextureID = TextureID,
+                ObjectID = TileID,
+                FullID = FullID,
+                Content = content
+            };
         }
 
         public static Rectangle? ParseCollisionRectangle(string input)
@@ -93,17 +106,13 @@ namespace SkyTown.Logic
         //path_to_png::id {Rects: [<frame_time> (x, y, w, h), (x, y, w, h)], CollisionRect: (x, y, w, h)}
         public static KeyValuePair<string, BaseTile> ParseTileLine(string input)
         {
-            string[] cleanedInput = ParseID(input);
-            string TextureID = cleanedInput[0];
-            string TileID = cleanedInput[1];
-            string FullID = cleanedInput[2];
-            string content = cleanedInput[3];
+            ParsedLine parsedLine = ParseLine(input);
 
             // Collision Rectangle (optional)
-            Rectangle? CollisionRectangle = ParseCollisionRectangle(content);
+            Rectangle? CollisionRectangle = ParseCollisionRectangle(parsedLine.Content);
 
-            IAnimator animator = ParseAnimationInformation(content, TextureID);
-            return new KeyValuePair<string, BaseTile>(TileID, new BaseTile(FullID, animator, CollisionRectangle));
+            IAnimator animator = ParseAnimationInformation(parsedLine.Content, parsedLine.TextureID);
+            return new KeyValuePair<string, BaseTile>(parsedLine.ObjectID, new BaseTile(parsedLine.FullID, animator, CollisionRectangle));
         }
 
         public static Dictionary<string, BaseTile> ParseTileManifest(string input)
@@ -133,15 +142,11 @@ namespace SkyTown.Logic
 
         public static KeyValuePair<string, ItemConstructor> ParseItemLine(string input)
         {
-            string[] cleanedInput = ParseID(input);
-            string TextureID = cleanedInput[0];
-            string ItemID = cleanedInput[1];
-            string FullID = cleanedInput[2];
-            string content = cleanedInput[3];
+            ParsedLine parsedLine = ParseLine(input);
 
-            IAnimator animator = ParseAnimationInformation(content, TextureID);
+            IAnimator animator = ParseAnimationInformation(parsedLine.Content, parsedLine.TextureID);
 
-            return new KeyValuePair<string, ItemConstructor>(ItemID, new ItemConstructor(FullID, animator, 1));
+            return new KeyValuePair<string, ItemConstructor>(parsedLine.ObjectID, new ItemConstructor(parsedLine.FullID, animator, 1));
         }
 
         public static Dictionary<string, ItemConstructor> ParseItemManifest(string input)

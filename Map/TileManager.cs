@@ -12,7 +12,7 @@ namespace SkyTown.Map
 
         static TileManager()
         {
-            TileManifest = ResourceManager.LoadTiles($"Assets\\Tilesets\\MapSheetTileManifest");
+            TileManifest = ResourceManager.LoadTiles($"Assets\\Tilesets\\MapSheetJSON");
         }
 
         public static void Update(GameTime gameTime)

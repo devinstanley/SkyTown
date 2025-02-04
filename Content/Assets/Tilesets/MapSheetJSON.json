@@ -1,0 +1,38 @@
+[
+  {
+    "ObjectID": "grass0",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": [ 0, 0, 32, 32 ],
+    "CollisionRectangle": []
+  },
+  {
+    "ObjectID": "grass1",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": [ 32, 128, 32, 32 ],
+    "CollisionRectangle": [ 0, 0, 32, 32 ]
+  },
+  {
+    "ObjectID": "grass2",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": {
+      "FrameTime": 1,
+      "SourceRectangles": [
+        [ 0, 128, 32, 32 ],
+        [ 32, 128, 32, 32 ]
+      ]
+    },
+    "CollisionRectangle": [0, 16, 32, 16]
+  },
+  {
+    "ObjectID": "grass3",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": {
+      "FrameTime": 2,
+      "SourceRectangles": [
+        [ 64, 128, 32, 32 ],
+        [ 32, 128, 32, 32 ]
+      ]
+    },
+    "CollisionRectangle": [ 0, 0, 32, 32 ]
+  }
+]

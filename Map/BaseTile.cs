@@ -9,8 +9,7 @@ namespace SkyTown.Map
         public BaseTile(string ID, IAnimator animation, Rectangle? collisionRectangle = null) : base(ID)
         {
             CollisionRectangle = collisionRectangle;
-            var animationSequence = animation;
-            AnimationHandler = animationSequence;
+            AnimationHandler = animation;
         }
     }
 }

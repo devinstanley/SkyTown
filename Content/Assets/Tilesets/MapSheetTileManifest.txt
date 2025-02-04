@@ -2,3 +2,66 @@
 "Assets.Tilesets.MapSheet::grass1": {Rect: (32, 128, 32, 32), CollisionRect: (0, 0, 32, 32)}
 "Assets.Tilesets.MapSheet::grass2": {Rects: [1, (0, 128, 32, 32), (32, 128, 32, 32)]}
 "Assets.Tilesets.MapSheet::grass3": {Rects: [2, (64, 128, 32, 32), (32, 128, 32, 32)], CollisionRect: (0, 0, 32, 32)}
+
+[
+  {
+    "ObjectID": "grass0",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": [ 0, 0, 32, 32 ],
+    "CollisionRectangle": []
+  },
+  {
+    "ObjectID": "grass1",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": [ 32, 128, 32, 32 ],
+    "CollisionRectangle": [0, 0, 32, 32]
+  },
+  {
+    "ObjectID": "grass2",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": {
+      "FrameTime": 1,
+      "SourceRectangles": [
+        [ 0, 128, 32, 32 ],
+        [32, 128, 32, 32]
+      ]
+    },
+    "CollisionRectangle": []
+  },
+  {
+    "ObjectID": "grass3",
+    "TextureID": "Assets.Tilesets.MapSheet",
+    "IAnimator": {
+      "FrameTime": 2,
+      "SourceRectangles": [
+        [64, 128, 32, 32],
+        [32, 128, 32, 32]
+      ]
+    },
+    "CollisionRectangle": [0, 0, 32, 32]
+  }
+ ]
+
+
+  {
+    "ObjectID": "multiple_animation_sequence_grass",
+    "TextureID": "",
+    "IAnimator": {
+      "animation_sequence_key1": {
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 32, 32, 32, 32 ]
+        ]
+      },
+      "animation_sequence_key2": {
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 32, 32, 32, 32 ]
+        ]
+      }
+    },
+    "CollisionRectangle": []
+  }
+]

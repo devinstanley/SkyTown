@@ -12,7 +12,7 @@ namespace SkyTown.Entities.GameObjects
         {
             get { return FullID.Split("::")[0]; }
         }
-        public string ItemID
+        public string ObjectID
         {
             get { return FullID.Split("::")[1]; }
         }

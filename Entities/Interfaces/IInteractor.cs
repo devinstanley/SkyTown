@@ -9,11 +9,16 @@ namespace SkyTown.Entities.Interfaces
 
     public interface IHarvestable : IInteractor
     {
+        public string RequiredToolType { get; set; }
+        public int ToolUpgradeLevel { get; set; }
         public void Harvest();
     }
 
-    public interface IGrowable : IInteractor
+    public interface IGrowable : IHarvestable
     {
+        public int DaysToGrow { get; set; }
+        public bool Renewable { get; set; }
+
         public void Grow();
     }
 }
