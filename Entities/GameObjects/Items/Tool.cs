@@ -7,9 +7,11 @@ namespace SkyTown.Entities.GameObjects.Items
     {
         public string ToolType;
         public int ToolUpgradeLevel;
-        public Tool(string ID, AnimationManager animation) : base(ID, 1, animation)
+        public Tool(string ID, IAnimator animation, string toolType, int toolUpgradeLevel) : base(ID, 1, animation)
         {
             AnimationHandler = animation;
+            ToolType = toolType;
+            ToolUpgradeLevel = toolUpgradeLevel;
         }
 
         public void Interact(Player player)
@@ -21,9 +23,20 @@ namespace SkyTown.Entities.GameObjects.Items
         }
     }
 
-    public enum ToolAnimationKeys
+    public class ToolConstructor: ItemConstructor
     {
-        Default = 0,
+        public string ToolType;
+        public int ToolUpgradeLevel;
+        
+        public ToolConstructor(string ID, IAnimator animation, string toolType, int toolUpgradeLevel): base(ID, animation, 1)
+        {
+            ToolType = toolType;
+            ToolUpgradeLevel = toolUpgradeLevel;
+        }
 
+        public override Tool Construct()
+        {
+            return new Tool(base.FullID, base.Animator, ToolType, ToolUpgradeLevel);
+        }
     }
 }

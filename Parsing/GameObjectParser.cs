@@ -75,7 +75,6 @@ namespace SkyTown.Parsing
                     string objectID = element.GetProperty("ObjectID").GetString();
                     string textureID = element.GetProperty("TextureID").GetString();
                     string fullID = $"{textureID}::{objectID}";
-                    int maxStack = element.GetProperty("MaxStack").GetInt32();
 
                     // Deserialize IAnimator (using existing logic)
                     IAnimator animator = null;
@@ -83,12 +82,22 @@ namespace SkyTown.Parsing
                     {
                         animator = JsonSerializer.Deserialize<IAnimator>(element.GetRawText(), options);
                     }
+                    
 
-                    // Create the tile object
-                    ItemConstructor itemC = new ItemConstructor(fullID, animator, maxStack);
+                    if (element.TryGetProperty("MaxStack", out JsonElement maxStack))
+                    {
+                        ItemConstructor itemC = new ItemConstructor(fullID, animator, maxStack.GetInt32());
+                        itemsDict[objectID] = itemC;
+                        continue;
+                    }
 
-                    // Store it in the dictionary
-                    itemsDict[objectID] = itemC;
+                    if (element.TryGetProperty("ToolType", out JsonElement toolType) &&
+                        element.TryGetProperty("UpgradeLevel", out JsonElement toolUpgrade))
+                    {
+                        ToolConstructor toolC = new ToolConstructor(fullID, animator, toolType.GetString(), toolUpgrade.GetInt32());
+                        itemsDict[objectID] = toolC;
+                        continue;
+                    }
                 }
             }
 

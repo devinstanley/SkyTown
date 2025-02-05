@@ -8,27 +8,28 @@
   {
     "ObjectID": "pickaxe",
     "TextureID": "Assets.Items.Pickaxe",
-    "MaxStack": 1,
+    "ToolType": "Pickaxe",
+    "UpgradeLevel": 1,
     "IAnimator": [
       {
         "AnimationKey": 0,
         "FrameTime": 1,
         "SourceRectangles": [
-          [0, 0, 32, 32]
+          [ 0, 0, 16, 16 ]
         ]
       },
       {
         "AnimationKey": 1,
         "FrameTime": 1,
         "SourceRectangles": [
-          [ 0, 0, 32, 32 ]
+          [ 0, 32, 32, 32 ]
         ]
       },
       {
         "AnimationKey": 2,
         "FrameTime": 1,
         "SourceRectangles": [
-          [ 0, 0, 32, 32 ]
+          [ 0, 32, 16, 16 ]
         ]
       },
       {
@@ -36,6 +37,83 @@
         "FrameTime": 1,
         "SourceRectangles": [
           [ 0, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 4,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 0, 3, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 5, 
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 32, 32, 32 ],
+          [ 0, 35, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 6, 
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 32, 32, 32 ],
+          [ 0, 35, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 7,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 0, 3, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 8,
+        "FrameTime": 0.5,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 0, 3, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 9,
+        "FrameTime": 0.5,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 0, 3, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 10, 
+        "FrameTime": 0.5,
+        "SourceRectangles": [
+          [ 0, 32, 32, 32 ],
+          [ 0, 35, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 11,
+        "FrameTime": 0.5,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 0, 3, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 13,
+        "FrameTime": 0.2,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 32, 0, 32, 32 ],
+          [ 64, 0, 32, 32 ],
+          [ 96, 0, 32, 32 ],
+          [ 128, 0, 32, 32 ],
+          [ 160, 0, 32, 32 ],
+          [ 192, 0, 32, 32 ]
         ]
       }
     ]

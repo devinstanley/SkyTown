@@ -9,6 +9,7 @@ namespace SkyTown.Entities.Interfaces
 {
     public interface IAnimator
     {
+        bool AnimationLocked { get; }
         int Height { get; }
         int Width { get; }
         void Update(GameTime gameTime);
@@ -20,6 +21,7 @@ namespace SkyTown.Entities.Interfaces
         private readonly Dictionary<object, Animation> _animations = new();
         private object CurrentAnimationKey;
         private object PreviousAnimationKey;
+        public bool AnimationLocked { get { return _animations[CurrentAnimationKey].AnimationLocked; } }
 
         public int Height
         {
@@ -37,8 +39,12 @@ namespace SkyTown.Entities.Interfaces
             PreviousAnimationKey = key; //Ensures previous animation key exists as fall back
         }
 
-        public void UpdateAnimationSequence(object key)
+        public void UpdateAnimationSequence(object key, bool animationLock = false)
         {
+            if (AnimationLocked)
+            {
+                return;
+            }
             if (_animations.ContainsKey(key))
             {
                 PreviousAnimationKey = CurrentAnimationKey;
@@ -47,7 +53,12 @@ namespace SkyTown.Entities.Interfaces
             else
             {
                 _animations[PreviousAnimationKey].Reset();
-                PreviousAnimationKey = CurrentAnimationKey;
+                CurrentAnimationKey = PreviousAnimationKey;
+            }
+
+            if (animationLock)
+            {
+                _animations[CurrentAnimationKey].StartLockedAnimation();
             }
         }
 
@@ -61,7 +72,7 @@ namespace SkyTown.Entities.Interfaces
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale = -1)
         {
-            _animations[PreviousAnimationKey].Draw(spriteBatch, pos, scale);
+            _animations[CurrentAnimationKey].Draw(spriteBatch, pos, scale);
         }
     }
 
@@ -75,6 +86,12 @@ namespace SkyTown.Entities.Interfaces
         private double RemainingTimeOnFrame;
         private bool IsAnimated = true;
 
+        private double RemainingLock { get; set; }
+        private double TotalDuration
+        {
+            get { return TotalFrames * TimePerFrame; }
+        }
+        public bool AnimationLocked {  get; set; }
         public int Height
         {
             get { return FrameSources[CurrentFrame].Height; }
@@ -104,11 +121,31 @@ namespace SkyTown.Entities.Interfaces
             RemainingTimeOnFrame = TimePerFrame;
         }
 
+        public void StartLockedAnimation()
+        {
+            if (IsAnimated)
+            {
+                Reset();
+                AnimationLocked = true;
+                RemainingLock = TotalDuration;
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             if (!IsAnimated)
             {
                 return;
+            }
+
+            if (RemainingLock <= 0)
+            {
+                AnimationLocked = false;
+                RemainingLock = 0;
+            }
+            else
+            {
+                RemainingLock -= gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             RemainingTimeOnFrame -= gameTime.ElapsedGameTime.TotalSeconds;

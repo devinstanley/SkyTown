@@ -8,6 +8,7 @@ using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SkyTown.Entities.Characters
 {
@@ -23,7 +24,6 @@ namespace SkyTown.Entities.Characters
         private Vector2 _minPos, _maxPos;
 
         private int AnimationSequence;
-        private bool AnimationLock = false;
 
         public Player(string ID) : base(ID)
         {
@@ -113,6 +113,12 @@ namespace SkyTown.Entities.Characters
                 return;
             }
 
+            if (input.IsRightClickDown() && inventory.CurrentItem is Tool t && !t.AnimationHandler.AnimationLocked)
+            {
+                StartSpecialAnimation(0, true);
+                Debug.WriteLine("Started Animation!");
+            }
+
             //Handle Input Update
             float displacementScalar = WalkingSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             UpdateVelocity(input);
@@ -135,18 +141,24 @@ namespace SkyTown.Entities.Characters
             //Draw platyer current held item
             if (inventory.CurrentItem != null)
             {
-                inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X, Position.Y), 0.25f);
+                if (inventory.CurrentItem is Tool t)
+                {
+                    inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X + Width/4, Position.Y), 1f);
+                }
+                else
+                {
+                    inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X, Position.Y), 0.25f);
+                }
             }
         }
 
-        public void StartSpecialAnimation(int animationRoot)
+        public void StartSpecialAnimation(int animationRoot, bool animLock)
         {
             int directionKey = AnimationSequence % 4;
             int animationKey = animationRoot + directionKey;
             if (inventory.CurrentItem.AnimationHandler is AnimationManager animator)
             {
-                AnimationLock = true;
-                animator.UpdateAnimationSequence(animationKey);
+                animator.UpdateAnimationSequence(13, animLock);
             }
             if (AnimationHandler is AnimationManager animationManager)
             {
@@ -168,19 +180,19 @@ namespace SkyTown.Entities.Characters
 
                 if (angle <= 3 * MathHelper.PiOver4 + 0.1 && angle >= MathHelper.PiOver4 - 0.1)
                 {
-                    AnimationSequence = 7;
+                    AnimationSequence = 7; //Left
                 }
                 else if (angle > -3 * MathHelper.PiOver4 - 0.1 && angle < -MathHelper.PiOver4 + 0.1)
                 {
-                    AnimationSequence = 6;
+                    AnimationSequence = 6; //Right
                 }
                 else if (angle > -MathHelper.PiOver4 && angle < MathHelper.PiOver4)
                 {
-                    AnimationSequence = 5;
+                    AnimationSequence = 5; //Toward
                 }
                 else if (angle < -3 * MathHelper.PiOver4 || angle > 3 * MathHelper.PiOver4)
                 {
-                    AnimationSequence = 4;
+                    AnimationSequence = 4; //Away
                 }
 
                 if (isRunning)
@@ -191,6 +203,11 @@ namespace SkyTown.Entities.Characters
 
             var animationManager = (AnimationManager)AnimationHandler;
             animationManager.UpdateAnimationSequence(AnimationSequence);
+
+            if (inventory.CurrentItem is Tool tool && tool.AnimationHandler is AnimationManager animation)
+            {
+                animation.UpdateAnimationSequence(AnimationSequence);
+            }
         }
 
 
@@ -198,7 +215,7 @@ namespace SkyTown.Entities.Characters
         {
             
             Velocity = Vector2.Zero;
-            if (AnimationLock)
+            if (inventory.CurrentItem is Tool tool && tool.AnimationHandler is AnimationManager animation && animation.AnimationLocked)
             {
                 return;
             }

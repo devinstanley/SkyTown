@@ -36,7 +36,7 @@ namespace SkyTown.Entities.GameObjects.Items
             this.MaxStack = MaxStack;
         }
 
-        public Item Construct()
+        public virtual Item Construct()
         {
             return new Item(FullID, MaxStack, Animator);
         }
