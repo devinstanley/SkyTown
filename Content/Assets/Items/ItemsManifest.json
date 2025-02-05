@@ -2,7 +2,42 @@
   {
     "ObjectID": "berries",
     "TextureID": "Assets.Items.BerryBush",
-    "IAnimator": [64, 0, 32, 32],
+    "IAnimator": [ 64, 0, 32, 32 ],
     "MaxStack": 32
+  },
+  {
+    "ObjectID": "pickaxe",
+    "TextureID": "Assets.Items.Pickaxe",
+    "MaxStack": 1,
+    "IAnimator": [
+      {
+        "AnimationKey": 0,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [0, 0, 32, 32]
+        ]
+      },
+      {
+        "AnimationKey": 1,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 2,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 3,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ]
+        ]
+      }
+    ]
   }
 ]

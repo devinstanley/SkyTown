@@ -7,12 +7,36 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using System.Text.Json.Nodes;
 
 namespace SkyTown.Parsing
 {
     //Parses TextureID and Animation Info From Any Object
     public class IAnimatorConverter : JsonConverter<IAnimator>
     {
+        public static Animation ParseAnimationObject(JsonElement element, string textureID)
+        {
+            // More complex sequence
+            if (element.TryGetProperty("FrameTime", out JsonElement frameTimeElement) &&
+                element.TryGetProperty("SourceRectangles", out JsonElement rectElements))
+            {
+                double frameTime = frameTimeElement.GetDouble();
+                List<Rectangle> frames = new List<Rectangle>();
+                foreach (var item in rectElements.EnumerateArray())
+                {
+                    frames.Add(new Rectangle(
+                        item[0].GetInt32(), // X
+                        item[1].GetInt32(), // Y
+                        item[2].GetInt32(), // Width
+                        item[3].GetInt32()  // Height
+                    ));
+                }
+
+                return new Animation(textureID, frameTime, frames);
+            }
+            throw new JsonException("Unknown IAnimator type.");
+        }
+
         public override IAnimator Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             // Read the parent JsonElement
@@ -26,6 +50,19 @@ namespace SkyTown.Parsing
             {
                 if (animatorElement.ValueKind == JsonValueKind.Array)
                 {
+                    //Handle Animation Manager - If array item is object, parse here
+                    if (animatorElement[0].ValueKind == JsonValueKind.Object)
+                    {
+                        AnimationManager animation = new();
+                        foreach (var animationSequence in animatorElement.EnumerateArray())
+                        {
+                            if (animationSequence.TryGetProperty("AnimationKey", out JsonElement key))
+                            {
+                                animation.AddAnimation(key.GetInt32(), ParseAnimationObject(animationSequence, textureID));
+                            }
+                        }
+                        return animation;
+                    }
                     // Handle static animation: Convert a single int[4] array into a Rectangle
                     var rect = new Rectangle(
                         animatorElement[0].GetInt32(), // X
@@ -37,24 +74,7 @@ namespace SkyTown.Parsing
                 }
                 else if (animatorElement.ValueKind == JsonValueKind.Object)
                 {
-                    // More complex sequence
-                    if (animatorElement.TryGetProperty("FrameTime", out JsonElement frameTimeElement) &&
-                        animatorElement.TryGetProperty("SourceRectangles", out JsonElement rectElements))
-                    {
-                        double frameTime = frameTimeElement.GetDouble();
-                        List<Rectangle> frames = new List<Rectangle>();
-                        foreach (var item in rectElements.EnumerateArray())
-                        {
-                            frames.Add(new Rectangle(
-                                item[0].GetInt32(), // X
-                                item[1].GetInt32(), // Y
-                                item[2].GetInt32(), // Width
-                                item[3].GetInt32()  // Height
-                            ));
-                        }
-                       
-                        return new Animation(textureID, frameTime, frames);
-                    }
+                    return ParseAnimationObject(animatorElement, textureID);
                 }
             }
 
