@@ -81,10 +81,10 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Items/BerryBush.png
 
-#begin Assets/Items/ItemsManifest.txt
+#begin Assets/Items/ItemsManifest.json
 /importer:TextImporter
 /processor:TextProcessor
-/build:Assets/Items/ItemsManifest.txt
+/build:Assets/Items/ItemsManifest.json
 
 #begin Assets/Maps/TestMap/Layer0.csv
 /importer:CsvImporter

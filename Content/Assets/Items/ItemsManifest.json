@@ -1,0 +1,8 @@
+[
+  {
+    "ObjectID": "berries",
+    "TextureID": "Assets.Items.BerryBush",
+    "IAnimator": [64, 0, 32, 32],
+    "MaxStack": 32
+  }
+]

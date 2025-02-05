@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using SkyTown.Entities.GameObjects.Items;
 
 namespace SkyTown.Parsing
 {
@@ -55,6 +56,46 @@ namespace SkyTown.Parsing
         }
 
         public override void Write(Utf8JsonWriter writer, Dictionary<string, BaseTile> value, JsonSerializerOptions options)
+        {
+            throw new NotImplementedException(); // Only implementing deserialization for now
+        }
+    }
+
+    public class ItemDictionaryConverter : JsonConverter<Dictionary<string, ItemConstructor>>
+    {
+        public override Dictionary<string, ItemConstructor> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            var itemsDict = new Dictionary<string, ItemConstructor>();
+
+            using (JsonDocument doc = JsonDocument.ParseValue(ref reader))
+            {
+                foreach (JsonElement element in doc.RootElement.EnumerateArray())
+                {
+                    // Extract base properties
+                    string objectID = element.GetProperty("ObjectID").GetString();
+                    string textureID = element.GetProperty("TextureID").GetString();
+                    string fullID = $"{textureID}::{objectID}";
+                    int maxStack = element.GetProperty("MaxStack").GetInt32();
+
+                    // Deserialize IAnimator (using existing logic)
+                    IAnimator animator = null;
+                    if (element.TryGetProperty("IAnimator", out JsonElement animatorElement))
+                    {
+                        animator = JsonSerializer.Deserialize<IAnimator>(element.GetRawText(), options);
+                    }
+
+                    // Create the tile object
+                    ItemConstructor itemC = new ItemConstructor(fullID, animator, maxStack);
+
+                    // Store it in the dictionary
+                    itemsDict[objectID] = itemC;
+                }
+            }
+
+            return itemsDict;
+        }
+
+        public override void Write(Utf8JsonWriter writer, Dictionary<string, ItemConstructor> value, JsonSerializerOptions options)
         {
             throw new NotImplementedException(); // Only implementing deserialization for now
         }

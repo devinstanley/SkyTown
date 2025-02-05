@@ -1,1 +1,0 @@
-"Assets.Items.BerryBush::berries": {Rect: (64, 0, 32, 32), MaxStack: 32}
