@@ -1,5 +1,6 @@
 ﻿using SkyTown.Entities.Characters;
 using SkyTown.Entities.Interfaces;
+using SkyTown.Map;
 
 namespace SkyTown.Entities.GameObjects.Items
 {
@@ -14,12 +15,9 @@ namespace SkyTown.Entities.GameObjects.Items
             ToolUpgradeLevel = toolUpgradeLevel;
         }
 
-        public void Interact(Player player)
+        public void Interact(Player player, MapScene mapScene)
         {
-            if (AnimationHandler is AnimationManager animation)
-            {
-                //animation.UpdateAnimationSequence()
-            }
+            
         }
     }
 

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Interfaces;
+using SkyTown.Map;
 using System.Collections.Generic;
 
 namespace SkyTown.Entities.GameObjects.Items
@@ -23,7 +24,7 @@ namespace SkyTown.Entities.GameObjects.Items
             base.Update(gameTime);
         }
 
-        public void Interact(Player player)
+        public void Interact(Player player, MapScene mapScene)
         {
 
         }
