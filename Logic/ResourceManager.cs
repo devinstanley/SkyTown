@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Map;
 using SkyTown.Parsing;
@@ -79,6 +80,17 @@ namespace SkyTown.Logic
                 PropertyNameCaseInsensitive = true
             };
             return JsonSerializer.Deserialize<Dictionary<string, ItemConstructor>>(json, options);
+        }
+
+        public static Dictionary<string, GameObjectConstructor> LoadGameObjects(string manifestID)
+        {
+            string json = content.Load<string>(manifestID);
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new ItemDictionaryConverter(), new IAnimatorConverter() }, // Add both converters
+                PropertyNameCaseInsensitive = true
+            };
+            return JsonSerializer.Deserialize<Dictionary<string, GameObjectConstructor>>(json, options);
         }
     }
 }

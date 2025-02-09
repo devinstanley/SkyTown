@@ -19,7 +19,7 @@ namespace SkyTown.Entities.GameObjects
         public bool DispenseReady = true;
         public double CoolDown;
         private double RemainingCoolDown;
-        public DispensableObject(string ID, IAnimator animator, string dispencedItem, int numDispensed, double coolDown) : base(ID)
+        public DispensableObject(string ID, IAnimator animator, string dispencedItem, int numDispensed, double coolDown, Rectangle? collisionRect) : base(ID, collisionRect)
         {
             AnimationHandler = animator;
             DispensedItemID = dispencedItem;
@@ -75,6 +75,24 @@ namespace SkyTown.Entities.GameObjects
                 spawned_item.Position = Position + new Vector2(rand.Next(3), rand.Next(3));
                 mapScene.SceneObjects.Add(spawned_item);
             }
+        }
+    }
+
+    public class DispensableObjectConstructor: GameObjectConstructor
+    {
+        string DispensedItem { get; set; }
+        int NumDispensed { get; set; }
+        double CoolDown {  get; set; }
+        public DispensableObjectConstructor(string ID, IAnimator animator, Rectangle? collisionRect, string DispensedItem, int NumDispensed, double CoolDown): base(ID, animator, collisionRect)
+        {
+            this.DispensedItem = DispensedItem;
+            this.NumDispensed = NumDispensed;
+            this.CoolDown = CoolDown;
+        }
+
+        public override GameObject Construct()
+        {
+            return new DispensableObject(base.FullID, base.Animator, DispensedItem, NumDispensed, CoolDown, base.CollisionRect);
         }
     }
 }

@@ -1,0 +1,7 @@
+[
+    {
+        "ObjectID": "berrybush",
+        "TextureID": "Assets.Items.BerryBush",
+        "IAnimator": [ 64, 0, 32, 32 ],
+    }
+]
