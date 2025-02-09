@@ -13,7 +13,8 @@ namespace SkyTown.Logic
 {
     public class InteractionManager
     {
-        
+
+        int InteractionDistance = 40;
         public InteractionManager()
         {
 
@@ -28,15 +29,52 @@ namespace SkyTown.Logic
 
         }
 
+        public bool ObjectClicked(InputManager inputManager, GameObject gameObject)
+        {
+            if (!inputManager.IsLeftClicked())
+            {
+                return false;
+            }
+            Rectangle interactionRect;
+            if (gameObject.CollisionRectangle != null)
+            {
+                Rectangle hitbox = (Rectangle)gameObject.CollisionRectangle;
+                interactionRect = new(
+                            (int)gameObject.Position.X + hitbox.Left - gameObject.Width / 2,
+                            (int)gameObject.Position.Y + hitbox.Top - gameObject.Height / 2,
+                            gameObject.Width,
+                            gameObject.Height
+                        );
+            }
+            else
+            {
+                interactionRect = new Rectangle(
+                    (int)gameObject.Position.X, 
+                    (int)gameObject.Position.X, 
+                    gameObject.Width, 
+                    gameObject.Height);
+            }
+
+            if (interactionRect.Contains(inputManager.GetMousePosition()))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public void HandlePlayerDispenserInteractions(InputManager inputManager, MapScene mapScene, Player player)
         {
-            if (inputManager.IsRightClickDown())
-            {
-                List<DispensableObject> ItemsCopy = mapScene.SceneObjects.OfType<DispensableObject>().ToList();
+            List<DispensableObject> DispensableCopy = mapScene.SceneObjects.OfType<DispensableObject>().ToList();
 
-                foreach (DispensableObject item in ItemsCopy)
+            foreach (DispensableObject dispensable in DispensableCopy)
+            {
+                float dist = (player.Position - dispensable.Position).Length();
+                if (dist < InteractionDistance &&
+                    ObjectClicked(inputManager, dispensable))
                 {
-                    item.Interact(player, mapScene);
+                    {
+                        dispensable.Interact(player, mapScene);
+                    }
                 }
             }
         }

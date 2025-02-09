@@ -12,7 +12,6 @@ namespace SkyTown.Entities.GameObjects.Items
 
     public class Item : GameObject, IInteractor
     {
-        int InteractionDistance = 40;
         int ItemFollowDistance = 100;
         int ItemFollowSpeed = 200;
 
