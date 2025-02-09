@@ -82,11 +82,17 @@ namespace SkyTown.Parsing
                     {
                         animator = JsonSerializer.Deserialize<IAnimator>(element.GetRawText(), options);
                     }
-                    
+
+                    Animation inventoryAnimation = null;
+                    if (element.TryGetProperty("InventorySprite", out JsonElement invAnimatorElement))
+                    {
+                        inventoryAnimation = StaticElementConverters.ParseAnimationObject(invAnimatorElement, textureID);
+                    }
+
 
                     if (element.TryGetProperty("MaxStack", out JsonElement maxStack))
                     {
-                        ItemConstructor itemC = new ItemConstructor(fullID, animator, maxStack.GetInt32());
+                        ItemConstructor itemC = new ItemConstructor(fullID, animator, maxStack.GetInt32(), inventoryAnimation);
                         itemsDict[objectID] = itemC;
                         continue;
                     }
@@ -94,7 +100,7 @@ namespace SkyTown.Parsing
                     if (element.TryGetProperty("ToolType", out JsonElement toolType) &&
                         element.TryGetProperty("UpgradeLevel", out JsonElement toolUpgrade))
                     {
-                        ToolConstructor toolC = new ToolConstructor(fullID, animator, toolType.GetString(), toolUpgrade.GetInt32());
+                        ToolConstructor toolC = new ToolConstructor(fullID, animator, inventoryAnimation, toolType.GetString(), toolUpgrade.GetInt32());
                         itemsDict[objectID] = toolC;
                         continue;
                     }

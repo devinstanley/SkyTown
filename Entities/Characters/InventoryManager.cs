@@ -220,7 +220,7 @@ namespace SkyTown.Entities.Characters
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)
         {
-            Item.Draw(spriteBatch, pos, scale);
+            Item.DrawInInventory(spriteBatch, pos, scale);
             string amt = Quantiy.ToString();
             SpriteFont font = ResourceManager.LoadFont("Assets.Font.Arial");
             Vector2 size = font.MeasureString(amt);

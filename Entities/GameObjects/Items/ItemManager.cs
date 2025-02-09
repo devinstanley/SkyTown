@@ -27,18 +27,20 @@ namespace SkyTown.Entities.GameObjects.Items
     {
         public string FullID { get; set; }
         public IAnimator Animator { get; set; }
+        public Animation InventoryAnimation { get; set; }
         public int MaxStack { get; set; }
 
-        public ItemConstructor(string FullID, IAnimator Animator, int MaxStack)
+        public ItemConstructor(string FullID, IAnimator Animator, int MaxStack, Animation InventoryAnimation)
         {
             this.FullID = FullID;
             this.Animator = Animator;
             this.MaxStack = MaxStack;
+            this.InventoryAnimation = InventoryAnimation;
         }
 
         public virtual Item Construct()
         {
-            return new Item(FullID, MaxStack, Animator);
+            return new Item(FullID, MaxStack, Animator, InventoryAnimation);
         }
     }
 }

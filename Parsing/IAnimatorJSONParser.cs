@@ -14,28 +14,6 @@ namespace SkyTown.Parsing
     //Parses TextureID and Animation Info From Any Object
     public class IAnimatorConverter : JsonConverter<IAnimator>
     {
-        public static Animation ParseAnimationObject(JsonElement element, string textureID)
-        {
-            // More complex sequence
-            if (element.TryGetProperty("FrameTime", out JsonElement frameTimeElement) &&
-                element.TryGetProperty("SourceRectangles", out JsonElement rectElements))
-            {
-                double frameTime = frameTimeElement.GetDouble();
-                List<Rectangle> frames = new List<Rectangle>();
-                foreach (var item in rectElements.EnumerateArray())
-                {
-                    frames.Add(new Rectangle(
-                        item[0].GetInt32(), // X
-                        item[1].GetInt32(), // Y
-                        item[2].GetInt32(), // Width
-                        item[3].GetInt32()  // Height
-                    ));
-                }
-
-                return new Animation(textureID, frameTime, frames);
-            }
-            throw new JsonException("Unknown IAnimator type.");
-        }
 
         public override IAnimator Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
@@ -58,7 +36,7 @@ namespace SkyTown.Parsing
                         {
                             if (animationSequence.TryGetProperty("AnimationKey", out JsonElement key))
                             {
-                                animation.AddAnimation(key.GetInt32(), ParseAnimationObject(animationSequence, textureID));
+                                animation.AddAnimation(key.GetInt32(), StaticElementConverters.ParseAnimationObject(animationSequence, textureID));
                             }
                         }
                         return animation;
@@ -74,7 +52,7 @@ namespace SkyTown.Parsing
                 }
                 else if (animatorElement.ValueKind == JsonValueKind.Object)
                 {
-                    return ParseAnimationObject(animatorElement, textureID);
+                    return StaticElementConverters.ParseAnimationObject(animatorElement, textureID);
                 }
             }
 
@@ -84,6 +62,43 @@ namespace SkyTown.Parsing
         public override void Write(Utf8JsonWriter writer, IAnimator value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public static class StaticElementConverters
+    {
+        public static Animation ParseAnimationObject(JsonElement element, string textureID)
+        {
+            // More complex sequence
+            if (element.ValueKind == JsonValueKind.Object &&
+                element.TryGetProperty("FrameTime", out JsonElement frameTimeElement) &&
+                element.TryGetProperty("SourceRectangles", out JsonElement rectElements))
+            {
+                double frameTime = frameTimeElement.GetDouble();
+                List<Rectangle> frames = new List<Rectangle>();
+                foreach (var item in rectElements.EnumerateArray())
+                {
+                    frames.Add(new Rectangle(
+                        item[0].GetInt32(), // X
+                        item[1].GetInt32(), // Y
+                        item[2].GetInt32(), // Width
+                        item[3].GetInt32()  // Height
+                    ));
+                }
+
+                return new Animation(textureID, frameTime, frames);
+            }
+            else if (element.ValueKind == JsonValueKind.Array && element[0].ValueKind == JsonValueKind.Number)
+            {
+                var rect = new Rectangle(
+                        element[0].GetInt32(), // X
+                        element[1].GetInt32(), // Y
+                        element[2].GetInt32(), // Width
+                        element[3].GetInt32()  // Height
+                    );
+                return new Animation(textureID, 1, new List<Rectangle>([rect]));
+            }
+            throw new JsonException("Unknown IAnimator type.");
         }
     }
 }
