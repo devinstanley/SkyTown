@@ -27,10 +27,6 @@ namespace SkyTown.Map
         public Vector2 MapDimension;
 
         public List<Dictionary<Vector2, string>> TileMapLayers = new();
-
-        //Handles Majority of Collision and Interaction
-        private CollisionManager collisionManager = new();
-        private InteractionManager interactionManager = new();
         public List<GameObject> SceneObjects = new(); //Attainable Items
 
         //Holds Player
@@ -86,8 +82,8 @@ namespace SkyTown.Map
             }
 
             Player1.Update(inputManager);
-            collisionManager.Update(this, Player1);
-            interactionManager.Update(inputManager, this, Player1);
+            CollisionManager.Update(this, Player1);
+            InteractionManager.Update(inputManager, this, Player1);
             ViewCamera.SetPosition(Player1.Position);
         }
 

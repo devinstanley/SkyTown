@@ -6,15 +6,14 @@ using System.Collections.Generic;
 
 namespace SkyTown.LogicManagers
 {
-    public class CollisionManager
+    public static class CollisionManager
     {
-        int tileSize = 32;
 
-        public CollisionManager()
+        static CollisionManager()
         {
         }
 
-        public void Update(MapScene scene, Player player)
+        public static void Update(MapScene scene, Player player)
         {
             HandlePlayerMapCollisions(scene.TileMapLayers, player);
             //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
@@ -23,7 +22,7 @@ namespace SkyTown.LogicManagers
             player.UpdatePosition();
         }
 
-        public void HandlePlayerObjectCollisions(List<GameObject> gameObjects, Player player)
+        public static void  HandlePlayerObjectCollisions(List<GameObject> gameObjects, Player player)
         {
             var futurePlayerRectX = new Rectangle(
                     (int)(player.Position.X + player.Velocity.X + player.CollisionRectangle.Value.X - player.Width / 2),
@@ -66,7 +65,7 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        public void HandlePlayerMapCollisions(List<Dictionary<Vector2, string>> TileMapLayers, Player player)
+        public static void HandlePlayerMapCollisions(List<Dictionary<Vector2, string>> TileMapLayers, Player player)
         {
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {
@@ -118,11 +117,11 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        public void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager, Player player)
+        public static void HandlePlayerNPCCollisions(GameTime gameTime, NPCManager npcManager, Player player)
         {
             var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                (int)(player.Position.X + player.Velocity.X) - TileManager.BASE_TILESIZE / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)player.Position.Y - TileManager.BASE_TILESIZE / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
             );
@@ -130,8 +129,8 @@ namespace SkyTown.LogicManagers
             foreach (NPC npc in npcManager.NPCs)
             {
                 Rectangle collisionRect = new(
-                    (int)npc.Position.X - npc.Width / 2 + tileSize / 2,
-                    (int)npc.Position.Y - npc.Height / 2 + tileSize / 2,
+                    (int)npc.Position.X - npc.Width / 2 + TileManager.BASE_TILESIZE / 2,
+                    (int)npc.Position.Y - npc.Height / 2 + TileManager.BASE_TILESIZE / 2,
                     npc.Width,
                     npc.Height
                 );
@@ -144,8 +143,8 @@ namespace SkyTown.LogicManagers
             }
 
             var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
+                (int)player.Position.X - TileManager.BASE_TILESIZE / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
+                (int)(player.Position.Y + player.Velocity.Y) - TileManager.BASE_TILESIZE / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
                 player.CollisionRectangle.Value.Width,
                 player.CollisionRectangle.Value.Height
             );
@@ -153,8 +152,8 @@ namespace SkyTown.LogicManagers
             foreach (NPC npc in npcManager.NPCs)
             {
                 Rectangle collisionRect = new(
-                    (int)npc.Position.X - npc.Width / 2 + tileSize / 2,
-                    (int)npc.Position.Y - npc.Height / 2 + tileSize / 2,
+                    (int)npc.Position.X - npc.Width / 2 + TileManager.BASE_TILESIZE / 2,
+                    (int)npc.Position.Y - npc.Height / 2 + TileManager.BASE_TILESIZE / 2,
                     npc.Width,
                     npc.Height
                 );
@@ -169,7 +168,7 @@ namespace SkyTown.LogicManagers
 
 
         #region Sliding Collision Resolvers
-        private void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect, Player player)
+        private static void ResolveYSlidingCollision(Rectangle futurePlayerRectY, Rectangle collisionRect, Player player)
         {
             while (futurePlayerRectY.Intersects(collisionRect))
             {
@@ -192,7 +191,7 @@ namespace SkyTown.LogicManagers
             }
         }
 
-        private void ResolveXSlidingCollision(Rectangle futurePlayerRectX, Rectangle collisionRect, Player player)
+        private static void ResolveXSlidingCollision(Rectangle futurePlayerRectX, Rectangle collisionRect, Player player)
         {
             while (futurePlayerRectX.Intersects(collisionRect))
             {
@@ -217,15 +216,15 @@ namespace SkyTown.LogicManagers
         #endregion
 
         #region Collision Tile Identification
-        private List<Vector2> GetCollidableTilesAroundPlayer(Rectangle playerRect, Dictionary<Vector2, string> collisionMap)
+        private static List<Vector2> GetCollidableTilesAroundPlayer(Rectangle playerRect, Dictionary<Vector2, string> collisionMap)
         {
             List<Vector2> collidables = new();
 
 
-            int leftTile = (int)(playerRect.Left / tileSize);
-            int rightTile = (int)(playerRect.Right / tileSize);
-            int topTile = (int)(playerRect.Top / tileSize);
-            int bottomTile = (int)(playerRect.Bottom / tileSize);
+            int leftTile = (int)(playerRect.Left / TileManager.BASE_TILESIZE);
+            int rightTile = (int)(playerRect.Right / TileManager.BASE_TILESIZE);
+            int topTile = (int)(playerRect.Top / TileManager.BASE_TILESIZE);
+            int bottomTile = (int)(playerRect.Bottom / TileManager.BASE_TILESIZE);
 
             // Loop through the bounding box to collect collidable tiles
             for (int x = leftTile; x <= rightTile + 1; x++)

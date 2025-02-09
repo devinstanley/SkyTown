@@ -11,16 +11,16 @@ using System.Linq;
 
 namespace SkyTown.Logic
 {
-    public class InteractionManager
+    public static class InteractionManager
     {
 
-        int InteractionDistance = 40;
-        public InteractionManager()
+        static int InteractionDistance = 40;
+        static InteractionManager()
         {
 
         }
 
-        public void Update(InputManager inputManager, MapScene mapScene, Player player)
+        public static void Update(InputManager inputManager, MapScene mapScene, Player player)
         {
             //HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
             HandlePlayerItemInteractions(mapScene, player);
@@ -29,7 +29,7 @@ namespace SkyTown.Logic
 
         }
 
-        public bool ObjectClicked(InputManager inputManager, GameObject gameObject)
+        public static bool ObjectClicked(InputManager inputManager, GameObject gameObject)
         {
             if (!inputManager.IsLeftClicked())
             {
@@ -62,7 +62,7 @@ namespace SkyTown.Logic
             return false;
         }
 
-        public void HandlePlayerDispenserInteractions(InputManager inputManager, MapScene mapScene, Player player)
+        public static void HandlePlayerDispenserInteractions(InputManager inputManager, MapScene mapScene, Player player)
         {
             List<DispensableObject> DispensableCopy = mapScene.SceneObjects.OfType<DispensableObject>().ToList();
 
@@ -127,7 +127,7 @@ namespace SkyTown.Logic
         }
         */
 
-        public void HandlePlayerItemInteractions(MapScene mapScene, Player player)
+        public static void HandlePlayerItemInteractions(MapScene mapScene, Player player)
         {
             List<Item> ItemsCopy = mapScene.SceneObjects.OfType<Item>().ToList();
 
