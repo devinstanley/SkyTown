@@ -17,7 +17,7 @@ namespace SkyTown.Entities.GameObjects.Items
         int ItemFollowSpeed = 200;
 
         public int MaxStack;
-        private Animation InventoryAnimation;
+        public Animation InventoryAnimation;
         public Item(string id, int maxStack, IAnimator animation, Animation inventoryAnimation) : base(id)
         {
             MaxStack = maxStack;

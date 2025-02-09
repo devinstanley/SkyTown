@@ -147,8 +147,8 @@ namespace SkyTown.HUD.Inventory
                 slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
                 position = new(
-                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Width / 2 - InventoryTexture.Width / 2,
-                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.Height / 2 - InventoryTexture.Height / 2
+                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Width / 2 - InventoryTexture.Width / 2,
+                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Height / 2 - InventoryTexture.Height / 2
                     );
 
                 if (slotY == 3)
