@@ -18,7 +18,6 @@ namespace SkyTown.LogicManagers
         {
             HandlePlayerMapCollisions(gameTime, scene.TileMapLayers, player);
             //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
-            HandlePlayerEntityCollisions(gameTime, scene.SceneHarvestables, player);
 
             player.UpdatePosition();
         }
@@ -71,55 +70,6 @@ namespace SkyTown.LogicManagers
 
                         ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
                     }
-                }
-            }
-        }
-
-        public void HandlePlayerEntityCollisions(GameTime gameTime, List<HarvestableObject> SceneEntities, Player player)
-        {
-            var futurePlayerRectX = new Rectangle(
-                (int)(player.Position.X + player.Velocity.X) - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)player.Position.Y - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
-                player.CollisionRectangle.Value.Width,
-                player.CollisionRectangle.Value.Height
-            );
-
-            foreach (HarvestableObject entity in SceneEntities)
-            {
-                Rectangle collisionRect = new(
-                    (int)entity.Position.X - entity.Width / 2 + tileSize / 2,
-                    (int)entity.Position.Y - entity.Height / 2 + tileSize / 2,
-                    entity.Width,
-                    entity.Height
-                );
-
-                //Is Sliding Collision for Player
-                if (futurePlayerRectX.Intersects(collisionRect))
-                {
-                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
-                }
-            }
-
-            var futurePlayerRectY = new Rectangle(
-                (int)player.Position.X - tileSize / 2 + player.Width / 2 - player.CollisionRectangle.Value.Width / 2 + (int)player.CollisionRectangle.Value.X,
-                (int)(player.Position.Y + player.Velocity.Y) - tileSize / 2 + player.Height / 2 - player.CollisionRectangle.Value.Height / 2 + (int)player.CollisionRectangle.Value.Y,
-                player.CollisionRectangle.Value.Width,
-                player.CollisionRectangle.Value.Height
-            );
-
-            foreach (HarvestableObject entity in SceneEntities)
-            {
-                Rectangle collisionRect = new(
-                    (int)entity.Position.X - entity.Width / 2 + tileSize / 2,
-                    (int)entity.Position.Y - entity.Height / 2 + tileSize / 2,
-                    entity.Width,
-                    entity.Height
-                );
-
-                //Is Sliding Collision for Player
-                if (futurePlayerRectY.Intersects(collisionRect))
-                {
-                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
                 }
             }
         }

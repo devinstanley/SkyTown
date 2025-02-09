@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
+using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System.Collections.Generic;
@@ -30,8 +31,7 @@ namespace SkyTown.Map
         //Handles Majority of Collision and Interaction
         private CollisionManager collisionManager = new();
         private InteractionManager interactionManager = new();
-        public List<Item> SceneItems = new(); //Attainable Items
-        public List<HarvestableObject> SceneHarvestables = new(); //Non-map collideables and interactables
+        public List<GameObject> SceneObjects = new(); //Attainable Items
 
         //Holds Player
         private Player Player1;
@@ -69,13 +69,9 @@ namespace SkyTown.Map
         public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
         {
             TileManager.Update(gameTime);
-            foreach (Item item in SceneItems)
+            foreach (Item item in SceneObjects)
             {
                 item.Update(gameTime);
-            }
-            foreach (HarvestableObject entity in SceneHarvestables)
-            {
-                entity.Update(gameTime);
             }
 
             Player1.Update(gameTime, inputManager);
@@ -96,13 +92,9 @@ namespace SkyTown.Map
             }
 
             //Draw All Items/Entities
-            foreach (var e in SceneItems)
+            foreach (var e in SceneObjects)
             {
                 e.Draw(spriteBatch, e.Position, 0.5f);
-            }
-            foreach (var e in SceneHarvestables)
-            {
-                e.Draw(spriteBatch, e.Position);
             }
 
             //Draw Player
