@@ -29,7 +29,7 @@ namespace SkyTown.Entities.Interfaces
         }
         public int Width
         {
-            get { return _animations[(int)CurrentAnimationKey].Width; }
+            get { return _animations[CurrentAnimationKey].Width; }
         }
 
         public void AddAnimation(object key, Animation animation)

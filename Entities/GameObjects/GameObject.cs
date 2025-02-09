@@ -29,9 +29,10 @@ namespace SkyTown.Entities.GameObjects
             get { return AnimationHandler.Width; }
         }
 
-        public GameObject(string id)
+        public GameObject(string id, Rectangle? collisionRect = null)
         {
             FullID = id;
+            CollisionRectangle = collisionRect;
         }
 
         public virtual void LoadContent(ContentManager content)

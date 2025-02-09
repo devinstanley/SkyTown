@@ -18,8 +18,52 @@ namespace SkyTown.LogicManagers
         {
             HandlePlayerMapCollisions(scene.TileMapLayers, player);
             //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
+            HandlePlayerObjectCollisions(scene.SceneObjects, player);
 
             player.UpdatePosition();
+        }
+
+        public void HandlePlayerObjectCollisions(List<GameObject> gameObjects, Player player)
+        {
+            var futurePlayerRectX = new Rectangle(
+                    (int)(player.Position.X + player.Velocity.X + player.CollisionRectangle.Value.X - player.Width / 2),
+                    (int)(player.Position.Y + player.CollisionRectangle.Value.Y - player.Height / 2),
+                    player.CollisionRectangle.Value.Width,
+                    player.CollisionRectangle.Value.Height
+                );
+            foreach ( var obj in gameObjects)
+            {
+                if (obj.CollisionRectangle is Rectangle hitbox)
+                {
+                    Rectangle collisionRect = new(
+                            (int)obj.Position.X + hitbox.Left - obj.Width / 2,
+                            (int)obj.Position.Y + hitbox.Top - obj.Height / 2,
+                            hitbox.Width,
+                            hitbox.Height
+                        );
+                    ResolveXSlidingCollision(futurePlayerRectX, collisionRect, player);
+                }
+            }
+
+            var futurePlayerRectY = new Rectangle(
+                    (int)(player.Position.X + player.CollisionRectangle.Value.X - player.Width / 2),
+                    (int)(player.Position.Y + player.Velocity.Y + player.CollisionRectangle.Value.Y - player.Height / 2),
+                    player.CollisionRectangle.Value.Width,
+                    player.CollisionRectangle.Value.Height
+                );
+            foreach (var obj in gameObjects)
+            {
+                if (obj.CollisionRectangle is Rectangle hitbox)
+                {
+                    Rectangle collisionRect = new(
+                            (int)obj.Position.X + hitbox.Left - obj.Width / 2,
+                            (int)obj.Position.Y + hitbox.Top - obj.Height / 2,
+                            hitbox.Width,
+                            hitbox.Height
+                        );
+                    ResolveYSlidingCollision(futurePlayerRectY, collisionRect, player);
+                }
+            }
         }
 
         public void HandlePlayerMapCollisions(List<Dictionary<Vector2, string>> TileMapLayers, Player player)

@@ -23,6 +23,22 @@ namespace SkyTown.Logic
         {
             //HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
             HandlePlayerItemInteractions(mapScene, player);
+            HandlePlayerDispenserInteractions(inputManager, mapScene, player);
+
+
+        }
+
+        public void HandlePlayerDispenserInteractions(InputManager inputManager, MapScene mapScene, Player player)
+        {
+            if (inputManager.IsRightClickDown())
+            {
+                List<DispensableObject> ItemsCopy = mapScene.SceneObjects.OfType<DispensableObject>().ToList();
+
+                foreach (DispensableObject item in ItemsCopy)
+                {
+                    item.Interact(player, mapScene);
+                }
+            }
         }
         /*
         public void HandlePlayerNPCInteractions(GameTime gameTime, InputManager inputManager, NPCManager npcManager, Player player)
@@ -75,11 +91,11 @@ namespace SkyTown.Logic
 
         public void HandlePlayerItemInteractions(MapScene mapScene, Player player)
         {
-            List<IInteractor> ItemsCopy = mapScene.SceneObjects.OfType<IInteractor>().ToList();
+            List<Item> ItemsCopy = mapScene.SceneObjects.OfType<Item>().ToList();
 
-            foreach (IInteractor interactable in ItemsCopy)
+            foreach (Item item in ItemsCopy)
             {
-                interactable.Interact(player, mapScene);
+                item.Interact(player, mapScene);
             }
         }
     }

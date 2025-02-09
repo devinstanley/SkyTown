@@ -64,14 +64,25 @@ namespace SkyTown.Map
             int numCols = (int)TileMapLayers.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numCols, numRows);
             Player1.SetBounds(new Point(numCols, numRows));
+            SceneObjects.Add(ItemManager.GetItem("berries"));
+            SceneObjects.Add(ItemManager.GetItem("pickaxe"));
+
+            //Generates Dispenseable Object
+            var animation = new AnimationManager();
+            animation.AddAnimation("1", new Animation("Assets.Items.BerryBush", 1, new List<Rectangle>([new Rectangle(32, 0, 32, 32)])));
+            animation.AddAnimation("0", new Animation("Assets.Items.BerryBush", 1, new List<Rectangle>([new Rectangle(0, 0, 32, 32)])));
+            var dispense_test = new DispensableObject("berryBushDispensor", animation, "berries", 5, 5);
+            dispense_test.Position = new Vector2(120, 120);
+            dispense_test.CollisionRectangle = new Rectangle(0, 0, 32, 32);
+            SceneObjects.Add(dispense_test);
         }
 
         public void Update(InputManager inputManager, Camera ViewCamera)
         {
             TileManager.Update();
-            foreach (Item item in SceneObjects)
+            foreach (GameObject sceneObject in SceneObjects)
             {
-                item.Update();
+                sceneObject.Update();
             }
 
             Player1.Update(inputManager);
@@ -94,7 +105,16 @@ namespace SkyTown.Map
             //Draw All Items/Entities
             foreach (var e in SceneObjects)
             {
-                e.Draw(spriteBatch, e.Position, 0.5f);
+                if (e is Item item)
+                {
+                    item.Draw(spriteBatch, scale:0.5f);
+                    continue;
+                }
+                if (e is GameObject gameObject)
+                {
+                    gameObject.Draw(spriteBatch);
+                    continue;
+                }
             }
 
             //Draw Player
