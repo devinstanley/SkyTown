@@ -31,7 +31,7 @@ namespace SkyTown.Logic.GameStates
             MediaPlayer.Play(ResourceManager.LoadSong("Assets.Sounds.SkytownMainTheme"));
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager)
+        public void Update(InputManager inputManager)
         {
             if (inputManager.IsNewKeyPressed(Keys.Enter))
             {
@@ -42,7 +42,7 @@ namespace SkyTown.Logic.GameStates
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 ResourceManager.LoadTexture("Assets.Menus.StartMenu"),

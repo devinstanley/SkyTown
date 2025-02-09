@@ -14,15 +14,15 @@ namespace SkyTown.LogicManagers
         {
         }
 
-        public void Update(GameTime gameTime, MapScene scene, Player player)
+        public void Update(MapScene scene, Player player)
         {
-            HandlePlayerMapCollisions(gameTime, scene.TileMapLayers, player);
+            HandlePlayerMapCollisions(scene.TileMapLayers, player);
             //HandlePlayerNPCCollisions(gameTime, scene.NpcManager, player); Handle this somewhere - need to have some messaging between current scene and game state to get NPCs
 
             player.UpdatePosition();
         }
 
-        public void HandlePlayerMapCollisions(GameTime gameTime, List<Dictionary<Vector2, string>> TileMapLayers, Player player)
+        public void HandlePlayerMapCollisions(List<Dictionary<Vector2, string>> TileMapLayers, Player player)
         {
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)
             {

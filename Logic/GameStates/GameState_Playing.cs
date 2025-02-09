@@ -44,7 +44,7 @@ namespace SkyTown.Logic.GameStates
             ViewCamera.SetBounds(CurrentScene.MapDimension);
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager)
+        public void Update(InputManager inputManager)
         {
             if (inputManager.IsNewKeyPressed(Keys.Escape))
             {
@@ -62,25 +62,25 @@ namespace SkyTown.Logic.GameStates
             switch (mySubstate)
             {
                 case GameState.Playing:
-                    CurrentScene.Update(gameTime, inputManager, ViewCamera);
-                    Hotbar.Update(gameTime, inputManager);
+                    CurrentScene.Update(inputManager, ViewCamera);
+                    Hotbar.Update(inputManager);
                     break;
                 case GameState.Paused:
-                    pauseMenu.Update(gameTime, inputManager);
+                    pauseMenu.Update(inputManager);
                     break;
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            CurrentScene.Draw(gameTime, spriteBatch);
+            CurrentScene.Draw(spriteBatch);
             if (mySubstate == GameState.Paused)
             {
-                pauseMenu.Draw(gameTime, spriteBatch);
+                pauseMenu.Draw(spriteBatch);
             }
             else
             {
-                Hotbar.Draw(gameTime, spriteBatch);
+                Hotbar.Draw(spriteBatch);
             }
         }
 

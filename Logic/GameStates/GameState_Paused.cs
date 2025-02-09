@@ -34,14 +34,14 @@ namespace SkyTown.Logic.GameStates
             inventoryHUD.LoadContent();
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager)
+        public void Update(InputManager inputManager)
         {
-            inventoryHUD.Update(gameTime, inputManager);
+            inventoryHUD.Update(inputManager);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            inventoryHUD.Draw(gameTime, spriteBatch);
+            inventoryHUD.Draw(spriteBatch);
         }
     }
 }

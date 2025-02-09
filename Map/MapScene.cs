@@ -66,21 +66,21 @@ namespace SkyTown.Map
             Player1.SetBounds(new Point(numCols, numRows));
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager, Camera ViewCamera)
+        public void Update(InputManager inputManager, Camera ViewCamera)
         {
-            TileManager.Update(gameTime);
+            TileManager.Update();
             foreach (Item item in SceneObjects)
             {
-                item.Update(gameTime);
+                item.Update();
             }
 
-            Player1.Update(gameTime, inputManager);
-            collisionManager.Update(gameTime, this, Player1);
-            interactionManager.Update(gameTime, inputManager, this, Player1);
+            Player1.Update(inputManager);
+            collisionManager.Update(this, Player1);
+            interactionManager.Update(inputManager, this, Player1);
             ViewCamera.SetPosition(Player1.Position);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             //Draw Map Scene Here Using Tileset
             foreach (Dictionary<Vector2, string> TileMapLayer in TileMapLayers)

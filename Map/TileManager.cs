@@ -15,11 +15,11 @@ namespace SkyTown.Map
             TileManifest = ResourceManager.LoadTiles($"Assets\\Tilesets\\MapSheetJSON");
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Update()
         {
             foreach (var tile in TileManifest)
             {
-                tile.Value.Update(gameTime);
+                tile.Value.Update();
             }
         }
 

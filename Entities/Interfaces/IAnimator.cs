@@ -12,7 +12,7 @@ namespace SkyTown.Entities.Interfaces
         bool AnimationLocked { get; }
         int Height { get; }
         int Width { get; }
-        void Update(GameTime gameTime);
+        void Update();
         void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = -1);
     }
 
@@ -62,11 +62,11 @@ namespace SkyTown.Entities.Interfaces
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (_animations.ContainsKey(CurrentAnimationKey))
             {
-                _animations[CurrentAnimationKey].Update(gameTime);
+                _animations[CurrentAnimationKey].Update();
             }
         }
 
@@ -131,7 +131,7 @@ namespace SkyTown.Entities.Interfaces
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (!IsAnimated)
             {
@@ -145,10 +145,10 @@ namespace SkyTown.Entities.Interfaces
             }
             else
             {
-                RemainingLock -= gameTime.ElapsedGameTime.TotalSeconds;
+                RemainingLock -= GameGlobals.ElapsedGameTime;
             }
 
-            RemainingTimeOnFrame -= gameTime.ElapsedGameTime.TotalSeconds;
+            RemainingTimeOnFrame -= GameGlobals.ElapsedGameTime;
             if (RemainingTimeOnFrame < 0)
             {
                 RemainingTimeOnFrame = TimePerFrame;

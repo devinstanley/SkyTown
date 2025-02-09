@@ -45,11 +45,11 @@ namespace SkyTown.Entities.Characters
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             foreach (var item in Items)
             {
-                item.Value.Update(gameTime);
+                item.Value.Update();
             }
         }
 
@@ -213,9 +213,9 @@ namespace SkyTown.Entities.Characters
             return false;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            Item.Update(gameTime);
+            Item.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale)

@@ -39,9 +39,9 @@ namespace SkyTown.Entities.GameObjects
 
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update()
         {
-            AnimationHandler?.Update(gameTime);
+            AnimationHandler?.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2? position = null, float scale = -1)

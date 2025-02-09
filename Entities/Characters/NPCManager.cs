@@ -22,15 +22,15 @@ namespace SkyTown.Entities.Characters
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             foreach (NPC n in NPCs)
             {
-                n.Update(gameTime);
+                n.Update();
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (NPC n in NPCs)
             {

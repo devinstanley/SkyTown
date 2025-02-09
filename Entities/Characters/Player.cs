@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
+using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
@@ -106,7 +107,7 @@ namespace SkyTown.Entities.Characters
                 );
         }
 
-        public void Update(GameTime gameTime, InputManager input)
+        public void Update(InputManager input)
         {
             if (input == null)
             {
@@ -120,12 +121,12 @@ namespace SkyTown.Entities.Characters
             }
 
             //Handle Input Update
-            float displacementScalar = WalkingSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float displacementScalar = WalkingSpeed * (float)GameGlobals.ElapsedGameTime;
             UpdateVelocity(input);
             Velocity *= displacementScalar;
             UpdateAnimation();
 
-            base.Update(gameTime);
+            base.Update();
         }
 
         public void UpdatePosition()

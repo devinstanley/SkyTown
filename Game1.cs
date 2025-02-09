@@ -63,8 +63,9 @@ namespace SkyTown
 
         protected override void Update(GameTime gameTime)
         {
+            GameGlobals.Update(gameTime);
             InputManager.Update(ViewCamera);
-            GameState.Update(gameTime, InputManager);
+            GameState.Update(InputManager);
 
             base.Update(gameTime);
         }
@@ -74,7 +75,7 @@ namespace SkyTown
             GraphicsDevice.Clear(Color.Black);
             GraphicsDevice.Viewport = ViewCamera._viewport;
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: GameState.ViewCamera.GetTransformation());
-            GameState.Draw(gameTime, _spriteBatch);
+            GameState.Draw(_spriteBatch);
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

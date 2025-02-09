@@ -19,10 +19,10 @@ namespace SkyTown.Logic
 
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager, MapScene mapScene, Player player)
+        public void Update(InputManager inputManager, MapScene mapScene, Player player)
         {
             //HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
-            HandlePlayerItemInteractions(gameTime, mapScene, player);
+            HandlePlayerItemInteractions(mapScene, player);
         }
         /*
         public void HandlePlayerNPCInteractions(GameTime gameTime, InputManager inputManager, NPCManager npcManager, Player player)
@@ -73,7 +73,7 @@ namespace SkyTown.Logic
         }
         */
 
-        public void HandlePlayerItemInteractions(GameTime gameTime, MapScene mapScene, Player player)
+        public void HandlePlayerItemInteractions(MapScene mapScene, Player player)
         {
             List<IInteractor> ItemsCopy = mapScene.SceneObjects.OfType<IInteractor>().ToList();
 

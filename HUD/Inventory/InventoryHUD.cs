@@ -33,10 +33,10 @@ namespace SkyTown.HUD.Inventory
         {
         }
 
-        public void Update(GameTime gameTime, InputManager inputManager)
+        public void Update(InputManager inputManager)
         {
             HandleInput(inputManager);
-            Inventory.Update(gameTime);
+            Inventory.Update();
         }
 
         public void HandleInput(InputManager inputManager)
@@ -110,7 +110,7 @@ namespace SkyTown.HUD.Inventory
             return -1;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             //Draw inventory HUD
             spriteBatch.Draw(

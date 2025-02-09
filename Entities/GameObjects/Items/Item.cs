@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.Interfaces;
+using SkyTown.Logic;
 using SkyTown.Map;
 using System;
 using System.Collections.Generic;
@@ -24,10 +25,10 @@ namespace SkyTown.Entities.GameObjects.Items
             InventoryAnimation = inventoryAnimation;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            InventoryAnimation.Update(gameTime);
-            base.Update(gameTime);
+            InventoryAnimation.Update();
+            base.Update();
         }
 
         public void Interact(Player player, MapScene mapScene)
@@ -42,7 +43,7 @@ namespace SkyTown.Entities.GameObjects.Items
             {
                 Vector2 vel = (player.Position - Position);
                 vel.Normalize();
-                float displacementScalar = (float)(ItemFollowSpeed * gameTime.ElapsedGameTime.TotalSeconds * Math.Clamp((50 / dist), 0, 1));
+                float displacementScalar = (float)(ItemFollowSpeed * GameGlobals.ElapsedGameTime * Math.Clamp((50 / dist), 0, 1));
                 Position += displacementScalar * vel;
             }
         }

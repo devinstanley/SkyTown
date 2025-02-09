@@ -24,9 +24,9 @@ namespace SkyTown.Entities.Characters
 
         }
 
-        new public void Update(GameTime gameTime)
+        new public void Update()
         {
-            base.Update(gameTime);
+            base.Update();
         }
 
         public void Interact(Player player, MapScene mapScene)

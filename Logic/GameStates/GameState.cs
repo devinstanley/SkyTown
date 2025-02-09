@@ -17,7 +17,7 @@ namespace SkyTown.Logic.GameStates
         public Camera ViewCamera { get; set; }
         public void Initialize();
         public void LoadContent(ContentManager content);
-        public void Update(GameTime gameTime, InputManager inputManager);
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public void Update(InputManager inputManager);
+        public void Draw(SpriteBatch spriteBatch);
     }
 }
