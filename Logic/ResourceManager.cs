@@ -87,7 +87,7 @@ namespace SkyTown.Logic
             string json = content.Load<string>(manifestID);
             var options = new JsonSerializerOptions
             {
-                Converters = { new ItemDictionaryConverter(), new IAnimatorConverter() }, // Add both converters
+                Converters = { new GameObjectDictionaryConverter(), new IAnimatorConverter() }, // Add both converters
                 PropertyNameCaseInsensitive = true
             };
             return JsonSerializer.Deserialize<Dictionary<string, GameObjectConstructor>>(json, options);

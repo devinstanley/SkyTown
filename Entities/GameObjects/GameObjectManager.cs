@@ -16,7 +16,7 @@ namespace SkyTown.Entities.GameObjects
         static Dictionary<string, GameObjectConstructor> GameObjectManifest = new();
         static GameObjectManager()
         {
-            GameObjectManifest = ResourceManager.LoadGameObjects($"Assets\\Items\\ItemsManifest");
+            GameObjectManifest = ResourceManager.LoadGameObjects($"Assets\\Items\\GameObjectsManifest");
         }
 
         public static GameObject GetItem(string ItemID)
@@ -41,7 +41,7 @@ namespace SkyTown.Entities.GameObjects
         public virtual GameObject Construct()
         {
             GameObject obj = new GameObject(FullID, CollisionRect);
-            obj.AnimationHandler = Animator;
+            obj.AnimationHandler = Animator.Copy();
             return obj;
         }
 }

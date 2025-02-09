@@ -81,6 +81,11 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Items/BerryBush.png
 
+#begin Assets/Items/GameObjectsManifest.json
+/importer:TextImporter
+/processor:TextProcessor
+/build:Assets/Items/GameObjectsManifest.json
+
 #begin Assets/Items/ItemsManifest.json
 /importer:TextImporter
 /processor:TextProcessor

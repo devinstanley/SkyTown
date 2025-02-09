@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SkyTown.Entities.Interfaces
@@ -14,6 +15,7 @@ namespace SkyTown.Entities.Interfaces
         int Width { get; }
         void Update();
         void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = -1);
+        IAnimator Copy();
     }
 
     public class AnimationManager : IAnimator
@@ -73,6 +75,16 @@ namespace SkyTown.Entities.Interfaces
         public void Draw(SpriteBatch spriteBatch, Vector2 pos, float scale = -1)
         {
             _animations[CurrentAnimationKey].Draw(spriteBatch, pos, scale);
+        }
+
+        public IAnimator Copy()
+        {
+            var animationCopy = new AnimationManager();
+            foreach (var anim in _animations)
+            {
+                animationCopy.AddAnimation(anim.Key, anim.Value.Copy() as Animation);
+            }
+            return animationCopy;
         }
     }
 
@@ -167,6 +179,22 @@ namespace SkyTown.Entities.Interfaces
                 SpriteEffects.None,
                 0f
             );
+        }
+
+        public IAnimator Copy()
+        {
+            var newFrameSources = new List<Rectangle>();
+            foreach ( var frameSource in FrameSources)
+            {
+                newFrameSources.Add(
+                    new Rectangle(
+                        frameSource.X,
+                        frameSource.Y,
+                        frameSource.Width,
+                        frameSource.Height)
+                    );
+            }
+            return new Animation(TextureID, TimePerFrame, newFrameSources);
         }
     }
 }

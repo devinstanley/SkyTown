@@ -14,7 +14,7 @@ namespace SkyTown.Logic
     public static class InteractionManager
     {
 
-        static int InteractionDistance = 40;
+        static int InteractionDistance = 80;
         static InteractionManager()
         {
 
@@ -74,6 +74,7 @@ namespace SkyTown.Logic
                 {
                     {
                         dispensable.Interact(player, mapScene);
+                        continue;
                     }
                 }
             }

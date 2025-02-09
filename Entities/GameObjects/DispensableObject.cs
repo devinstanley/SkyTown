@@ -40,7 +40,7 @@ namespace SkyTown.Entities.GameObjects
                 RemainingCoolDown = 0;
                 if (AnimationHandler is AnimationManager animator)
                 {
-                    animator.UpdateAnimationSequence("0");
+                    animator.UpdateAnimationSequence(0);
                 }
             }
             
@@ -64,7 +64,7 @@ namespace SkyTown.Entities.GameObjects
             DispenseReady = false;
             if (AnimationHandler is AnimationManager animator)
             {
-                animator.UpdateAnimationSequence("1");
+                animator.UpdateAnimationSequence(1);
             }
 
             var rand = new Random();

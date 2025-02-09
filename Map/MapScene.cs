@@ -64,13 +64,21 @@ namespace SkyTown.Map
             SceneObjects.Add(ItemManager.GetItem("pickaxe"));
 
             //Generates Dispenseable Object
-            var animation = new AnimationManager();
-            animation.AddAnimation("1", new Animation("Assets.Items.BerryBush", 1, new List<Rectangle>([new Rectangle(32, 0, 32, 32)])));
-            animation.AddAnimation("0", new Animation("Assets.Items.BerryBush", 1, new List<Rectangle>([new Rectangle(0, 0, 32, 32)])));
-            var dispense_test = new DispensableObject("berryBushDispensor", animation, "berries", 5, 5);
+            var dispense_test = GameObjectManager.GetItem("berrybush");
             dispense_test.Position = new Vector2(120, 120);
-            dispense_test.CollisionRectangle = new Rectangle(0, 0, 32, 32);
             SceneObjects.Add(dispense_test);
+
+            var dispense_test1 = GameObjectManager.GetItem("berrybush");
+            dispense_test1.Position = new Vector2(170, 120);
+            SceneObjects.Add(dispense_test1);
+
+            var dispense_test2 = GameObjectManager.GetItem("berrybush");
+            dispense_test2.Position = new Vector2(16, 120);
+            SceneObjects.Add(dispense_test2);
+
+            var dispense_test3 = GameObjectManager.GetItem("berrybush");
+            dispense_test3.Position = new Vector2(75, 120);
+            SceneObjects.Add(dispense_test3);
         }
 
         public void Update(InputManager inputManager, Camera ViewCamera)

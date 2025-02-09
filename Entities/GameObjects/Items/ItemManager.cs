@@ -40,7 +40,7 @@ namespace SkyTown.Entities.GameObjects.Items
 
         public virtual Item Construct()
         {
-            return new Item(FullID, MaxStack, Animator, InventoryAnimation);
+            return new Item(FullID, MaxStack, Animator.Copy(), InventoryAnimation);
         }
     }
 }

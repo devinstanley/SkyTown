@@ -2,6 +2,25 @@
     {
         "ObjectID": "berrybush",
         "TextureID": "Assets.Items.BerryBush",
-        "IAnimator": [ 64, 0, 32, 32 ],
+        "CollisionRectangle": [ 0, 0, 32, 32 ],
+        "IAnimator": [
+            {
+                "AnimationKey": 1,
+                "FrameTime": 1,
+                "SourceRectangles": [
+                    [ 32, 0, 32, 32 ]
+                ]
+            },
+            {
+                "AnimationKey": 0,
+                "FrameTime": 1,
+                "SourceRectangles": [
+                    [ 0, 0, 32, 32 ]
+                ]
+            }
+        ],
+        "DispensedItem": "berries",
+        "NumDispensed": 5,
+        "CoolDowm": 5
     }
 ]
