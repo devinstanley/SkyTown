@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.Interfaces;
+using SkyTown.HUD;
 using SkyTown.Map;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,11 @@ namespace SkyTown.Entities.Characters
     public class NPC : GameObject, IInteractor
     {
         public string Name { get; set; }
+        public Dialogue Dialogue { get; set; }
 
         public NPC(string id) : base(id)
         {
-            List<string> parsedID = new List<string>(id.Split(','));
-            Name = parsedID.Last();
+
         }
 
         new public void LoadContent(ContentManager content)
@@ -31,7 +32,7 @@ namespace SkyTown.Entities.Characters
 
         public void Interact(Player player, MapScene mapScene)
         {
-
+            Dialogue.StartDialogue();
         }
 
 
