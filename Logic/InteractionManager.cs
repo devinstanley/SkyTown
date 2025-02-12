@@ -2,10 +2,8 @@
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
-using SkyTown.Entities.Interfaces;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,9 +47,9 @@ namespace SkyTown.Logic
             else
             {
                 interactionRect = new Rectangle(
-                    (int)gameObject.Position.X, 
-                    (int)gameObject.Position.X, 
-                    gameObject.Width, 
+                    (int)gameObject.Position.X,
+                    (int)gameObject.Position.X,
+                    gameObject.Width,
                     gameObject.Height);
             }
 

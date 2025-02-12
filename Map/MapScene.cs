@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
-using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using System.Collections.Generic;
@@ -111,7 +110,7 @@ namespace SkyTown.Map
             {
                 if (e is Item item)
                 {
-                    item.Draw(spriteBatch, scale:0.5f);
+                    item.Draw(spriteBatch, scale: 0.5f);
                     continue;
                 }
                 if (e is GameObject gameObject)

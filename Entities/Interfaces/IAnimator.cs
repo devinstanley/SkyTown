@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Logic;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SkyTown.Entities.Interfaces
@@ -103,7 +102,7 @@ namespace SkyTown.Entities.Interfaces
         {
             get { return TotalFrames * TimePerFrame; }
         }
-        public bool AnimationLocked {  get; set; }
+        public bool AnimationLocked { get; set; }
         public int Height
         {
             get { return FrameSources[CurrentFrame].Height; }
@@ -183,18 +182,7 @@ namespace SkyTown.Entities.Interfaces
 
         public IAnimator Copy()
         {
-            var newFrameSources = new List<Rectangle>();
-            foreach ( var frameSource in FrameSources)
-            {
-                newFrameSources.Add(
-                    new Rectangle(
-                        frameSource.X,
-                        frameSource.Y,
-                        frameSource.Width,
-                        frameSource.Height)
-                    );
-            }
-            return new Animation(TextureID, TimePerFrame, newFrameSources);
+            return new Animation(TextureID, TimePerFrame, FrameSources);
         }
     }
 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using SkyTown.Entities.GameObjects.Items;
+﻿using Microsoft.Xna.Framework;
 using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
+using System.Collections.Generic;
 
 namespace SkyTown.Entities.GameObjects
 {
@@ -44,5 +39,5 @@ namespace SkyTown.Entities.GameObjects
             obj.AnimationHandler = Animator.Copy();
             return obj;
         }
-}
+    }
 }

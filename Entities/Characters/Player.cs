@@ -29,8 +29,8 @@ namespace SkyTown.Entities.Characters
         public Player(string ID) : base(ID)
         {
             inventory = new InventoryManager();
-            inventory.AddItem(ItemManager.GetItem("berries"));
-            inventory.AddItem(ItemManager.GetItem("pickaxe"));
+            inventory.AddItem("berries");
+            inventory.AddItem("pickaxe");
             CollisionRectangle = new Rectangle(16, 16, 32, 48);
         }
 
@@ -144,7 +144,7 @@ namespace SkyTown.Entities.Characters
             {
                 if (inventory.CurrentItem is Tool t)
                 {
-                    inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X + Width/4, Position.Y), 1f);
+                    inventory.CurrentItem.Draw(spriteBatch, new Vector2(Position.X + Width / 4, Position.Y), 1f);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ namespace SkyTown.Entities.Characters
 
         public void UpdateVelocity(InputManager input)
         {
-            
+
             Velocity = Vector2.Zero;
             if (inventory.CurrentItem is Tool tool && tool.AnimationHandler is AnimationManager animation && animation.AnimationLocked)
             {

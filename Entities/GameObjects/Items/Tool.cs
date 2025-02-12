@@ -17,16 +17,16 @@ namespace SkyTown.Entities.GameObjects.Items
 
         public void Interact(Player player, MapScene mapScene)
         {
-            
+
         }
     }
 
-    public class ToolConstructor: ItemConstructor
+    public class ToolConstructor : ItemConstructor
     {
         public string ToolType;
         public int ToolUpgradeLevel;
-        
-        public ToolConstructor(string ID, IAnimator animation, Animation inventoryAnimation, string toolType, int toolUpgradeLevel): base(ID, animation, 1, inventoryAnimation)
+
+        public ToolConstructor(string ID, IAnimator animation, Animation inventoryAnimation, string toolType, int toolUpgradeLevel) : base(ID, animation, 1, inventoryAnimation)
         {
             ToolType = toolType;
             ToolUpgradeLevel = toolUpgradeLevel;
@@ -34,7 +34,7 @@ namespace SkyTown.Entities.GameObjects.Items
 
         public override Tool Construct()
         {
-            return new Tool(base.FullID, base.Animator, base.InventoryAnimation, ToolType, ToolUpgradeLevel);
+            return new Tool(base.FullID, base.Animator.Copy(), base.InventoryAnimation, ToolType, ToolUpgradeLevel);
         }
     }
 }

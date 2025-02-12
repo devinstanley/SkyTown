@@ -131,10 +131,10 @@ namespace SkyTown.Entities.Characters
             }
         }
 
-        public void AddItem(Item item)
+        public void AddItem(String itemID)
         {
             //First check if item can be stacked into existing slot
-            foreach (var slot in Items.Where(u => u.Value.Item.FullID.Equals(item.FullID)).Select(u => u.Value))
+            foreach (var slot in Items.Where(u => u.Value.Item.ObjectID.Equals(itemID)).Select(u => u.Value))
             {
                 if (slot.AddedQuantity())
                 {
@@ -147,7 +147,7 @@ namespace SkyTown.Entities.Characters
             {
                 if (!Items.ContainsKey(i))
                 {
-                    Items.Add(i, new InventorySlot(item));
+                    Items.Add(i, new InventorySlot(ItemManager.GetItem(itemID)));
                     return;
                 }
             }
@@ -157,7 +157,7 @@ namespace SkyTown.Entities.Characters
             {
                 if (!Items.ContainsKey(i))
                 {
-                    Items.Add(i, new InventorySlot(item));
+                    Items.Add(i, new InventorySlot(ItemManager.GetItem(itemID)));
                     return;
                 }
             }
