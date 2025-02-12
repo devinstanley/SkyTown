@@ -1,14 +1,18 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using SkyTown.Entities.Characters;
 using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
 using SkyTown.Map;
-using System;
 
 namespace SkyTown.Entities.GameObjects
 {
-    public class DispensableObject : GameObject, IInteractor
+    public class DispensableObject: GameObject, IInteractor
     {
         public string DispensedItemID;
         public int NumberDispensed;
@@ -39,7 +43,7 @@ namespace SkyTown.Entities.GameObjects
                     animator.UpdateAnimationSequence(0);
                 }
             }
-
+            
         }
         public void Interact(Player player, MapScene mapScene)
         {
@@ -51,7 +55,7 @@ namespace SkyTown.Entities.GameObjects
             {
                 Dispense(mapScene);
             }
-
+            
         }
 
         public void Dispense(MapScene mapScene)
@@ -74,12 +78,12 @@ namespace SkyTown.Entities.GameObjects
         }
     }
 
-    public class DispensableObjectConstructor : GameObjectConstructor
+    public class DispensableObjectConstructor: GameObjectConstructor
     {
         string DispensedItem { get; set; }
         int NumDispensed { get; set; }
-        double CoolDown { get; set; }
-        public DispensableObjectConstructor(string ID, IAnimator animator, Rectangle? collisionRect, string DispensedItem, int NumDispensed, double CoolDown) : base(ID, animator, collisionRect)
+        double CoolDown {  get; set; }
+        public DispensableObjectConstructor(string ID, IAnimator animator, Rectangle? collisionRect, string DispensedItem, int NumDispensed, double CoolDown): base(ID, animator, collisionRect)
         {
             this.DispensedItem = DispensedItem;
             this.NumDispensed = NumDispensed;
@@ -88,7 +92,7 @@ namespace SkyTown.Entities.GameObjects
 
         public override GameObject Construct()
         {
-            return new DispensableObject(base.FullID, base.Animator.Copy(), DispensedItem, NumDispensed, CoolDown, base.CollisionRect);
+            return new DispensableObject(base.FullID, base.Animator, DispensedItem, NumDispensed, CoolDown, base.CollisionRect);
         }
     }
 }

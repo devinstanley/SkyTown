@@ -5,6 +5,7 @@ using SkyTown.Entities.Interfaces;
 using SkyTown.Logic;
 using SkyTown.Map;
 using System;
+using System.Collections.Generic;
 
 namespace SkyTown.Entities.GameObjects.Items
 {
@@ -34,7 +35,7 @@ namespace SkyTown.Entities.GameObjects.Items
             float dist = (player.Position - Position).Length();
             if (dist < 10)
             {
-                player.inventory.AddItem(this.ObjectID);
+                player.inventory.AddItem(this);
                 mapScene.SceneObjects.Remove(this);
             }
             else if (dist < ItemFollowDistance)
