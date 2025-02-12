@@ -1,0 +1,30 @@
+[
+  {
+    "ObjectID": "blurg",
+    "TextureID": "Assets.Sprites.NPCs.Blurg",
+    "Dialogue": {
+      "TextureID": "Assets.Sprites.NPCs.Blurg_Portrait",
+      "Dialogues": "Assets.Sprites.NPCs.Blurg_Dialogue",
+      "IAnimator": [
+        {
+          "AnimationKey": 0,
+          "FrameTime": 1,
+          "SourceRectangles": [
+            [ 0, 0, 64, 64 ],
+            [ 64, 0, 64, 64 ]
+          ]
+        }
+      ]
+    },
+    "IAnimator": [
+      {
+        "AnimationKey": 0,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 64 ],
+          [ 32, 0, 32, 64 ]
+        ]
+      }
+    ]
+  }
+]
