@@ -92,7 +92,7 @@ namespace SkyTown.Entities.GameObjects
 
         public override GameObject Construct()
         {
-            return new DispensableObject(base.FullID, base.Animator, DispensedItem, NumDispensed, CoolDown, base.CollisionRect);
+            return new DispensableObject(base.FullID, base.Animator.Copy(), DispensedItem, NumDispensed, CoolDown, base.CollisionRect);
         }
     }
 }

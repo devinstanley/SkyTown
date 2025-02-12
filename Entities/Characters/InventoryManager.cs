@@ -124,17 +124,17 @@ namespace SkyTown.Entities.Characters
                     Items[itemKey].Quantiy = curStackCount;
                     if (newStackCount > 0)
                     {
-                        Items.Add(i, new InventorySlot(Items[itemKey].Item, newStackCount));
+                        Items.Add(i, new InventorySlot(Items[itemKey].Item.ObjectID, newStackCount));
                     }
                     return;
                 }
             }
         }
 
-        public void AddItem(Item item)
+        public void AddItem(string itemID)
         {
             //First check if item can be stacked into existing slot
-            foreach (var slot in Items.Where(u => u.Value.Item.FullID.Equals(item.FullID)).Select(u => u.Value))
+            foreach (var slot in Items.Where(u => u.Value.Item.ObjectID.Equals(itemID)).Select(u => u.Value))
             {
                 if (slot.AddedQuantity())
                 {
@@ -147,7 +147,7 @@ namespace SkyTown.Entities.Characters
             {
                 if (!Items.ContainsKey(i))
                 {
-                    Items.Add(i, new InventorySlot(item));
+                    Items.Add(i, new InventorySlot(itemID));
                     return;
                 }
             }
@@ -157,7 +157,7 @@ namespace SkyTown.Entities.Characters
             {
                 if (!Items.ContainsKey(i))
                 {
-                    Items.Add(i, new InventorySlot(item));
+                    Items.Add(i, new InventorySlot(itemID));
                     return;
                 }
             }
@@ -197,9 +197,9 @@ namespace SkyTown.Entities.Characters
         public Item Item { get; set; }
         public int Quantiy { get; set; }
 
-        public InventorySlot(Item item, int quantity = 1)
+        public InventorySlot(string itemID, int quantity = 1)
         {
-            this.Item = item;
+            this.Item = ItemManager.GetItem(itemID);
             this.Quantiy = quantity;
         }
 

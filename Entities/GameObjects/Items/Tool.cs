@@ -8,9 +8,8 @@ namespace SkyTown.Entities.GameObjects.Items
     {
         public string ToolType;
         public int ToolUpgradeLevel;
-        public Tool(string ID, IAnimator animation, Animation inventoryAnimation, string toolType, int toolUpgradeLevel) : base(ID, 1, animation, inventoryAnimation)
+        public Tool(string ID, IAnimator animation, IAnimator inventoryAnimation, string toolType, int toolUpgradeLevel) : base(ID, 1, animation, inventoryAnimation)
         {
-            AnimationHandler = animation;
             ToolType = toolType;
             ToolUpgradeLevel = toolUpgradeLevel;
         }
@@ -26,7 +25,7 @@ namespace SkyTown.Entities.GameObjects.Items
         public string ToolType;
         public int ToolUpgradeLevel;
         
-        public ToolConstructor(string ID, IAnimator animation, Animation inventoryAnimation, string toolType, int toolUpgradeLevel): base(ID, animation, 1, inventoryAnimation)
+        public ToolConstructor(string ID, IAnimator animation, IAnimator inventoryAnimation, string toolType, int toolUpgradeLevel): base(ID, animation, 1, inventoryAnimation)
         {
             ToolType = toolType;
             ToolUpgradeLevel = toolUpgradeLevel;
@@ -34,7 +33,7 @@ namespace SkyTown.Entities.GameObjects.Items
 
         public override Tool Construct()
         {
-            return new Tool(base.FullID, base.Animator, base.InventoryAnimation, ToolType, ToolUpgradeLevel);
+            return new Tool(base.FullID, base.Animator.Copy(), base.InventoryAnimation.Copy(), ToolType, ToolUpgradeLevel);
         }
     }
 }

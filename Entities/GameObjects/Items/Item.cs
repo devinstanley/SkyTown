@@ -16,8 +16,8 @@ namespace SkyTown.Entities.GameObjects.Items
         int ItemFollowSpeed = 200;
 
         public int MaxStack;
-        public Animation InventoryAnimation;
-        public Item(string id, int maxStack, IAnimator animation, Animation inventoryAnimation) : base(id)
+        public IAnimator InventoryAnimation;
+        public Item(string id, int maxStack, IAnimator animation, IAnimator inventoryAnimation) : base(id)
         {
             MaxStack = maxStack;
             AnimationHandler = animation;
@@ -35,7 +35,7 @@ namespace SkyTown.Entities.GameObjects.Items
             float dist = (player.Position - Position).Length();
             if (dist < 10)
             {
-                player.inventory.AddItem(this);
+                player.inventory.AddItem(this.ObjectID);
                 mapScene.SceneObjects.Remove(this);
             }
             else if (dist < ItemFollowDistance)
