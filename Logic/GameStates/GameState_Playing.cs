@@ -18,20 +18,18 @@ namespace SkyTown.Logic.GameStates
         private NPCManager NPCs = new NPCManager();
         private GameState_Paused pauseMenu;
         private HotbarHUD Hotbar;
-        public Camera ViewCamera { get; set; }
 
         public GameState_Playing(Game1 game)
         {
             this.game = game;
             CurrentScene = new MapScene("TestMap");
-            this.ViewCamera = game.ViewCamera;
         }
 
         public void Initialize()
         {
             Player1 = new Player("Assets.Sprites.spriteAnimationTest::PlayerSprite");
             Player1.Position = new Vector2(64, 64);
-            Hotbar = new HotbarHUD(game, Player1);
+            Hotbar = new HotbarHUD(Player1);
             pauseMenu = new GameState_Paused(game, Player1);
             CurrentScene.Initialize(Player1);
         }
@@ -41,7 +39,7 @@ namespace SkyTown.Logic.GameStates
             Player1.LoadContent(content);
             pauseMenu.LoadContent(content);
             CurrentScene.LoadContent(content);
-            ViewCamera.SetBounds(CurrentScene.MapDimension);
+            Camera.SetBounds(CurrentScene.MapDimension);
         }
 
         public void Update(InputManager inputManager)
@@ -62,7 +60,7 @@ namespace SkyTown.Logic.GameStates
             switch (mySubstate)
             {
                 case GameState.Playing:
-                    CurrentScene.Update(inputManager, ViewCamera);
+                    CurrentScene.Update(inputManager);
                     Hotbar.Update(inputManager);
                     break;
                 case GameState.Paused:
@@ -87,7 +85,7 @@ namespace SkyTown.Logic.GameStates
         public void ChangeScene(MapScene newScene)
         {
             CurrentScene = newScene;
-            ViewCamera.SetBounds(CurrentScene.MapDimension);
+            Camera.SetBounds(CurrentScene.MapDimension);
         }
     }
 }

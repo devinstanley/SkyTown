@@ -21,6 +21,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Assets/Font/Arial.spritefont
 
+#begin Assets/HUDs/DialogueHUD.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/HUDs/DialogueHUD.png
+
 #begin Assets/HUDs/HotbarHUD.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -131,6 +143,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Assets/Sounds/Start Effect.mp3;Assets/Sounds/StartEffect.mp3
+
+#begin Assets/Sprites/NPCs/Blurg_Portrait.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Sprites/NPCs/Blurg_Portrait.png
 
 #begin Assets/Sprites/NPCs/Blurg.png
 /importer:TextureImporter

@@ -14,7 +14,6 @@ namespace SkyTown.Logic.GameStates
 
     public interface IGameState
     {
-        public Camera ViewCamera { get; set; }
         public void Initialize();
         public void LoadContent(ContentManager content);
         public void Update(InputManager inputManager);

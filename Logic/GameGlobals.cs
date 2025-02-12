@@ -10,6 +10,7 @@ namespace SkyTown.Logic
     public static class GameGlobals
     {
         public static double ElapsedGameTime;
+        public static Point InGameResolution = new Point(480, 270);
 
         public static void Update(GameTime gameTime)
         {

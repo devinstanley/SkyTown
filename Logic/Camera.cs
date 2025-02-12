@@ -1,52 +1,57 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SkyTown.Logic;
 using SkyTown.Map;
 
-public class Camera
+public static class Camera
 {
-    public Vector2 _position;
-    private float _resolutionScalar;
-    private float _zoom = 1;
-    private float _rotation;
-    public Viewport _viewport;
-    public readonly int _resolutionWidth;
-    public readonly int _resolutionHeight;
-    public int virtualHeight;
-    public int virtualWidth;
-    private Vector2 _minPos, _maxPos;
-
-    public bool TopScreenClamp;
-
-
-    public Camera(Viewport viewport, int resWidth, int resHeight)
+    public static Vector2 Position;
+    private static float _resolutionScalar = 1f;
+    private static float _zoom = 1f;
+    private static float _rotation = 0f;
+    public static Viewport _viewport;
+    public static int ResolutionWidth
     {
-        _viewport = viewport;
-        _position = Vector2.Zero;
-        _resolutionScalar = 1.0f;
-        _zoom = 1.0f;
-        _rotation = 0.0f;
-        _resolutionWidth = resWidth;
-        _resolutionHeight = resHeight;
+        get { return GameGlobals.InGameResolution.X; }
+    }
+    public static int ResolutionHeight
+    {
+        get { return GameGlobals.InGameResolution.Y; }
+    }
+    public static int virtualHeight;
+    public static int virtualWidth;
+    private static Vector2 _minPos, _maxPos;
+
+    public static bool TopScreenClamp;
+
+
+    static Camera()
+    {
     }
 
-    public void HandleScreenResize(GraphicsDevice graphicsDevice)
+    public static void SetViewport(Viewport viewport)
+    {
+        _viewport = viewport;
+    }
+
+    public static void HandleScreenResize(GraphicsDevice graphicsDevice)
     {
         float screenHeight = graphicsDevice.PresentationParameters.BackBufferHeight;
         float screenWidth = graphicsDevice.PresentationParameters.BackBufferWidth;
 
-        if (screenWidth / _resolutionWidth > screenHeight / _resolutionHeight)
+        if (screenWidth / ResolutionWidth > screenHeight / ResolutionHeight)
         {
-            float aspect = (float)screenHeight / _resolutionHeight;
-            virtualWidth = (int)(aspect * _resolutionWidth);
+            float aspect = (float)screenHeight / ResolutionHeight;
+            virtualWidth = (int)(aspect * ResolutionWidth);
             virtualHeight = (int)screenHeight;
         }
         else
         {
-            float aspect = (float)screenWidth / _resolutionWidth;
+            float aspect = (float)screenWidth / ResolutionWidth;
             virtualWidth = (int)screenWidth;
-            virtualHeight = (int)(aspect * _resolutionHeight);
+            virtualHeight = (int)(aspect * ResolutionHeight);
         }
-        _resolutionScalar = virtualWidth / (float)_resolutionWidth;
+        _resolutionScalar = virtualWidth / (float)ResolutionWidth;
         _viewport = new Viewport
         {
             X = (int)(screenWidth / 2f - virtualWidth / 2f),
@@ -58,24 +63,24 @@ public class Camera
         };
     }
 
-    public Matrix GetTransformation()
+    public static Matrix GetTransformation()
     {
-        return Matrix.CreateTranslation(new Vector3(-_position, 0)) *
+        return Matrix.CreateTranslation(new Vector3(-Position, 0)) *
                Matrix.CreateRotationZ(_rotation) *
                Matrix.CreateScale(_resolutionScalar * _zoom) *
                Matrix.CreateTranslation(new Vector3(_viewport.Width * 0.5f, _viewport.Height * 0.5f, 0));
     }
 
-    public void SetZoom(float newZoom)
+    public static void SetZoom(float newZoom)
     {
         _zoom = newZoom;
     }
 
-    public void SetBounds(Vector2 mapSize)
+    public static void SetBounds(Vector2 mapSize)
     {
         //TODO: Handle zoom type issues HERE, for bounding to work in current state, zoom must be 1!
-        float halfWidth = (_resolutionWidth / 2f) / _zoom;
-        float halfHeight = (_resolutionHeight / 2f) / _zoom;
+        float halfWidth = (ResolutionWidth / 2f) / _zoom;
+        float halfHeight = (ResolutionHeight / 2f) / _zoom;
 
         // Calculate the map size (considering the size of the map in world coordinates)
         _minPos = new Vector2(halfWidth - TileManager.BASE_TILESIZE / 2, halfHeight - TileManager.BASE_TILESIZE / 2);
@@ -85,14 +90,14 @@ public class Camera
                               (mapSize.Y + 1) * TileManager.BASE_TILESIZE - halfHeight - TileManager.BASE_TILESIZE / 2);
     }
 
-    public void SetPosition(Vector2 position)
+    public static void SetPosition(Vector2 position)
     {
-        _position = position;
+        Position = position;
 
         // Check if HUD needs to move to bottom
         TopScreenClamp = _minPos.Y > position.Y ? true : false;
 
         // Clamp the camera position to the valid range considering the map boundaries
-        _position = Vector2.Clamp(_position, _minPos, _maxPos);
+        Position = Vector2.Clamp(Position, _minPos, _maxPos);
     }
 }

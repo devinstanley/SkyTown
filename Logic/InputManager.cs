@@ -25,10 +25,10 @@ namespace SkyTown.LogicManagers
 
         }
 
-        public void Update(Camera ViewCamera)
+        public void Update()
         {
-            MouseTranslation = Matrix.Invert(ViewCamera.GetTransformation());
-            viewportOffset = new(ViewCamera._viewport.X, ViewCamera._viewport.Y);
+            MouseTranslation = Matrix.Invert(Camera.GetTransformation());
+            viewportOffset = new(Camera._viewport.X, Camera._viewport.Y);
 
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();

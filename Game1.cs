@@ -13,20 +13,15 @@ namespace SkyTown
 
         private IGameState GameState;
 
-        private int _resolutionWidth = 480;
-        private int _resolutionHeight = 270;
-
-        public Camera ViewCamera;
-
 
         private InputManager InputManager = new InputManager();
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = _resolutionWidth * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = _resolutionHeight * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = GameGlobals.InGameResolution.X * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GameGlobals.InGameResolution.Y * 4;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             ResourceManager.content = Content;
@@ -37,14 +32,14 @@ namespace SkyTown
 
         private void Window_ClientSizeChanged(object sender, System.EventArgs e)
         {
-            ViewCamera.HandleScreenResize(GraphicsDevice);
+            Camera.HandleScreenResize(GraphicsDevice);
         }
 
         protected override void Initialize()
         {
-            ViewCamera = new Camera(GraphicsDevice.Viewport, _resolutionWidth, _resolutionHeight);
+            Camera.SetViewport(GraphicsDevice.Viewport);
             GameState = new GameState_MainMenu(this);
-            ViewCamera.HandleScreenResize(GraphicsDevice);
+            Camera.HandleScreenResize(GraphicsDevice);
             GameState.Initialize();
             base.Initialize();
         }
@@ -65,7 +60,7 @@ namespace SkyTown
         protected override void Update(GameTime gameTime)
         {
             GameGlobals.Update(gameTime);
-            InputManager.Update(ViewCamera);
+            InputManager.Update();
             GameState.Update(InputManager);
 
             base.Update(gameTime);
@@ -74,8 +69,8 @@ namespace SkyTown
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            GraphicsDevice.Viewport = ViewCamera._viewport;
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: GameState.ViewCamera.GetTransformation());
+            GraphicsDevice.Viewport = Camera._viewport;
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: Camera.GetTransformation());
             GameState.Draw(_spriteBatch);
             _spriteBatch.End();
 

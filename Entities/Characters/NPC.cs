@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.Interfaces;
 using SkyTown.HUD;
+using SkyTown.LogicManagers;
 using SkyTown.Map;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,13 @@ namespace SkyTown.Entities.Characters
 
         }
 
-        new public void Update()
+        new public void Update(InputManager inputManager)
         {
             base.Update();
+            if (Dialogue.DialogueRunning)
+            {
+                Dialogue.Update(inputManager);
+            }
         }
 
         public void Interact(Player player, MapScene mapScene)
@@ -39,6 +44,10 @@ namespace SkyTown.Entities.Characters
         new public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
+            if (Dialogue.DialogueRunning)
+            {
+                Dialogue.Draw(spriteBatch);
+            }
         }
     }
 }

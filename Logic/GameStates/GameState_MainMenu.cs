@@ -11,12 +11,10 @@ namespace SkyTown.Logic.GameStates
     {
         private Game1 game;
         const GameState myStateEnum = GameState.MainMenu;
-        public Camera ViewCamera { get; set; }
 
         public GameState_MainMenu(Game1 game)
         {
             this.game = game;
-            ViewCamera = game.ViewCamera;
         }
 
         public void Initialize()
@@ -58,7 +56,6 @@ namespace SkyTown.Logic.GameStates
         public void StartGame()
         {
             game.ChangeGameState(new GameState_Playing(game));
-            game.ViewCamera.SetZoom(1.0f);
         }
     }
 }

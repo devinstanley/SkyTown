@@ -17,14 +17,12 @@ namespace SkyTown.HUD.Inventory
 
         public int SelectingSlot = -1;
 
-        protected Game1 Game;
         protected Player Player1;
         protected InventoryManager Inventory;
 
 
-        public InventoryHUD(Game1 game, Player player)
+        public InventoryHUD(Player player)
         {
-            Game = game;
             Player1 = player;
             Inventory = player.inventory;
         }
@@ -90,8 +88,8 @@ namespace SkyTown.HUD.Inventory
             Debug.WriteLine($"Mouse Pos: {mousePosition}");
 
             // Calculate grid-relative mouse position
-            float relativeX = mousePosition.X + InventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - Game.ViewCamera._position.X - Player1.Width / 2f;
-            float relativeY = mousePosition.Y + InventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - Game.ViewCamera._position.Y - Player1.Height / 2f;
+            float relativeX = mousePosition.X + InventoryTexture.Width / 2f - InventoryStartLoc.X + InventorySlotDimensions - Camera.Position.X - Player1.Width / 2f;
+            float relativeY = mousePosition.Y + InventoryTexture.Height / 2f - InventoryStartLoc.Y + InventorySlotDimensions - Camera.Position.Y - Player1.Height / 2f;
 
             Debug.WriteLine($"Fixed Mouse Pos: {relativeX}, {relativeY}");
 
@@ -115,7 +113,7 @@ namespace SkyTown.HUD.Inventory
             //Draw inventory HUD
             spriteBatch.Draw(
                 InventoryTexture,
-                Game.ViewCamera._position,
+                Camera.Position,
                 null,
                 Color.White,
                 0f,
@@ -128,8 +126,8 @@ namespace SkyTown.HUD.Inventory
             int slotY = InventoryManager.INVENTORYHEIGHT - 1; // Row index
             Vector2 position = new();
             position = new(
-                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - InventoryTexture.Width / 2,
-                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - InventoryTexture.Height / 2 + 1
+                    Camera.Position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Width / 2 - InventoryTexture.Width / 2,
+                    Camera.Position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + selectedItemHighlight.Height / 2 - InventoryTexture.Height / 2 + 1
                     );
             //Draw selected item highlight
             spriteBatch.Draw(
@@ -147,8 +145,8 @@ namespace SkyTown.HUD.Inventory
                 slotY = itemSlot.Key / InventoryManager.INVENTORYWIDTH; // Row index
 
                 position = new(
-                    Game.ViewCamera._position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Width / 2 - InventoryTexture.Width / 2,
-                    Game.ViewCamera._position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Height / 2 - InventoryTexture.Height / 2
+                    Camera.Position.X + InventoryStartLoc.X + slotX * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Width / 2 - InventoryTexture.Width / 2,
+                    Camera.Position.Y + InventoryStartLoc.Y + slotY * (InventorySlotDimensions + InventorySpacer) + itemSlot.Value.Item.InventoryAnimation.Height / 2 - InventoryTexture.Height / 2
                     );
 
                 if (slotY == 3)

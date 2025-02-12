@@ -59,7 +59,7 @@ namespace SkyTown.Map
             int numRows = (int)TileMapLayers.Last().Select(u => u.Key.Y).Max();
             int numCols = (int)TileMapLayers.Last().Select(u => u.Key.X).Max();
             MapDimension = new(numCols, numRows);
-            Player1.SetBounds(new Point(numCols, numRows));
+            Player1.SetBounds(MapDimension);
             SceneObjects.Add(ItemManager.GetItem("berries"));
             SceneObjects.Add(ItemManager.GetItem("pickaxe"));
 
@@ -81,7 +81,7 @@ namespace SkyTown.Map
             SceneObjects.Add(dispense_test3);
         }
 
-        public void Update(InputManager inputManager, Camera ViewCamera)
+        public void Update(InputManager inputManager)
         {
             TileManager.Update();
             foreach (GameObject sceneObject in SceneObjects)
@@ -92,7 +92,6 @@ namespace SkyTown.Map
             Player1.Update(inputManager);
             CollisionManager.Update(this, Player1);
             InteractionManager.Update(inputManager, this, Player1);
-            ViewCamera.SetPosition(Player1.Position);
         }
 
         public void Draw(SpriteBatch spriteBatch)

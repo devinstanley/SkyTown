@@ -79,6 +79,11 @@ namespace SkyTown.Logic
                 }
             }
         }
+
+        public static void HandlePlayerNPCInteractions(InputManager inputManager)
+        {
+
+        }
         /*
         public void HandlePlayerNPCInteractions(GameTime gameTime, InputManager inputManager, NPCManager npcManager, Player player)
         {

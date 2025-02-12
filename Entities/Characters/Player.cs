@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using SkyTown.Entities.GameObjects;
 using SkyTown.Entities.GameObjects.Items;
 using SkyTown.Entities.Interfaces;
+using SkyTown.HUD;
 using SkyTown.Logic;
 using SkyTown.LogicManagers;
 using SkyTown.Map;
@@ -23,6 +24,7 @@ namespace SkyTown.Entities.Characters
         bool isRunning = false;
         public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
+        public Dialogue test = new Dialogue("");
 
         private int AnimationSequence;
 
@@ -98,13 +100,14 @@ namespace SkyTown.Entities.Characters
             AnimationHandler = animations;
         }
 
-        public void SetBounds(Point mapSize)
+        public void SetBounds(Vector2 mapSize)
         {
             _minPos = new Vector2(-TileManager.BASE_TILESIZE / 2 + Width / 2 - CollisionRectangle.Value.X, -TileManager.BASE_TILESIZE / 2 + Height / 2 - CollisionRectangle.Value.Y);
             _maxPos = new Vector2(
                 -TileManager.BASE_TILESIZE / 2 + (mapSize.X + 1) * TileManager.BASE_TILESIZE - Width / 2 + (Width - CollisionRectangle.Value.X - CollisionRectangle.Value.Width),
                 -TileManager.BASE_TILESIZE / 2 + (mapSize.Y + 1) * TileManager.BASE_TILESIZE - Height / 2 + (Height - CollisionRectangle.Value.Y - CollisionRectangle.Value.Height)
                 );
+            Camera.SetBounds(mapSize);
         }
 
         public void Update(InputManager input)
@@ -120,6 +123,8 @@ namespace SkyTown.Entities.Characters
                 Debug.WriteLine("Started Animation!");
             }
 
+            test.Update(input);
+
             //Handle Input Update
             float displacementScalar = WalkingSpeed * (float)GameGlobals.ElapsedGameTime;
             UpdateVelocity(input);
@@ -134,10 +139,12 @@ namespace SkyTown.Entities.Characters
             //Update Player Position
             Position += Velocity;
             Position = Vector2.Clamp(Position, _minPos, _maxPos);
+            Camera.SetPosition(Position);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            test.Draw(spriteBatch);
             base.Draw(spriteBatch);
             //Draw platyer current held item
             if (inventory.CurrentItem != null)

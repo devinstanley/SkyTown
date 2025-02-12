@@ -14,14 +14,12 @@ namespace SkyTown.Logic.GameStates
         private SpriteFont font;
         const GameState myStateEnum = GameState.Paused;
         InventoryHUD inventoryHUD;
-        public Camera ViewCamera { get; set; }
 
         public GameState_Paused(Game1 game, Player player)
         {
             this.game = game;
             this.player = player;
-            this.inventoryHUD = new InventoryHUD(game, player);
-            ViewCamera = game.ViewCamera;
+            this.inventoryHUD = new InventoryHUD(player);
         }
 
         public void Initialize()
