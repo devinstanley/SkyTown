@@ -10,6 +10,7 @@ namespace SkyTown.Entities.Interfaces
 {
     public interface IAnimator
     {
+        public event Action OnAnimationCompleted;
         bool AnimationLocked { get; }
         int Height { get; }
         int Width { get; }
@@ -20,6 +21,7 @@ namespace SkyTown.Entities.Interfaces
 
     public class AnimationManager : IAnimator
     {
+        public event Action OnAnimationCompleted;
         private readonly Dictionary<object, Animation> _animations = new();
         private object CurrentAnimationKey;
         private object PreviousAnimationKey;
@@ -49,8 +51,10 @@ namespace SkyTown.Entities.Interfaces
             }
             if (_animations.ContainsKey(key))
             {
+                _animations[CurrentAnimationKey].OnAnimationCompleted -= () => OnAnimationCompleted?.Invoke();
                 PreviousAnimationKey = CurrentAnimationKey;
                 CurrentAnimationKey = key;
+                _animations[CurrentAnimationKey].OnAnimationCompleted += () => OnAnimationCompleted?.Invoke();
             }
             else
             {
@@ -90,6 +94,7 @@ namespace SkyTown.Entities.Interfaces
 
     public class Animation : IAnimator
     {
+        public event Action OnAnimationCompleted;
         private readonly string TextureID;
         private readonly List<Rectangle> FrameSources = new();
         private readonly int TotalFrames;
@@ -154,6 +159,7 @@ namespace SkyTown.Entities.Interfaces
             {
                 AnimationLocked = false;
                 RemainingLock = 0;
+                OnAnimationCompleted?.Invoke();
             }
             else
             {
