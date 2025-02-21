@@ -1,26 +1,72 @@
 [
-    {
-        "ObjectID": "berrybush",
-        "TextureID": "Assets.Items.BerryBush",
-        "CollisionRectangle": [ 0, 0, 32, 32 ],
-        "IAnimator": [
-            {
-                "AnimationKey": 1,
-                "FrameTime": 1,
-                "SourceRectangles": [
-                    [ 32, 0, 32, 32 ]
-                ]
-            },
-            {
-                "AnimationKey": 0,
-                "FrameTime": 1,
-                "SourceRectangles": [
-                    [ 0, 0, 32, 32 ]
-                ]
-            }
-        ],
-        "DispensedItem": "berries",
-        "NumDispensed": 5,
-        "CoolDowm": 5
-    }
+  {
+    "ObjectID": "berrybush",
+    "TextureID": "Assets.Items.BerryBush",
+    "CollisionRectangle": [ 0, 0, 32, 32 ],
+    "IAnimator": [
+      {
+        "AnimationKey": 1,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 32, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 0,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ]
+        ]
+      }
+    ],
+    "DispensedItem": "berries",
+    "NumDispensed": 5,
+    "CoolDowm": 5
+  },
+  {
+    "ObjectID": "rock",
+    "TextureID": "Assets.Items.Stone",
+    "CollisionRectangle": [ 0, 0, 32, 32 ],
+    "IAnimator": [
+      {
+        "AnimationKey": 1,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 32, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 2,
+        "FrameTime": 0.1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ],
+          [ 32, 0, 32, 32 ],
+          [ 64, 0, 32, 32 ],
+          [ 96, 0, 32, 32 ],
+          [ 128, 0, 32, 32 ],
+          [ 160, 0, 32, 32 ],
+          [ 192, 0, 32, 32 ],
+          [ 224, 0, 32, 32 ],
+          [ 256, 0, 32, 32 ],
+          [ 288, 0, 32, 32 ],
+          [ 320, 0, 32, 32 ],
+          [ 352, 0, 32, 32 ],
+          [ 384, 0, 32, 32 ]
+        ]
+      },
+      {
+        "AnimationKey": 0,
+        "FrameTime": 1,
+        "SourceRectangles": [
+          [ 0, 0, 32, 32 ]
+        ]
+      }
+    ],
+    "DispensedItem": "berries",
+    "NumDispensed": 5,
+    "RequiredTool": "pickaxe",
+    "RequiredToolLevel": 1,
+    "HP": 3
+  }
 ]

@@ -16,6 +16,7 @@
         "ObjectID": "pickaxe",
         "TextureID": "Assets.Items.Pickaxe",
         "ToolType": "Pickaxe",
+        "ToolDamage": 1,
         "UpgradeLevel": 1,
         "InventorySprite": [0, 32, 32, 32],
         "IAnimator": [

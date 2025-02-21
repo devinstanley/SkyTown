@@ -115,6 +115,18 @@
 /processorParam:TextureFormat=Color
 /build:Assets/Items/Pickaxe.png
 
+#begin Assets/Items/Stone.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Assets/Items/Stone.png
+
 #begin Assets/Maps/TestMap/Layer0.csv
 /importer:CsvImporter
 /processor:CsvProcessor
