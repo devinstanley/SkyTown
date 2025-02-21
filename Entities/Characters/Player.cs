@@ -24,7 +24,6 @@ namespace SkyTown.Entities.Characters
         bool isRunning = false;
         public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
-        public Dialogue test = new Dialogue("");
 
         private int AnimationSequence;
 
@@ -38,7 +37,6 @@ namespace SkyTown.Entities.Characters
 
         new public void LoadContent(ContentManager content)
         {
-            inventory.LoadContent(content);
 
             //Needs to be responsible for loading spritesheet, animation register, inventory status?
             AnimationManager animations = new AnimationManager();
@@ -123,8 +121,6 @@ namespace SkyTown.Entities.Characters
                 Debug.WriteLine("Started Animation!");
             }
 
-            test.Update(input);
-
             //Handle Input Update
             float displacementScalar = WalkingSpeed * (float)GameGlobals.ElapsedGameTime;
             UpdateVelocity(input);
@@ -144,7 +140,6 @@ namespace SkyTown.Entities.Characters
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            test.Draw(spriteBatch);
             base.Draw(spriteBatch);
             //Draw platyer current held item
             if (inventory.CurrentItem != null)

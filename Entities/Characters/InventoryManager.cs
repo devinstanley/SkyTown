@@ -37,14 +37,6 @@ namespace SkyTown.Entities.Characters
             Items = new Dictionary<int, InventorySlot>();
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            foreach (var item in Items)
-            {
-                item.Value.Item.LoadContent(content);
-            }
-        }
-
         public void Update()
         {
             foreach (var item in Items)

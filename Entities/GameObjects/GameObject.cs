@@ -35,11 +35,6 @@ namespace SkyTown.Entities.GameObjects
             CollisionRectangle = collisionRect;
         }
 
-        public virtual void LoadContent(ContentManager content)
-        {
-
-        }
-
         public virtual void Update()
         {
             AnimationHandler?.Update();

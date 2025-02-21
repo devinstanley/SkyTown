@@ -14,14 +14,6 @@ namespace SkyTown.Entities.Characters
 
         }
 
-        public void LoadContent(ContentManager content)
-        {
-            foreach (NPC n in NPCs)
-            {
-                n.LoadContent(content);
-            }
-        }
-
         public void Update()
         {
             foreach (NPC n in NPCs)

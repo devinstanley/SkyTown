@@ -21,11 +21,6 @@ namespace SkyTown.Entities.Characters
 
         }
 
-        new public void LoadContent(ContentManager content)
-        {
-
-        }
-
         new public void Update(InputManager inputManager)
         {
             base.Update();
