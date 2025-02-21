@@ -228,7 +228,7 @@ namespace SkyTown.Entities.Characters
         {
             
             Velocity = Vector2.Zero;
-            if (inventory.CurrentItem is Tool tool && tool.AnimationHandler is AnimationManager animation && animation.AnimationLocked)
+            if (AnimationLocked)
             {
                 return;
             }

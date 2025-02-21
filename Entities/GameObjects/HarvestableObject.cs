@@ -67,7 +67,7 @@ namespace SkyTown.Entities.GameObjects
                     HP -= t.ToolDamage;
                     if (AnimationHandler is AnimationManager animation)
                     {
-                        animation.UpdateAnimationSequence(1);
+                        animation.UpdateAnimationSequence(1, true);
                         animation.OnAnimationCompleted += () =>
                         {
                             animation.UpdateAnimationSequence(0);
