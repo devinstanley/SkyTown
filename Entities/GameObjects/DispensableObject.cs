@@ -19,7 +19,13 @@ namespace SkyTown.Entities.GameObjects
         public bool DispenseReady = true;
         public double CoolDown;
         private double RemainingCoolDown;
-        public DispensableObject(string ID, IAnimator animator, string dispencedItem, int numDispensed, double coolDown, Rectangle? collisionRect) : base(ID, collisionRect)
+        public DispensableObject(
+            string ID, 
+            IAnimator animator, 
+            string dispencedItem, 
+            int numDispensed, 
+            double coolDown, 
+            Rectangle? collisionRect) : base(ID, collisionRect)
         {
             AnimationHandler = animator;
             DispensedItemID = dispencedItem;

@@ -24,6 +24,11 @@ namespace SkyTown.Entities.Characters
         bool isRunning = false;
         public Vector2 Velocity;
         private Vector2 _minPos, _maxPos;
+        public bool AnimationLocked = false;
+        public Item HeldItem { get
+            {
+                return inventory.CurrentItem;
+            } }
 
         private int AnimationSequence;
 
@@ -115,7 +120,7 @@ namespace SkyTown.Entities.Characters
                 return;
             }
 
-            if (input.IsRightClickDown() && inventory.CurrentItem is Tool t && !t.AnimationHandler.AnimationLocked)
+            if (input.IsLeftClickDown() && inventory.CurrentItem is Tool t && !AnimationLocked)
             {
                 StartSpecialAnimation(0, true);
                 Debug.WriteLine("Started Animation!");
@@ -161,7 +166,12 @@ namespace SkyTown.Entities.Characters
             int animationKey = animationRoot + directionKey;
             if (inventory.CurrentItem.AnimationHandler is AnimationManager animator)
             {
+                AnimationLocked = true;
                 animator.UpdateAnimationSequence(13, animLock);
+                animator.OnAnimationCompleted += () =>
+                {
+                    AnimationLocked = false;
+                };
             }
             if (AnimationHandler is AnimationManager animationManager)
             {

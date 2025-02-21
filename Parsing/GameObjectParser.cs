@@ -99,9 +99,10 @@ namespace SkyTown.Parsing
                     }
 
                     if (element.TryGetProperty("ToolType", out JsonElement toolType) &&
-                        element.TryGetProperty("UpgradeLevel", out JsonElement toolUpgrade))
+                        element.TryGetProperty("UpgradeLevel", out JsonElement toolUpgrade) &&
+                        element.TryGetProperty("ToolDamage", out JsonElement toolDmg))
                     {
-                        ToolConstructor toolC = new ToolConstructor(fullID, animator, inventoryAnimation, toolType.GetString(), toolUpgrade.GetInt32());
+                        ToolConstructor toolC = new ToolConstructor(fullID, animator, inventoryAnimation, toolType.GetString(), toolUpgrade.GetInt32(), toolDmg.GetInt32());
                         itemsDict[objectID] = toolC;
                         continue;
                     }
@@ -149,13 +150,26 @@ namespace SkyTown.Parsing
                     }
 
                     if (element.TryGetProperty("DispensedItem", out JsonElement dispensedItem) &&
-                        element.TryGetProperty("NumDispensed", out JsonElement numDispensed) &&
-                        element.TryGetProperty("CoolDowm", out JsonElement coolDown))
+                        element.TryGetProperty("NumDispensed", out JsonElement numDispensed))
                     {
-                        DispensableObjectConstructor dC = new DispensableObjectConstructor(fullID, animator, collisionRectangle, dispensedItem.ToString(), numDispensed.GetInt32(), coolDown.GetDouble());
-                        itemsDict[objectID] = dC;
-                        continue;
+
+                        if (element.TryGetProperty("CoolDowm", out JsonElement coolDown))
+                        {
+                            DispensableObjectConstructor dC = new DispensableObjectConstructor(fullID, animator, collisionRectangle, dispensedItem.ToString(), numDispensed.GetInt32(), coolDown.GetDouble());
+                            itemsDict[objectID] = dC;
+                            continue;
+                        }
+                        
+                        if (element.TryGetProperty("RequiredTool", out JsonElement reqTool) &&
+                            element.TryGetProperty("RequiredToolLevel", out JsonElement reqToolLevel) &&
+                            element.TryGetProperty("HP", out JsonElement hp))
+                        {
+                            HarvestableObjectConstructor hc = new HarvestableObjectConstructor(fullID, animator, collisionRectangle, dispensedItem.ToString(), numDispensed.GetInt32(), reqTool.ToString(), reqToolLevel.GetInt32(), hp.GetInt32());
+                            itemsDict[objectID] = hc;
+                            continue;
+                        }
                     }
+
                 }
             }
 

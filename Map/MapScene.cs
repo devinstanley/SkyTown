@@ -79,12 +79,16 @@ namespace SkyTown.Map
             var dispense_test3 = GameObjectManager.GetItem("berrybush");
             dispense_test3.Position = new Vector2(75, 120);
             SceneObjects.Add(dispense_test3);
+
+            var harvest_test1 = GameObjectManager.GetItem("rock");
+            harvest_test1.Position = new Vector2(150, 160);
+            SceneObjects.Add(harvest_test1);
         }
 
         public void Update(InputManager inputManager)
         {
             TileManager.Update();
-            foreach (GameObject sceneObject in SceneObjects)
+            foreach (GameObject sceneObject in SceneObjects.ToList())
             {
                 sceneObject.Update();
             }

@@ -25,13 +25,12 @@ namespace SkyTown.Logic
             //HandlePlayerNPCInteractions(gameTime, inputManager, scene.NpcManager, player);
             HandlePlayerItemInteractions(mapScene, player);
             HandlePlayerDispenserInteractions(inputManager, mapScene, player);
-
-
+            HandlePlayerHarvestInteractions(inputManager, mapScene, player);
         }
 
         public static bool ObjectClicked(InputManager inputManager, GameObject gameObject)
         {
-            if (!inputManager.IsLeftClicked())
+            if (!inputManager.IsLeftClicked() && !inputManager.IsLeftClickDown())
             {
                 return false;
             }
@@ -60,6 +59,24 @@ namespace SkyTown.Logic
                 return true;
             }
             return false;
+        }
+
+        public static void HandlePlayerHarvestInteractions(InputManager inputManager, MapScene mapScene, Player player)
+        {
+            List<HarvestableObject> HarvestableCopy = mapScene.SceneObjects.OfType<HarvestableObject>().ToList();
+
+            foreach (HarvestableObject dispensable in HarvestableCopy)
+            {
+                float dist = (player.Position - dispensable.Position).Length();
+                if (dist < InteractionDistance &&
+                    ObjectClicked(inputManager, dispensable))
+                {
+                    {
+                        dispensable.Interact(player, mapScene);
+                        continue;
+                    }
+                }
+            }
         }
 
         public static void HandlePlayerDispenserInteractions(InputManager inputManager, MapScene mapScene, Player player)

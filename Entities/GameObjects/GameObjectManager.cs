@@ -44,5 +44,5 @@ namespace SkyTown.Entities.GameObjects
             obj.AnimationHandler = Animator.Copy();
             return obj;
         }
-}
+    }
 }
